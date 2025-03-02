@@ -37,7 +37,7 @@ function AppointmentDetails() {
     const fetchAppointmentDetails = async () => {
       try {
         const response = await axios.get(
-          `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?id=${id}`
+          `${VITE_REACT_APP_BASE_URL}/appointments?id=${id}`
         );
         console.log("Response: ", response);
 

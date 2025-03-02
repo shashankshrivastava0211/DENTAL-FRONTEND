@@ -261,7 +261,7 @@ function AppointmentsList() {
 
     setUpdatingStatus(true);
     try {
-      await axios.put(`${VITE_REACT_APP_BASE_URL}/api/v1/appointments`, {
+      await axios.put(`${VITE_REACT_APP_BASE_URL}/appointments`, {
         appointmentIds: selectedAppointments,
         status,
       });
