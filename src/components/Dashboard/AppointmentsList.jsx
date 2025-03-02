@@ -170,7 +170,7 @@ function AppointmentsList() {
       }
 
       const response = await axios.get(
-        `${VITE_REACT_APP_BASE_URL}/api/v1/appointments`,
+        `${VITE_REACT_APP_BASE_URL}/appointments`,
         { params: queryParams }
       );
 
