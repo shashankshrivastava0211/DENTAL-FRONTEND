@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   FileText,
   Download,
@@ -6,50 +6,50 @@ import {
   Search,
   Calendar,
   Filter,
-  ChevronDown
-} from 'lucide-react';
+  ChevronDown,
+} from "lucide-react";
 
 export const Reports = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [dateRange, setDateRange] = useState('');
-  const [reportType, setReportType] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dateRange, setDateRange] = useState("");
+  const [reportType, setReportType] = useState("");
 
   const reports = [
     {
       id: 1,
-      patient: 'John Doe',
-      type: 'Check-up Report',
-      doctor: 'Dr. Sarah Wilson',
-      date: '2024-03-01',
-      status: 'Completed'
+      patient: "John Doe",
+      type: "Check-up Report",
+      doctor: "Dr. Sarah Wilson",
+      date: "2024-03-01",
+      status: "Completed",
     },
     {
       id: 2,
-      patient: 'Jane Smith',
-      type: 'Treatment Plan',
-      doctor: 'Dr. Michael Chen',
-      date: '2024-03-05',
-      status: 'Pending'
+      patient: "Jane Smith",
+      type: "Treatment Plan",
+      doctor: "Dr. Michael Chen",
+      date: "2024-03-05",
+      status: "Pending",
     },
     {
       id: 3,
-      patient: 'Robert Johnson',
-      type: 'Prescription',
-      doctor: 'Dr. Emily Brown',
-      date: '2024-03-10',
-      status: 'Completed'
-    }
+      patient: "Robert Johnson",
+      type: "Prescription",
+      doctor: "Dr. Emily Brown",
+      date: "2024-03-10",
+      status: "Completed",
+    },
   ];
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle search logic
-    console.log('Searching for:', searchTerm);
-  };
+  // const handleSearch = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // Handle search logic
+  //   console.log('Searching for:', searchTerm);
+  // };
 
   const handleGenerateReport = () => {
     // Handle report generation logic
-    console.log('Generating new report');
+    console.log("Generating new report");
   };
 
   return (
@@ -75,9 +75,15 @@ export const Reports = () => {
         {/* Filters */}
         <div className="bg-white rounded-lg shadow mb-8">
           <div className="p-6">
-            <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <form
+              onSubmit={handleSearch}
+              className="grid grid-cols-1 md:grid-cols-4 gap-6"
+            >
               <div>
-                <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="search"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Search
                 </label>
                 <div className="relative rounded-md shadow-sm">
@@ -97,7 +103,10 @@ export const Reports = () => {
               </div>
 
               <div>
-                <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="date"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Date Range
                 </label>
                 <div className="relative rounded-md shadow-sm">
@@ -124,7 +133,10 @@ export const Reports = () => {
               </div>
 
               <div>
-                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="type"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Report Type
                 </label>
                 <div className="relative rounded-md shadow-sm">
@@ -190,7 +202,9 @@ export const Reports = () => {
               {reports.map((report) => (
                 <tr key={report.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{report.patient}</div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {report.patient}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">{report.type}</div>
@@ -204,9 +218,9 @@ export const Reports = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        report.status === 'Completed'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
+                        report.status === "Completed"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
                       {report.status}
