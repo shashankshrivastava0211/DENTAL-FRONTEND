@@ -283,7 +283,7 @@ function BookAppointment() {
         formData.countryCode
       }${formData.phoneNo.replace(/\D/g, "")}`;
 
-      await axios.post(`${VITE_REACT_APP_BASE_URL}/api/v1/appointments`, {
+      await axios.post(`${VITE_REACT_APP_BASE_URL}/appointments`, {
         ...formData,
         phoneNo: fullPhoneNumber,
         date: formattedDate,
