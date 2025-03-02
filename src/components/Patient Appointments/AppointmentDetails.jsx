@@ -25,6 +25,8 @@ import {
 import { Helmet } from "react-helmet";
 
 function AppointmentDetails() {
+  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [appointment, setAppointment] = useState(null);
@@ -36,7 +38,7 @@ function AppointmentDetails() {
     const fetchAppointmentDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/appointments?id=${id}`
+          `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?id=${id}`
         );
         console.log("Response: ", response);
         

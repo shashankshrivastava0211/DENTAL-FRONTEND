@@ -27,6 +27,8 @@ import PrescriptionModal from "./PrescriptionModal";
 
 function ConfirmedPatients() {
   // State management
+  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -150,7 +152,7 @@ function ConfirmedPatients() {
       }
 
       const response = await axios.get(
-        `http://localhost:3000/api/v1/appointments?${queryParams.toString()}`
+        `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?${queryParams.toString()}`
       );
 
       let filteredPatients = response.data.data || [];
@@ -193,7 +195,7 @@ function ConfirmedPatients() {
 
       // Fetch prescription data for the selected appointment
       const response = await axios.get(
-        `http://localhost:3000/api/v1/prescription?appointmentId=${appointmentId}`
+        `${VITE_REACT_APP_BASE_URL}/api/v1/prescription?appointmentId=${appointmentId}`
       );
 
       // Dismiss loading toast
@@ -222,7 +224,7 @@ function ConfirmedPatients() {
     try {
       const loadingToast = toast.loading("Updating appointment status...");
 
-      await axios.put(`http://localhost:3000/api/v1/appointments`, {
+      await axios.put(`${VITE_REACT_APP_BASE_URL}/api/v1/appointments`, {
         status: "completed",
         appointmentIds: [appointmentId],
       });
@@ -250,7 +252,7 @@ function ConfirmedPatients() {
       if (existingPrescription) {
         // Update existing prescription
         await axios.patch(
-          `http://localhost:3000/api/v1/prescription/${existingPrescription._id}`,
+          `${VITE_REACT_APP_BASE_URL}/api/v1/prescription/${existingPrescription._id}`,
           {
             ...prescriptionData,
             appointmentId: selectedAppointmentId,
@@ -260,7 +262,7 @@ function ConfirmedPatients() {
         toast.success("Prescription updated successfully");
       } else {
         // Create new prescription
-        await axios.post("http://localhost:3000/api/v1/prescription", {
+        await axios.post(`${VITE_REACT_APP_BASE_URL}/api/v1/prescription`, {
           ...prescriptionData,
           appointmentId: selectedAppointmentId,
         });

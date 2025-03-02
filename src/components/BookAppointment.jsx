@@ -33,6 +33,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 function BookAppointment() {
+  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const navigate = useNavigate();
   const appointmentRef = useRef(null);
 
@@ -282,7 +283,7 @@ function BookAppointment() {
         formData.countryCode
       }${formData.phoneNo.replace(/\D/g, "")}`;
 
-      await axios.post("http://localhost:3000/api/v1/appointments", {
+      await axios.post(`${VITE_REACT_APP_BASE_URL}/api/v1/appointments`, {
         ...formData,
         phoneNo: fullPhoneNumber,
         date: formattedDate,

@@ -11,6 +11,8 @@ import { Toaster, toast } from "react-hot-toast";
 
 function AppointmentsList() {
   // State management
+  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedAppointments, setSelectedAppointments] = useState([]);
@@ -138,7 +140,7 @@ function AppointmentsList() {
       }
 
       const response = await axios.get(
-        "http://localhost:3000/api/v1/appointments", 
+        `${VITE_REACT_APP_BASE_URL}/api/v1/appointments`, 
         { params: queryParams }
       );
 
@@ -225,7 +227,7 @@ function AppointmentsList() {
 
     setUpdatingStatus(true);
     try {
-      await axios.put("http://localhost:3000/api/v1/appointments", {
+      await axios.put(`${VITE_REACT_APP_BASE_URL}/api/v1/appointments`, {
         appointmentIds: selectedAppointments,
         status,
       });

@@ -28,7 +28,8 @@ import {
 function App() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -104,7 +105,7 @@ function App() {
   useEffect(() => {
     const fetchAppointmentDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/v1/appointments?id=${id}`);
+        const response = await axios.get(`${VITE_REACT_APP_BASE_URL}/api/v1/appointments?id=${id}`);
         let appointmentData;
         if (response.data && Array.isArray(response.data)) {
           appointmentData = response.data[0];
@@ -282,7 +283,7 @@ function App() {
         gender: formData.gender
       });
 
-      const response = await axios.put(`http://localhost:3000/api/v1/appointments/${id}`, {
+      const response = await axios.put(`${VITE_REACT_APP_BASE_URL}/api/v1/appointments/${id}`, {
         _id: [id], 
         patientName: formData.patientName,
         phoneNo: fullPhoneNumber,

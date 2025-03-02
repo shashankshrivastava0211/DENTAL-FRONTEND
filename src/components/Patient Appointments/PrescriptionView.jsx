@@ -23,6 +23,7 @@ function PrescriptionView() {
   const [appointment, setAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   useEffect(() => {
     const fetchPrescriptionDetails = async () => {
@@ -31,8 +32,8 @@ function PrescriptionView() {
 
         // First fetch the prescription using the correct API endpoint
         const prescriptionResponse = await axios.get(
-          `http://localhost:3000/api/v1/prescription?appointmentId=${id}`
-          // `http://localhost:3000/api/v1/prescription?appointmentId=67c075abdd3807a28a731ad7`
+          `${VITE_REACT_APP_BASE_URL}/api/v1/prescription?appointmentId=${id}`
+          // `${VITE_REACT_APP_BASE_URL}/api/v1/prescription?appointmentId=67c075abdd3807a28a731ad7`
         );
 
         console.log("Prescription Response:", prescriptionResponse);
@@ -74,7 +75,7 @@ function PrescriptionView() {
 
         // Then fetch the associated appointment
         const appointmentResponse = await axios.get(
-          `http://localhost:3000/api/v1/appointments?id=${appointmentIdValue}`
+          `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?id=${appointmentIdValue}`
         );
 
         console.log("Appointment Response:", appointmentResponse);

@@ -26,6 +26,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 function Appointments() {
+  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const navigate = useNavigate();
   const historyRef = useRef(null);
   const [appointments, setAppointments] = useState([]);
@@ -124,7 +125,7 @@ function Appointments() {
       }
 
       const response = await axios.get(
-        `http://localhost:3000/api/v1/appointments?${queryParams.toString()}`
+        `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?${queryParams.toString()}`
       );
 
       setAppointments(response.data.data || []);
