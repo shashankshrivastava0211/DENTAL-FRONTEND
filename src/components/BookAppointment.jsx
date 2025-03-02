@@ -31,9 +31,9 @@ import { Helmet } from "react-helmet";
 import Hero from "./Hero";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { VITE_REACT_APP_BASE_URL } from "./utils/constants";
 
 function BookAppointment() {
-  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const navigate = useNavigate();
   const appointmentRef = useRef(null);
 

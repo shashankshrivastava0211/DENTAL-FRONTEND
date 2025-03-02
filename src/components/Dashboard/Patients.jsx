@@ -24,10 +24,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Toaster, toast } from "react-hot-toast";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import PrescriptionModal from "./PrescriptionModal";
+import { VITE_REACT_APP_BASE_URL } from "../utils/constants";
 
 function ConfirmedPatients() {
   // State management
-  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -619,7 +619,7 @@ function ConfirmedPatients() {
                       >
                         Treatment
                       </th>
-                      
+
                       <th
                         scope="col"
                         className="px-6 py-4 text-left text-xs font-semibold text-indigo-800 uppercase tracking-wider"
@@ -683,8 +683,7 @@ function ConfirmedPatients() {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900 flex items-center gap-2">
-                                  <span>
-                                  {patient.status}</span>
+                                  <span>{patient.status}</span>
                                 </div>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
@@ -784,8 +783,6 @@ function ConfirmedPatients() {
           onSave={handleSavePrescription}
         />
       )}
-
-      
     </div>
   );
 }

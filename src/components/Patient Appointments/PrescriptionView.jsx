@@ -15,6 +15,7 @@ import {
   Printer,
   Share2,
 } from "lucide-react";
+import { VITE_REACT_APP_BASE_URL } from "../utils/constants";
 
 function PrescriptionView() {
   const { id } = useParams();
@@ -23,7 +24,6 @@ function PrescriptionView() {
   const [appointment, setAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
   useEffect(() => {
     const fetchPrescriptionDetails = async () => {

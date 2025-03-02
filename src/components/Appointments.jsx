@@ -24,9 +24,9 @@ import { format, isAfter, isBefore, addDays } from "date-fns";
 import Hero from "./Hero";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { VITE_REACT_APP_BASE_URL } from "./utils/constants";
 
 function Appointments() {
-  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const navigate = useNavigate();
   const historyRef = useRef(null);
   const [appointments, setAppointments] = useState([]);
@@ -59,15 +59,14 @@ function Appointments() {
     { value: "orthopedic", label: "Orthodontics" },
   ];
 
-
-    // Initialize AOS
-    useEffect(() => {
-      AOS.init({
-        duration: 800,
-        once: false,
-        mirror: true,
-      });
-    }, []);
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: false,
+      mirror: true,
+    });
+  }, []);
 
   const validateDateRange = () => {
     const errors = {
@@ -243,37 +242,37 @@ function Appointments() {
     navigate(`/appointment/${appointmentId}`);
   };
 
-
   const heroProps = {
     // badgeIcon: History,
-    badgeText: 'Treatment Records',
-    heading: 'Your Dental',
-    headingHighlight: 'Treatment',
-    headingEnd: 'History',
-    description: 'Access your complete dental treatment history, including past appointments, procedures, and upcoming visits. Keep track of your oral health journey in one convenient place.',
-    primaryButtonText: 'View History',
+    badgeText: "Treatment Records",
+    heading: "Your Dental",
+    headingHighlight: "Treatment",
+    headingEnd: "History",
+    description:
+      "Access your complete dental treatment history, including past appointments, procedures, and upcoming visits. Keep track of your oral health journey in one convenient place.",
+    primaryButtonText: "View History",
     primaryButtonAction: (e) => {
       e.preventDefault();
       const element = historyRef.current;
       if (element) {
         const y = element.getBoundingClientRect().top + window.pageYOffset - 80;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        window.scrollTo({ top: y, behavior: "smooth" });
       }
     },
-    secondaryButtonText: 'Download Records',
+    secondaryButtonText: "Download Records",
     // secondaryButtonIcon: Download,
     secondaryButtonAction: () => {
-      alert('This would download your complete dental records as a PDF file.');
+      alert("This would download your complete dental records as a PDF file.");
     },
-    imageSrc: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    imageSrc:
+      "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
     imageAlt: "Dental records",
     // floatingBadgeIcon: FileText,
     floatingBadgeTitle: "Digital Records",
     floatingBadgeText: "Secure & accessible anytime",
     scrollToRef: historyRef,
-    scrollText: "View Your History"
+    scrollText: "View Your History",
   };
-
 
   return (
     <>
@@ -324,11 +323,9 @@ function Appointments() {
       />
 
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
+        <Hero {...heroProps} />
 
-<Hero {...heroProps} />
-
-        <div
-ref={historyRef} className="relative min-h-screen">
+        <div ref={historyRef} className="relative min-h-screen">
           {/* Background Pattern */}
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 

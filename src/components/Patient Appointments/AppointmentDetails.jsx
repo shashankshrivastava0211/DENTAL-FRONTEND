@@ -23,10 +23,9 @@ import {
   X,
 } from "lucide-react";
 import { Helmet } from "react-helmet";
+import { VITE_REACT_APP_BASE_URL } from "../utils/constants";
 
 function AppointmentDetails() {
-  const VITE_REACT_APP_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
-
   const { id } = useParams();
   const navigate = useNavigate();
   const [appointment, setAppointment] = useState(null);
@@ -41,7 +40,7 @@ function AppointmentDetails() {
           `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?id=${id}`
         );
         console.log("Response: ", response);
-        
+
         if (response.data && Array.isArray(response.data)) {
           setAppointment(response.data[0]);
         } else if (response.data && response.data.data) {
@@ -61,7 +60,7 @@ function AppointmentDetails() {
         toast.error("Failed to fetch appointment details");
       } finally {
         setLoading(false);
-        console.log("Appointment Details: ", appointment);  
+        console.log("Appointment Details: ", appointment);
       }
     };
 
@@ -143,10 +142,9 @@ function AppointmentDetails() {
   };
 
   const handleViewPrescription = () => {
-
     if (appointment?.prescriptionId) {
       console.log("Prescription ID: ", appointment.prescriptionId);
-      
+
       navigate(`/prescriptions/${appointment._id}`);
     }
   };
