@@ -152,7 +152,7 @@ function ConfirmedPatients() {
       }
 
       const response = await axios.get(
-        `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?${queryParams.toString()}`
+        `${VITE_REACT_APP_BASE_URL}/appointments?${queryParams.toString()}`
       );
 
       let filteredPatients = response.data.data || [];
@@ -195,7 +195,7 @@ function ConfirmedPatients() {
 
       // Fetch prescription data for the selected appointment
       const response = await axios.get(
-        `${VITE_REACT_APP_BASE_URL}/api/v1/prescription?appointmentId=${appointmentId}`
+        `${VITE_REACT_APP_BASE_URL}/prescription?appointmentId=${appointmentId}`
       );
 
       // Dismiss loading toast
@@ -224,7 +224,7 @@ function ConfirmedPatients() {
     try {
       const loadingToast = toast.loading("Updating appointment status...");
 
-      await axios.put(`${VITE_REACT_APP_BASE_URL}/api/v1/appointments`, {
+      await axios.put(`${VITE_REACT_APP_BASE_URL}/appointments`, {
         status: "completed",
         appointmentIds: [appointmentId],
       });
@@ -252,7 +252,7 @@ function ConfirmedPatients() {
       if (existingPrescription) {
         // Update existing prescription
         await axios.patch(
-          `${VITE_REACT_APP_BASE_URL}/api/v1/prescription/${existingPrescription._id}`,
+          `${VITE_REACT_APP_BASE_URL}/prescription/${existingPrescription._id}`,
           {
             ...prescriptionData,
             appointmentId: selectedAppointmentId,
@@ -262,7 +262,7 @@ function ConfirmedPatients() {
         toast.success("Prescription updated successfully");
       } else {
         // Create new prescription
-        await axios.post(`${VITE_REACT_APP_BASE_URL}/api/v1/prescription`, {
+        await axios.post(`${VITE_REACT_APP_BASE_URL}/prescription`, {
           ...prescriptionData,
           appointmentId: selectedAppointmentId,
         });

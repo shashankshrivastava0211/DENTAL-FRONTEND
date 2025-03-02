@@ -124,7 +124,7 @@ function Appointments() {
       }
 
       const response = await axios.get(
-        `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?${queryParams.toString()}`
+        `${VITE_REACT_APP_BASE_URL}/appointments?${queryParams.toString()}`
       );
 
       setAppointments(response.data.data || []);

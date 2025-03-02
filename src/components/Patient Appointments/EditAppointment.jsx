@@ -107,7 +107,7 @@ function App() {
     const fetchAppointmentDetails = async () => {
       try {
         const response = await axios.get(
-          `${VITE_REACT_APP_BASE_URL}/api/v1/appointments?id=${id}`
+          `${VITE_REACT_APP_BASE_URL}/appointments?id=${id}`
         );
         let appointmentData;
         if (response.data && Array.isArray(response.data)) {
@@ -305,7 +305,7 @@ function App() {
       });
 
       const response = await axios.put(
-        `${VITE_REACT_APP_BASE_URL}/api/v1/appointments/${id}`,
+        `${VITE_REACT_APP_BASE_URL}/appointments/${id}`,
         {
           _id: [id],
           patientName: formData.patientName,
