@@ -30,11 +30,11 @@ function Footer() {
     { text: "Appointments", href: "/appointments" },
     { text: "Blog", href: "/blog" },
     { text: "Contact", href: "/contact" },
-    { text: "Login", href: "/login" },
-    { text: "Register", href: "/register" },
-    { text: "Dashboard", href: "/admin-dashboard" },
-    { text: "Doctor-Dashboard", href: "/doctor-dashboard" },
-    { text: "Patient-Dashboard", href: "/patient-dashboard" },
+    // { text: "Login", href: "/login" },
+    // { text: "Register", href: "/register" },
+    // { text: "Dashboard", href: "/admin-dashboard" },
+    // { text: "Doctor-Dashboard", href: "/doctor-dashboard" },
+    // { text: "Patient-Dashboard", href: "/patient-dashboard" },
   ];
 
   const handleCall = (number) => {
@@ -50,51 +50,54 @@ function Footer() {
     window.location.href = `mailto:${email}`;
   };
   
-  const handleLocation = () => {
-    window.open("https://www.google.com/maps?q=32+Pearls+Dental+Clinic,+New+York,+NY", "_blank");
+  const handleViewMap = () => {
+    window.open(
+      "https://www.google.com/maps/dir/?api=1&destination=107+Sai+vision+Kunal+Icon+Road+Pimple+Saudagar+Pune",
+      "_blank"
+    );
   };
 
   const contactInfo = [
     {
       icon: Phone,
-      text: "+1 (555) 123-4567",
-      action: () => handleCall("15551234567"),
+      text: "+91 844-632-2666",
+      action: () => handleCall("918446322666"),
       hoverColor: "group-hover:text-indigo-300",
     },
     {
       icon: MessageCircle,
-      text: "+1 (555) 123-4567",
-      action: () => handleWhatsApp("15551234567"),
+      text: "+91 844-632-2666",
+      action: () => handleWhatsApp("918446322666"),
       hoverColor: "group-hover:text-indigo-300",
     },
     {
       icon: Mail,
-      text: "info@32pearlsdental.com",
-      action: () => handleEmail("info@32pearlsdental.com"),
+      text: "drpritesh86@gmail.com",
+      action: () => handleEmail("drpritesh86@gmail.com"),
       hoverColor: "group-hover:text-indigo-300",
     },
     {
       icon: MapPin,
-      text: "123 Dental Ave, New York, NY",
-      action: handleLocation,
+      text: "107, Sai vision, Kunal Icon Road, Pimple Saudagar, Pune, Maharashtra 411027",
+      action: handleViewMap,
       hoverColor: "group-hover:text-indigo-300",
     },
   ];
   
   const socialLinks = [
     {
+      icon: Instagram,
+      name: "Instagram",
+      href: "https://www.instagram.com/32_pearls_dentalclinic",
+      hoverColor: "hover:text-pink-500",
+      bgColor: "from-purple-500 to-pink-600",
+    },
+    {
       icon: Linkedin,
       name: "LinkedIn",
       href: "https://www.linkedin.com/company/32-pearls-dental",
       hoverColor: "hover:text-blue-600",
       bgColor: "from-indigo-600 to-indigo-700",
-    },
-    {
-      icon: Instagram,
-      name: "Instagram",
-      href: "https://www.instagram.com/32pearlsdental",
-      hoverColor: "hover:text-pink-500",
-      bgColor: "from-purple-500 to-pink-600",
     },
     {
       icon: Twitter,
@@ -118,7 +121,7 @@ function Footer() {
         <meta name="description" content="32 Pearls Dental Clinic provides exceptional dental care with a team of experienced professionals using the latest technology." />
         <meta name="keywords" content="dental clinic, dentist, dental care, teeth cleaning, dental services" />
       </Helmet>
-      <footer className="bg-gradient-to-r from-indigo-900 to-purple-800 text-white py-12 sm:py-16">
+      <footer className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white py-12 sm:py-16">
         {/* Main Footer Content */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
@@ -165,7 +168,7 @@ function Footer() {
               </ul>
             </div>
 
-            <div className="lg:col-span-3 text-center md:text-left">
+            <div className="hidden md:block lg:col-span-3 text-center md:text-left">
               <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 inline-block relative">
                 Our Services
                 <span className="absolute bottom-0 left-0 right-0 mx-auto md:mx-0 w-12 h-0.5 bg-indigo-400 mt-1"></span>

@@ -17,8 +17,8 @@ const navigation = [
   { name: 'Dashboard', href: '/admin-dashboard', icon: Home },
   { name: 'Appointments', href: '/admin-dashboard/AppointmentsList', icon: Calendar },
   { name: 'Patients', href: '/admin-dashboard/patients', icon: Users },
-  { name: 'Reports', href: '/admin-dashboard/reports', icon: FileText },
-  { name: 'Analytics', href: '/admin-dashboard/analytics', icon: BarChart2 },
+  // { name: 'Reports', href: '/admin-dashboard/reports', icon: FileText },
+  // { name: 'Analytics', href: '/admin-dashboard/analytics', icon: BarChart2 },
   { name: 'Settings', href: '/admin-dashboard/settings', icon: Settings },
 ];
 
@@ -27,7 +27,7 @@ export const AdminDashboard = () => {
   const location = useLocation();
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 my-24">
       {/* Sidebar */}
       <aside className={`bg-white shadow-md transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'} flex flex-col`}>
         {/* Sidebar Header */}

@@ -12,8 +12,8 @@ import {
   MapPin,
   Users,
   Calendar as Calendar2,
+  ChevronDown,
 } from "lucide-react";
-import { Sparkles, Bluetooth as Tooth, Star } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
@@ -28,14 +28,23 @@ import {
 } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import Hero from "./Hero";
+import Hero from "../components/Hero";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { VITE_REACT_APP_BASE_URL } from "./utils/constants";
+import { VITE_REACT_APP_BASE_URL } from "../components/utils/constants";
+import SelectField from "../components/SelectField";
+import { treatments } from "../Data/Treatments";
 
 function BookAppointment() {
   const navigate = useNavigate();
   const appointmentRef = useRef(null);
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [minDate] = useState(new Date());
+  const [maxDate] = useState(addMonths(new Date(), 3));
+  const [currentMonth, setCurrentMonth] = useState(getMonth(new Date()));
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     patientName: "",
@@ -50,16 +59,9 @@ function BookAppointment() {
   });
 
   const [lunchTime, setLunchTime] = useState({
-    start: 12,
-    end: 14,
+    start: 14,
+    end: 16,
   });
-
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [errors, setErrors] = useState({});
-  const [minDate] = useState(new Date());
-  const [maxDate] = useState(addMonths(new Date(), 3));
-  const [currentMonth, setCurrentMonth] = useState(getMonth(new Date()));
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const phoneFormats = [
     { regex: /^[1-9]\d{2}-\d{3}-\d{4}$/, example: "XXX-XXX-XXXX" },
@@ -68,7 +70,6 @@ function BookAppointment() {
     { regex: /^[1-9]\d{2}\.\d{3}\.\d{4}$/, example: "XXX.XXX.XXXX" },
   ];
 
-  // Initialize AOS
   useEffect(() => {
     AOS.init({
       duration: 800,
@@ -81,14 +82,14 @@ function BookAppointment() {
     const fetchLunchTime = async () => {
       try {
         setLunchTime({
-          start: 12,
-          end: 14,
+          start: 14,
+          end: 16,
         });
       } catch (error) {
         console.error("Failed to fetch lunch time:", error);
         setLunchTime({
-          start: 12,
-          end: 14,
+          start: 14,
+          end: 16,
         });
       }
     };
@@ -96,37 +97,37 @@ function BookAppointment() {
     fetchLunchTime();
   }, []);
 
-  const treatments = [
-    {
-      value: "oral",
-      label: "Teeth Whitening",
-      icon: "✨",
-      description:
-        "Professional teeth whitening treatment for a brighter smile",
-      duration: "1 hour",
-    },
-    {
-      value: "dental",
-      label: "Root Canal",
-      icon: "🦷",
-      description: "Advanced root canal therapy with minimal discomfort",
-      duration: "2 hours",
-    },
-    {
-      value: "orthodontic",
-      label: "Dental Crown",
-      icon: "👑",
-      description: "Custom-fitted dental crowns for damaged teeth",
-      duration: "1.5 hours",
-    },
-    {
-      value: "orthopedic",
-      label: "Orthodontics",
-      icon: "😁",
-      description: "Complete orthodontic treatment for perfect alignment",
-      duration: "1 hour",
-    },
-  ];
+  // const treatments = [
+  //   {
+  //     value: "oral",
+  //     label: "Teeth Whitening",
+  //     icon: "✨",
+  //     description:
+  //       "Professional teeth whitening treatment for a brighter smile",
+  //     duration: "1 hour",
+  //   },
+  //   {
+  //     value: "dental",
+  //     label: "Root Canal",
+  //     icon: "🦷",
+  //     description: "Advanced root canal therapy with minimal discomfort",
+  //     duration: "2 hours",
+  //   },
+  //   {
+  //     value: "orthodontic",
+  //     label: "Dental Crown",
+  //     icon: "👑",
+  //     description: "Custom-fitted dental crowns for damaged teeth",
+  //     duration: "1.5 hours",
+  //   },
+  //   {
+  //     value: "orthopedic",
+  //     label: "Orthodontics",
+  //     icon: "😁",
+  //     description: "Complete orthodontic treatment for perfect alignment",
+  //     duration: "1 hour",
+  //   },
+  // ];
 
   useEffect(() => {
     const now = new Date();
@@ -173,7 +174,7 @@ function BookAppointment() {
     const currentHour = now.getHours();
     const isToday = selectedDate ? isSameDay(selectedDate, now) : false;
 
-    for (let hour = 9; hour <= 18; hour++) {
+    for (let hour = 10; hour <= 20; hour++) {
       if (isToday && hour <= currentHour) continue;
 
       if (hour >= lunchTime.start && hour < lunchTime.end) {
@@ -277,8 +278,6 @@ function BookAppointment() {
     try {
       const dateObj = new Date(formData.date);
       const formattedDate = format(dateObj, "dd/MM/yyyy");
-
-      // Include country code with phone number
       const fullPhoneNumber = `${
         formData.countryCode
       }${formData.phoneNo.replace(/\D/g, "")}`;
@@ -290,11 +289,14 @@ function BookAppointment() {
         age: parseInt(formData.age, 10),
       });
 
-      toast.success("Appointment scheduled successfully! We'll see you soon.", {
-        duration: 5000,
-        position: "top-center",
-        icon: "👨‍⚕️",
-      });
+      toast.success(
+        "Appointment scheduled successfully! We'll confirm your booking via SMS shortly.",
+        {
+          duration: 5000,
+          position: "top-right",
+          icon: "👨‍⚕️",
+        }
+      );
 
       setTimeout(() => {
         setIsSubmitting(false);
@@ -304,7 +306,7 @@ function BookAppointment() {
       setIsSubmitting(false);
       toast.error("Unable to schedule appointment. Please try again.", {
         duration: 4000,
-        position: "top-center",
+        position: "top-right",
       });
     }
   };
@@ -325,7 +327,6 @@ function BookAppointment() {
         [name]: formattedValue,
       }));
     } else if (name === "age") {
-      // Only allow numeric values for age
       const sanitizedValue = value.replace(/[^0-9]/g, "");
       setFormData((prev) => ({
         ...prev,
@@ -341,10 +342,6 @@ function BookAppointment() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
-  };
-
-  const handleCallClick = (phoneNumber) => {
-    window.location.href = `tel:${phoneNumber}`;
   };
 
   const heroProps = {
@@ -367,11 +364,11 @@ function BookAppointment() {
     secondaryButtonText: "Call Us",
     secondaryButtonIcon: Phone,
     secondaryButtonAction: () => {
-      window.location.href = "tel:+15551234567";
+      window.location.href = "tel:+918446322666";
     },
     imageSrc:
       "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2068&q=80",
-    imageAlt: "Dental appointment",
+    imageAlt: "Modern dental clinic interior with state-of-the-art equipment",
     floatingBadgeIcon: Clock,
     floatingBadgeTitle: "Quick & Easy",
     floatingBadgeText: "Book in under 2 minutes",
@@ -381,74 +378,92 @@ function BookAppointment() {
 
   return (
     <>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        toastOptions={{
-          duration: 5000,
-          style: {
-            background: "#1f2937",
-            color: "#fff",
-            borderRadius: "1rem",
-            padding: "1rem 1.5rem",
-            fontSize: "0.875rem",
-            maxWidth: "24rem",
-            boxShadow:
-              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          },
-          success: {
-            style: {
-              background: "#065f46",
-              borderLeft: "4px solid #34d399",
-            },
-            iconTheme: {
-              primary: "#34d399",
-              secondary: "#065f46",
-            },
-          },
-          error: {
-            style: {
-              background: "#7f1d1d",
-              borderLeft: "4px solid #f87171",
-            },
-            iconTheme: {
-              primary: "#f87171",
-              secondary: "#7f1d1d",
-            },
-          },
-        }}
-      />
       <Helmet>
-        <title>Book Your Dental Appointment | SmileCare Dental Clinic</title>
+        <title>
+          Book Dental Appointment | Premier Dental Clinic in Pimple Saudagar,
+          Pune
+        </title>
         <meta
           name="description"
-          content="Schedule your dental appointment online. Professional dental care including cleaning, whitening, fillings, and more. Easy and quick booking process."
+          content="Schedule your dental appointment at our modern clinic in Pimple Saudagar, Pune. Expert dental care, flexible scheduling, and state-of-the-art facilities available."
+        />
+        <meta
+          name="keywords"
+          content="dental appointment pune, book dentist pimple saudagar, dental clinic booking, dental care appointment pune, emergency dentist pune"
+        />
+        <meta
+          property="og:title"
+          content="Book Your Dental Appointment | Premier Dental Clinic in Pune"
+        />
+        <meta
+          property="og:description"
+          content="Schedule your dental appointment at our modern clinic in Pimple Saudagar, Pune. Expert dental care and convenient booking available."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://images.unsplash.com/photo-1629909613654-28e377c37b09"
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://yourdomain.com/book-appointment" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Book Your Dental Appointment | Premier Dental Clinic in Pune"
+        />
+        <meta
+          name="twitter:description"
+          content="Schedule your dental appointment at our modern clinic in Pimple Saudagar, Pune. Expert dental care and convenient booking available."
         />
       </Helmet>
 
-      <div className="min-h-screen max-h-full bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#ffffff",
+            color: "#363636",
+            padding: "16px",
+            borderRadius: "4px",
+            boxShadow:
+              "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+          },
+        }}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
         <Hero {...heroProps} />
 
-        <div ref={appointmentRef} className="relative min-h-screen">
-          <div className="relative z-10 container mx-auto px-4 py-12">
+        <div className="relative min-h-screen">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50 to-indigo-50"></div>
+          <div className="absolute inset-0 bg-wave-pattern opacity-20"></div>
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-200 rounded-full opacity-50"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-200 rounded-full opacity-50"></div>
+          </div>
+
+          <div className="container mx-auto px-4 py-12" ref={appointmentRef}>
             <div className="max-w-7xl mx-auto">
-              {/* Header Section */}
               <div
                 className="text-center mb-12"
                 data-aos="fade-up"
                 data-aos-delay="100"
               >
-                <h1 className="text-4xl md:text-5xl font-bold text-indigo-900 mb-4">
-                  Book Your Dental Visit
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-indigo-900 mb-6 leading-tight">
+                  Book Your{" "}
+                  <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                    Appointment
+                  </span>
                 </h1>
-                <p className="text-lg text-indigo-600 max-w-2xl mx-auto">
+                <p className="text-gray-700 max-w-2xl mx-auto text-base md:text-lg">
                   Experience exceptional dental care with our team of expert
                   professionals
                 </p>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Left Column - Form */}
                 <div
                   className="lg:col-span-8"
                   data-aos="fade-right"
@@ -457,7 +472,6 @@ function BookAppointment() {
                   <div className="bg-white rounded-3xl shadow-xl p-8">
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Patient Name */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             <span className="flex items-center">
@@ -477,7 +491,7 @@ function BookAppointment() {
                               errors.patientName
                                 ? "border-red-300"
                                 : "border-gray-300"
-                            } focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                            } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
                             placeholder="Enter your full name"
                           />
                           {errors.patientName && (
@@ -487,7 +501,6 @@ function BookAppointment() {
                           )}
                         </div>
 
-                        {/* Phone Number */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             <span className="flex items-center">
@@ -512,11 +525,11 @@ function BookAppointment() {
                               name="phoneNo"
                               value={formData.phoneNo}
                               onChange={handleChange}
-                              className={`block flex-1 px-4 py-3 rounded-r-xl border ${
+                              className={`block flex-1 w-24 px-4 py-3 rounded-r-xl border ${
                                 errors.phoneNo
                                   ? "border-red-300"
                                   : "border-gray-300"
-                              } focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                              } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
                               placeholder="XXX-XXX-XXXX"
                             />
                           </div>
@@ -528,9 +541,7 @@ function BookAppointment() {
                         </div>
                       </div>
 
-                      {/* Age and Gender */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Age */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             <span className="flex items-center">
@@ -542,13 +553,13 @@ function BookAppointment() {
                             </span>
                           </label>
                           <input
-                            type="text"
+                            type="number"
                             name="age"
                             value={formData.age}
                             onChange={handleChange}
                             className={`block w-full px-4 py-3 rounded-xl border ${
                               errors.age ? "border-red-300" : "border-gray-300"
-                            } focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                            } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
                             placeholder="Enter age (1-120)"
                             maxLength={3}
                           />
@@ -559,41 +570,22 @@ function BookAppointment() {
                           )}
                         </div>
 
-                        {/* Gender */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            <span className="flex items-center">
-                              <Users
-                                size={18}
-                                className="mr-2 text-indigo-600"
-                              />
-                              Gender
-                            </span>
-                          </label>
-                          <select
-                            name="gender"
-                            value={formData.gender}
-                            onChange={handleChange}
-                            className={`block w-full px-4 py-3 rounded-xl border ${
-                              errors.gender
-                                ? "border-red-300"
-                                : "border-gray-300"
-                            } focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
-                          >
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="others">Others</option>
-                          </select>
-                          {errors.gender && (
-                            <p className="mt-2 text-sm text-red-600">
-                              {errors.gender}
-                            </p>
-                          )}
-                        </div>
+                        <SelectField
+                          label="Gender"
+                          icon={Users}
+                          value={formData.gender}
+                          onChange={handleChange}
+                          options={[
+                            { value: "male", label: "Male" },
+                            { value: "female", label: "Female" },
+                            { value: "others", label: "Others" },
+                          ]}
+                          placeholder="Select Gender"
+                          error={errors.gender}
+                          name="gender"
+                        />
                       </div>
 
-                      {/* Date and Time Selection */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -613,7 +605,7 @@ function BookAppointment() {
                             dateFormat="dd/MM/yyyy"
                             className={`block w-full px-4 py-3 rounded-xl border ${
                               errors.date ? "border-red-300" : "border-gray-300"
-                            } focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                            } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
                             showMonthDropdown
                             showYearDropdown
                             dropdownMode="select"
@@ -625,83 +617,32 @@ function BookAppointment() {
                           )}
                         </div>
 
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            <span className="flex items-center">
-                              <Clock
-                                size={18}
-                                className="mr-2 text-indigo-600"
-                              />
-                              Preferred Time
-                            </span>
-                          </label>
-                          <select
-                            name="time"
-                            value={formData.time}
-                            onChange={handleChange}
-                            className={`block w-full px-4 py-3 rounded-xl border ${
-                              errors.time ? "border-red-300" : "border-gray-300"
-                            } focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
-                          >
-                            <option value="">Select Time</option>
-                            {generateTimeSlots().map((slot) => (
-                              <option
-                                key={slot.value}
-                                value={slot.value}
-                                disabled={slot.disabled}
-                              >
-                                {slot.label}
-                              </option>
-                            ))}
-                          </select>
-                          {errors.time && (
-                            <p className="mt-2 text-sm text-red-600">
-                              {errors.time}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Treatment Selection */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          <span className="flex items-center">
-                            <Stethoscope
-                              size={18}
-                              className="mr-2 text-indigo-600"
-                            />
-                            Treatment Type
-                          </span>
-                        </label>
-                        <select
-                          name="treatment"
-                          value={formData.treatment}
+                        <SelectField
+                          label="Time"
+                          icon={Clock}
+                          value={formData.time}
                           onChange={handleChange}
-                          className={`block w-full px-4 py-3 rounded-xl border ${
-                            errors.treatment
-                              ? "border-red-300"
-                              : "border-gray-300"
-                          } focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
-                        >
-                          <option value="">Select Treatment</option>
-                          {treatments.map((treatment) => (
-                            <option
-                              key={treatment.value}
-                              value={treatment.value}
-                            >
-                              {treatment.icon} {treatment.label} -{" "}
-                              {treatment.duration}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.treatment && (
-                          <p className="mt-2 text-sm text-red-600">
-                            {errors.treatment}
-                          </p>
-                        )}
+                          options={generateTimeSlots()}
+                          placeholder="Select Time"
+                          error={errors.time}
+                          name="time"
+                        />
                       </div>
 
-                      {/* Additional Notes */}
+                      <SelectField
+                        label="Treatment Type"
+                        icon={Stethoscope}
+                        value={formData.treatment}
+                        onChange={handleChange}
+                        options={treatments.map((t) => ({
+                          value: t.value,
+                          label: `${t.icon} ${t.label}`,
+                        }))}
+                        placeholder="Select Treatment"
+                        error={errors.treatment}
+                        name="treatment"
+                      />
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           <span className="flex items-center">
@@ -721,7 +662,7 @@ function BookAppointment() {
                             errors.description
                               ? "border-red-300"
                               : "border-gray-300"
-                          } focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
+                          } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
                           placeholder="Any specific concerns or requirements..."
                         />
                         {errors.description && (
@@ -735,7 +676,6 @@ function BookAppointment() {
                         </p>
                       </div>
 
-                      {/* Submit Button */}
                       <button
                         type="submit"
                         disabled={isSubmitting}
@@ -778,29 +718,33 @@ function BookAppointment() {
                   </div>
                 </div>
 
-                {/* Right Column - Info Cards */}
-                <div className="lg:col-span-4 space-y-6">
-                  {/* Emergency Contact */}
-                  <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl shadow-xl p-6 text-white">
-                    <h3 className="text-xl font-bold mb-4">Emergency Care</h3>
-                    <p className="mb-4">
-                      Available 24/7 for urgent dental needs
+                <div
+                  className="lg:col-span-4 space-y-6"
+                  data-aos="fade-left"
+                  data-aos-delay="200"
+                >
+                  <div className="bg-white rounded-3xl shadow-xl p-6">
+                    <div className="flex items-center space-x-4 mb-4">
+                      <Clock className="w-6 h-6 text-indigo-600" />
+                      <h3 className="font-semibold">Working Hours</h3>
+                    </div>{" "}
+                    <p className="text-gray-600 text-sm mb-4">
+                      09:00Am - 06:00Pm
                     </p>
-                    <a
-                      href="tel:+15551234567"
-                      className="inline-flex items-center px-4 py-2 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-indigo-50 transition-colors"
-                    >
-                      <Phone className="w-5 h-5 mr-2" />
-                      +1 (555) 123-4567
-                    </a>
+                    <div className="flex items-center space-x-4 mb-4">
+                      <MapPin className="w-6 h-6 text-indigo-600" />
+                      <h3 className="font-semibold">Our Location</h3>
+                    </div>
+                    <p className="text-gray-600 text-sm">
+                      107, Sai vision,
+                      <br />
+                      Kunal Icon Road, Pimple Saudagar,
+                      <br />
+                      Pune, Maharashtra 411027
+                    </p>
                   </div>
 
-                  {/* Features */}
-                  <div
-                    className="bg-white rounded-3xl shadow-xl p-6 space-y-4"
-                    data-aos="fade-up"
-                    data-aos-delay="400"
-                  >
+                  <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
                     <div className="flex items-center space-x-4">
                       <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
                         <Heart className="w-6 h-6 text-indigo-600" />
@@ -836,23 +780,18 @@ function BookAppointment() {
                     </div>
                   </div>
 
-                  {/* Location */}
-                  <div
-                    className="bg-white rounded-3xl shadow-xl p-6"
-                    data-aos="fade-up"
-                    data-aos-delay="500"
-                  >
-                    <div className="flex items-center space-x-4 mb-4">
-                      <MapPin className="w-6 h-6 text-indigo-600" />
-                      <h3 className="font-semibold">Our Location</h3>
-                    </div>
-                    <p className="text-gray-600 text-sm">
-                      123 Dental Street
-                      <br />
-                      Healthcare District
-                      <br />
-                      City, State 12345
+                  <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl shadow-xl p-6 text-white">
+                    <h3 className="text-xl font-bold mb-4">Emergency Care</h3>
+                    <p className="mb-4">
+                      Available 24/7 for urgent dental needs
                     </p>
+                    <a
+                      href="tel:+918446322666"
+                      className="inline-flex items-center px-4 py-2 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-indigo-50 transition-colors"
+                    >
+                      <Phone className="w-5 h-5 mr-2" />
+                      +91 844-632-2666
+                    </a>
                   </div>
                 </div>
               </div>

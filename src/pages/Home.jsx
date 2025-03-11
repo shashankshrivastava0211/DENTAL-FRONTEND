@@ -1,26 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Calendar,
-  Clock,
+  ChevronLeft,
   Star,
   Sparkles,
-  Shield,
-  Users,
-  HeartPulse,
-  Smile,
-  ArrowRight,
   Stethoscope,
-  Linkedin,
-  Instagram,
-  Twitter,
   CheckCircle,
   ChevronRight,
+  Heart,
+  Users,
+  Award,
   Bluetooth as Tooth,
 } from "lucide-react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { services } from "../Data/ServicesData";
+import FAQ from "../components/FAQ";
 
 export function Home() {
   // Initialize AOS
@@ -29,8 +32,37 @@ export function Home() {
       duration: 800,
       once: false,
       mirror: true,
+      offset: 50,
+      easing: "ease-in-out",
     });
   }, []);
+
+  const stats = [
+    {
+      value: 12,
+      label: "Dental Services",
+      suffix: "+",
+      icon: <Award className="w-8 h-8 text-indigo-600" />,
+    },
+    {
+      value: 15,
+      label: "Years Experience",
+      suffix: "+",
+      icon: <Users className="w-8 h-8 text-indigo-600" />,
+    },
+    {
+      value: 98,
+      label: "Patient Satisfaction",
+      suffix: "%",
+      icon: <Star className="w-8 h-8 text-indigo-600" />,
+    },
+    {
+      value: 8000,
+      label: "Happy Patients",
+      suffix: "+",
+      icon: <Stethoscope className="w-8 h-8 text-indigo-600" />,
+    },
+  ];
 
   // For CountUp animations
   const [statsRef, statsInView] = useInView({
@@ -40,309 +72,461 @@ export function Home() {
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      service: "Cosmetic Dentistry",
-      quote:
-        "The cosmetic dental work I received has completely transformed my smile. The team was professional, caring, and the results exceeded my expectations!",
-      rating: 5,
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-    },
-    {
-      name: "Michael Rodriguez",
+      name: "Rajesh Sharma",
       service: "Dental Implants",
       quote:
-        "After years of struggling with dentures, my dental implants have given me back the confidence to smile, eat, and speak without worry. Life-changing experience!",
+        "After my dental implants, I can smile, eat, and talk without any worries. A life-changing experience!",
       rating: 5,
       image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+        "https://images.unsplash.com/photo-1618835962148-cf177563c6c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
     },
     {
-      name: "Emily Chen",
+      name: "Priya Patel",
+      service: "Cosmetic Dentistry",
+      quote:
+        "32 Pearls completely transformed my smile. The team was professional and caring, and the results far exceeded my expectations!",
+      rating: 5,
+      image:
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+    },
+    {
+      name: "Amit Verma",
       service: "Orthodontics",
       quote:
-        "The orthodontic treatment was smooth from start to finish. The staff was always friendly and accommodating, and my teeth look amazing now!",
+        "The orthodontic treatment was smooth from start to finish. The staff was always friendly and accommodating, and now my teeth look amazing!",
       rating: 5,
       image:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=761&q=80",
+        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
     },
-  ];
-
-  const socialLinks = [
-    {
-      icon: Linkedin,
-      name: "LinkedIn",
-      href: "https://www.linkedin.com/company/32-pearls-dental",
-      hoverColor: "hover:text-purple-600",
-    },
-    {
-      icon: Instagram,
-      name: "Instagram",
-      href: "https://www.instagram.com/32pearlsdental",
-      hoverColor: "hover:text-purple-500",
-    },
-    {
-      icon: Twitter,
-      name: "Twitter",
-      href: "https://twitter.com/32pearlsdental",
-      hoverColor: "hover:text-purple-500",
-    },
-  ];
-
-  const services = [
-    {
-      icon: <Tooth className="w-10 h-10 text-purple-600" />,
-      title: "General Dentistry",
-      description:
-        "Comprehensive dental care including check-ups, cleanings, fillings, and preventive treatments.",
-    },
-    {
-      icon: <Smile className="w-10 h-10 text-purple-600" />,
-      title: "Cosmetic Dentistry",
-      description:
-        "Enhance your smile with teeth whitening, veneers, bonding, and other aesthetic procedures.",
-    },
-    {
-      icon: <HeartPulse className="w-10 h-10 text-purple-600" />,
-      title: "Orthodontics",
-      description:
-        "Straighten your teeth with braces, clear aligners, and other orthodontic treatments.",
-    },
-    {
-      icon: <Stethoscope className="w-10 h-10 text-purple-600" />,
-      title: "Pediatric Dentistry",
-      description:
-        "Specialized dental care for children in a comfortable and friendly environment.",
-    },
-  ];
-
-  const stats = [
-    { value: 15, label: "Years Experience", suffix: "+" },
-    { value: 10000, label: "Happy Patients", suffix: "+" },
-    { value: 25, label: "Expert Doctors", suffix: "+" },
-    { value: 15, label: "Services", suffix: "+" },
   ];
 
   return (
     <div className="min-h-screen overflow-hidden">
       {/* Photo Section with Fixed Background */}
-      <section className="min-h-screen text-white relative overflow-hidden flex items-center justify-center">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Fixed Background Image */}
         <div
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=2000')] bg-cover bg-center bg-fixed opacity-90"
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=800&h=600')] bg-cover bg-center bg-fixed"
           style={{ backgroundAttachment: "fixed" }}
-        ></div>
+        >
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/70"></div>
+        </div>
 
-        {/* Centered Content */}
-        <div className="relative z-10 max-w-3xl mx-auto text-center px-4 sm:px-6 mt-96">
-          <h1 className="text-9xl  text-white  md:text-5xl font-bold mb-6 leading-tight">
-            Your Perfect Smile Begins Here
-          </h1>
+        {/* Content Container */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Small Badge */}
+            <div
+              className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-800 mb-8 transform hover:scale-105 transition-transform duration-300 self-center lg:self-start backdrop-blur-xl shadow-sm"
+              data-aos="fade-down"
+              data-aos-delay="200"
+            >
+              <Sparkles className="w-4 h-4 mr-2 text-indigo-600" />
+              <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent font-semibold">
+                Welcome to 32 Pearls
+              </span>
+            </div>
+            {/* Main Heading */}
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              Your Perfect Smile{" "}
+              <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                {/* <span className="text-white"> */}
+                Begins Here
+              </span>
+            </h1>
 
-          <p className="text-xl text-purple-600 mb-8">
-            Our state-of-the-art facilities and compassionate team ensure a
-            comfortable experience for patients of all ages.
-          </p>
+            {/* Subheading */}
+            <p
+              className="text-lg sm:text-xl text-white mb-12 max-w-2xl mx-auto"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
+              Experience world-class dental care with our state-of-the-art
+              facilities and compassionate team. Your comfort and smile are our
+              top priorities.
+            </p>
 
-          <button className="bg-white text-purple-800 px-8 py-4 rounded-full font-semibold hover:bg-purple-50 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            Schedule a Visit
-          </button>
+            {/* CTA Buttons */}
+            <div
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              <button className="px-8 py-4 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+                Schedule Appointment
+              </button>
+              <button className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/20 transform hover:-translate-y-1 transition duration-300">
+                View Services
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+          data-aos="fade-up"
+          data-aos-delay="600"
+        >
+          <div className="w-8 h-12 rounded-full border-2 border-white/30 flex items-center justify-center">
+            <div className="w-2 h-2 bg-white rounded-full animate-scroll"></div>
+          </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <div
-        className="bg-gradient-to-r from-indigo-900 to-purple-800 py-8 md:py-12 "
-        ref={statsRef}
-      >
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+      {/* Stats Banner */}
+      <div className="relative -mt-20 z-20 mx-4 lg:mx-8">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-2xl shadow-xl p-8">
             {stats.map((stat, index) => (
-              <div className="text-center" key={index}>
-                <div className="text-3xl text-purple-50 md:text-5xl font-bold">
-                  {statsInView ? (
+              <div
+                ref={statsRef}
+                key={index}
+                className="text-center"
+                data-aos="fade-up"
+                data-aos-delay={100 * (index + 1)}
+              >
+                <div className="bg-indigo-50 p-2 w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  {stat.icon}
+                </div>
+                <h3 className="text-3xl text-white font-bold mb-2">
+                  {statsInView && (
                     <CountUp
                       end={stat.value}
                       duration={2.5}
-                      separator=","
                       suffix={stat.suffix}
                     />
-                  ) : (
-                    <span>
-                      {stat.value}
-                      {stat.suffix}
-                    </span>
                   )}
-                </div>
-                <div className="text-xs md:text-sm mt-2 text-purple-50 font-medium tracking-wide uppercase">
-                  {stat.label}
-                </div>
+                </h3>
+                <p className="text-white">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* About Section with Background Pattern */}
-      <section className="py-16 md:py-24 px-4 relative">
-        <div className="absolute inset-0 bg-wave-pattern opacity-20"></div>
-        <div className="container mx-auto relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-            <div className="lg:w-1/2" data-aos="fade-right">
-              <div className="relative">
-                <div className="absolute -top-4 -left-4 w-24 h-24 bg-purple-100 rounded-full opacity-70"></div>
-                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-violet-100 rounded-full opacity-70"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1629909615184-74f495363b67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-                  alt="Modern dental clinic interior"
-                  className="relative z-10 rounded-xl shadow-xl object-cover w-full h-[400px] sm:h-[500px]"
-                />
+      {/* Introduction Section */}
+      <section className="py-12 md:py-16 lg:py-20 relative overflow-hidden flex items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col-reverse lg:flex-row items-stretch gap-12 lg:gap-16">
+            <div
+              className="w-full lg:w-1/2"
+              data-aos="fade-right"
+              data-aos-duration="1000"
+            >
+              <div className="relative h-full">
+                {/* Decorative elements */}
+                <div className="absolute -top-20 -left-20 w-72 h-72 bg-gradient-to-br from-violet-400/30 to-fuchsia-400/30 rounded-full mix-blend-multiply blur-3xl animate-pulse"></div>
+                <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-gradient-to-br from-indigo-400/30 to-purple-400/30 rounded-full mix-blend-multiply blur-3xl animate-pulse delay-150"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-br from-indigo-600/5 to-purple-600/5 rounded-[3rem] rotate-6 scale-95"></div>
+
+                {/* Main image container */}
+                <div className="relative w-full h-full group flex justify-center items-center">
+                  {/* Inner container with pattern */}
+                  <div className="relative w-[90%] h-[90%] bg-white rounded-[2rem] p-2 shadow-2xl">
+                    {/* Image wrapper */}
+                    <div className="relative w-full h-full rounded-[1.7rem] overflow-hidden">
+                      <div className="absolute w-full h-full inset-0 bg-gradient-to-tr from-indigo-600/10 to-purple-600/10 mix-blend-overlay"></div>
+                      <img
+                        src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=2000"
+                        alt="Modern dental clinic interior"
+                        className="w-full h-full object-cover transform transition-all duration-700 group-hover:scale-105"
+                      />
+                    </div>
+
+                    {/* Floating stats card */}
+                    <div
+                      className="absolute -bottom-8 -right-6 rounded-lg bg-white/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-2 md:p-4 transform transition-all duration-500 group-hover:translate-x-3 group-hover:-translate-y-3"
+                      data-aos="fade-up"
+                      data-aos-delay="300"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-3 rounded-xl shadow-lg">
+                          <Star className="w-4 h-4 lg:w-6 lg:h-6 text-white drop-shadow-sm" />
+                        </div>
+                        <div>
+                          <p className="text-lg font-bold bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                            4.9/5
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Based on 500+ reviews
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="lg:w-1/2" data-aos="fade-left">
-              <div className="inline-flex items-center mb-4">
-                <div className="h-[1px] w-8 sm:w-10 bg-purple-500"></div>
-                <span className="mx-3 sm:mx-4 text-sm sm:text-base text-purple-600 font-semibold uppercase tracking-wider">
-                  About Us
+
+            <div
+              className="w-full lg:w-1/2 text-center lg:text-left flex flex-col justify-center"
+              data-aos="fade-left"
+              data-aos-duration="1000"
+            >
+              {/* Small Badge */}
+              <div
+                className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-800 mb-8 transform hover:scale-105 transition-transform duration-300 self-center lg:self-start backdrop-blur-xl shadow-sm"
+                data-aos="fade-down"
+                data-aos-delay="200"
+              >
+                <Sparkles className="w-4 h-4 mr-2 text-indigo-600" />
+                <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent font-semibold">
+                  Patient Care
                 </span>
               </div>
 
-              <h2 className="text-3xl font-display font-bold mb-6 text-purple-900 leading-tight">
-                Dedicated to Your Dental Health Since 2005
+              <h2
+                className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight"
+                data-aos="fade-up"
+                data-aos-delay="300"
+              >
+                Your Smile Deserves{" "}
+                <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  The Best Care
+                </span>
               </h2>
-              <p className="text-gray-700 mb-6 leading-relaxed">
+
+              <p
+                className="text-gray-700 mb-6 leading-relaxed"
+                data-aos="fade-up"
+                data-aos-delay="400"
+              >
                 At 32 Pearls Dental Clinic, we believe that a healthy smile is
                 essential to your overall well-being. Our state-of-the-art
                 facility is designed to provide you with the highest quality
                 dental care in a comfortable and relaxing environment.
               </p>
-              <p className="text-gray-700 mb-8 leading-relaxed">
+
+              <p
+                className="text-gray-700 mb-10 leading-relaxed"
+                data-aos="fade-up"
+                data-aos-delay="500"
+              >
                 Our team of experienced dentists and friendly staff are
                 dedicated to making your dental experience as pleasant as
                 possible. We use the latest technology and techniques to ensure
                 that you receive the best care possible.
               </p>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 mt-1">
-                    <CheckCircle className="h-5 w-5 text-purple-600" />
+
+              <div
+                className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10"
+                data-aos="fade-up"
+                data-aos-delay="600"
+              >
+                {[
+                  { text: "Modern Equipment", icon: CheckCircle },
+                  { text: "Gentle Approach", icon: CheckCircle },
+                  { text: "Family Friendly", icon: CheckCircle },
+                  { text: "Affordable Plans", icon: CheckCircle },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="group flex items-center gap-4 bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+                    data-aos="fade-up"
+                    data-aos-delay={700 + index * 100}
+                  >
+                    <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-2 rounded-xl shadow-sm transform transition-transform duration-300 group-hover:scale-110">
+                      <item.icon className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-gray-800 font-medium">
+                      {item.text}
+                    </span>
                   </div>
-                  <div className="ml-3">
-                    <p className="text-gray-700">
-                      State-of-the-art dental equipment and technology
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 mt-1">
-                    <CheckCircle className="h-5 w-5 text-purple-600" />
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-gray-700">
-                      Comfortable and relaxing environment for all ages
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 mt-1">
-                    <CheckCircle className="h-5 w-5 text-purple-600" />
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-gray-700">
-                      Experienced team of dental professionals
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-8">
-                <a
-                  href="#"
-                  className="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-md hover:shadow-lg"
-                >
-                  Learn More About Us <ChevronRight className="ml-1 w-4 h-4" />
-                </a>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Process Section  */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-purple-50 to-violet-50 relative">
-        <div className="absolute inset-0 bg-dotted-pattern opacity-50"></div>
-        {/* Background pattern */}
-        <div className="absolute inset-0 bg-dotted-pattern opacity-10"></div>
-        <div className="absolute inset-0 bg-wave-pattern opacity-10"></div>
+      {/* Services carousel */}
+      <section className="py-12 md:py-16 lg:py-20 relative overflow-hidden flex items-center">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50 to-indigo-50 opacity-70"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(124,58,237,0.1),transparent_50%)]"></div>
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-200/30 rounded-full blur-3xl"></div>
+        </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          {/* Main Treatment Process Section */}
-          <div className="text-center mb-12 md:mb-16" data-aos="fade-up">
-            <div className="inline-flex items-center justify-center mb-4">
-              <div className="h-[1px] w-10 bg-violet-500"></div>
-              <span className="mx-4 text-sm text-violet-600 font-semibold">
-                Our Process
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12 md:mb-16">
+            <div
+              className="inline-flex items-center justify-center mb-6"
+              data-aos="fade-down"
+            >
+              <div className="h-[1px] w-8 md:w-12 bg-indigo-500"></div>
+              <span className="mx-4 text-sm md:text-base text-indigo-600 font-semibold uppercase tracking-wider">
+                OUR SERVICES
               </span>
-              <div className="h-[1px] w-10 bg-violet-500"></div>
+              <div className="h-[1px] w-8 md:w-12 bg-indigo-500"></div>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-bold text-violet-900 mb-4">
-              Medical <span className="text-purple-600">Treatment Process</span>
+            <h2
+              className="text-3xl md:text-4xl lg:text-5xl font-bold text-indigo-900 mb-6 leading-tight"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              Comprehensive{" "}
+              <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                Dental Services
+              </span>
             </h2>
+            <p
+              className="text-gray-700 max-w-2xl mx-auto text-base md:text-lg"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
+              We offer a comprehensive range of dental services to meet all your
+              oral health needs, from routine check-ups to advanced treatments
+              and cosmetic procedures.
+            </p>
+          </div>
 
-            <p className="text-gray-600 max-w-2xl mx-auto">
+          {/* Services Carousel */}
+          <div className="relative" data-aos="fade-up" data-aos-delay="400">
+            {/* Custom Navigation Buttons */}
+            <button className="custom-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center -translate-x-6">
+              <ChevronLeft className="w-6 h-6 text-violet-700" />
+            </button>
+            <button className="custom-next absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center translate-x-6">
+              <ChevronRight className="w-6 h-6 text-violet-700" />
+            </button>
+
+            <div className="px-4">
+              <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={24}
+                slidesPerView={1.2}
+                centeredSlides={true}
+                loop={true}
+                navigation={{
+                  prevEl: ".custom-prev",
+                  nextEl: ".custom-next",
+                }}
+                pagination={{ clickable: true }}
+                autoplay={{
+                  delay: 2000,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                  waitForTransition: true,
+                }}
+                speed={800}
+                breakpoints={{
+                  480: { slidesPerView: 2.2, centeredSlides: false },
+                  768: { slidesPerView: 3, centeredSlides: false },
+                  1024: { slidesPerView: 4, centeredSlides: false },
+                }}
+                className="!pb-14"
+              >
+                {services.map((service, index) => (
+                  <SwiperSlide key={service.id}>
+                    <div
+                      className="service-card bg-white shadow-lg overflow-hidden group h-full"
+                      data-aos="fade-up"
+                      data-aos-delay={100 * index}
+                    >
+                      <div className="h-2 rounded-t-md bg-gradient-to-r from-indigo-700 via-violet-700 to-purple-700"></div>
+                      <div className="p-5 md:p-6 lg:p-8">
+                        <div className="mb-5 md:mb-6 flex justify-center">
+                          <div
+                            className={`service-icon w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center bg-gradient-to-r ${service.color}`}
+                          >
+                            {service.icon}
+                          </div>
+                        </div>
+                        <h3 className="service-title text-lg md:text-xl font-semibold mb-3 md:mb-4 text-gray-900 text-center">
+                          {service.title}
+                        </h3>
+                        <p className="service-description text-sm md:text-base text-gray-600 mb-5 md:mb-6 leading-relaxed text-center">
+                          {service.description}
+                        </p>
+
+                        <div className="flex justify-center">
+                          <Link
+                            to={`/services/${service.id}`}
+                            className="inline-flex items-center text-violet-600 font-medium"
+                          >
+                            Learn more <ChevronRight className="ml-1 w-4 h-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+
+          <div
+            className="text-center mt-8 md:mt-12 lg:mt-16"
+            data-aos="fade-up"
+            data-aos-delay="500"
+          >
+            <a
+              href="/services"
+              className="inline-flex items-center justify-center px-5 py-2 md:px-6 md:py-3 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-md hover:shadow-lg"
+            >
+              View All Services <ChevronRight className="ml-1 w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-12 md:py-16 relative overflow-hidden flex items-center">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50 to-indigo-50"></div>
+        <div className="absolute inset-0 bg-wave-pattern opacity-20"></div>
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-200 rounded-full opacity-50"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-200 rounded-full opacity-50"></div>
+        </div>
+
+        <div className="container py-0 my-0 mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-12 md:mb-16">
+            <div
+              className="inline-flex items-center justify-center mb-6"
+              data-aos="fade-down"
+            >
+              <div className="h-[1px] w-8 md:w-12 bg-indigo-500"></div>
+              <span className="mx-4 text-sm md:text-base text-indigo-600 font-semibold uppercase tracking-wider">
+                Process
+              </span>                  
+              <div className="h-[1px] w-8 md:w-12 bg-indigo-500"></div>
+            </div>
+
+            <h2
+              className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-indigo-900 mb-6 leading-tight"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              Medical{" "}
+              <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                Treatment Process
+              </span>
+            </h2>
+            <p
+              className="text-gray-700 max-w-2xl mx-auto text-base md:text-lg"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
               Our streamlined approach ensures you receive the best care from
               start to finish, with a focus on your comfort and results.
             </p>
           </div>
 
-          {/* Process Steps with Continuous Line - Redesigned */}
-          <div className="relative py-10 mt-24">
+          {/* Process Steps with Continuous Lines */}
+          <div className="relative py-10 mt-16">
             <div className="flex flex-wrap justify-between items-start relative">
-              {/* Step 1 */}
-              <div className="relative w-full md:w-[30%] flex flex-col items-center group mb-20 md:mb-0">
-                {/* Card */}
-                <div className="flex flex-col md:flex-row items-start gap-6 bg-white rounded-3xl overflow-hidden shadow-xl w-full relative z-10 transform transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl border border-purple-200 p-6">
-                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-600 to-violet-600"></div>
-
-                  {/* Left side - Label */}
-                  <div className="md:w-1/3">
-                    <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 md:mb-0">
-                      <span className="text-3xl font-bold text-purple-700">
-                        01
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold text-purple-900 mt-3">
-                      Get Appointment
-                    </h3>
-                  </div>
-
-                  {/* Right side - Image and description */}
-                  <div className="md:w-2/3">
-                    <div className="relative w-full h-48 overflow-hidden rounded-xl mb-4">
-                      <img
-                        src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="Get Appointment"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute top-0 right-0 bg-purple-700 text-white text-xs font-bold px-3 py-1.5 rounded-bl-lg">
-                        STEP 1
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-700 m-0">
-                      Schedule your visit with our easy online booking system.
-                      Our staff will confirm your appointment and help with any
-                      questions.
-                    </p>
-                  </div>
-
-                  {/* Purple accent line */}
-                  <div className="absolute left-0 bottom-5 w-2.5 h-14 bg-gradient-to-b from-purple-600 to-violet-600 rounded-r-md"></div>
-                </div>
-              </div>
-
-              {/* Curved dotted line 1 with arrow - going UP */}
-              <div className="absolute top-[40%] left-[30%] w-[15%] h-20 z-0 hidden md:block">
-                {/* SVG for curved dotted line */}
+              {/* Initial curved line */}
+              <div className="absolute top-[35%] -left-[3%] w-[15%] h-16 z-0 hidden lg:block">
                 <svg
                   width="100%"
                   height="100%"
@@ -350,21 +534,79 @@ export function Home() {
                   preserveAspectRatio="none"
                 >
                   <path
-                    d="M0,50 Q100,-10 200,40"
-                    stroke="url(#gradient1)"
-                    strokeWidth="4"
+                    d="M0,40 Q100,0 200,40"
+                    stroke="url(#gradient0)"
+                    strokeWidth="3"
                     fill="none"
-                    strokeDasharray="10,10"
-                    className="animate-pulse"
+                    strokeDasharray="8,8"
                   />
-                  {/* Arrow at the end */}
+                  <defs>
+                    <linearGradient
+                      id="gradient0"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop offset="0%" stopColor="#4f46e5" />
+                      <stop offset="100%" stopColor="#8b5cf6" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+
+              {/* Step 1 */}
+              <div
+                className="w-full lg:w-[28%] mb-16 lg:mb-0 z-10"
+                data-aos="fade-right"
+                data-aos-delay="200"
+              >
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-purple-100">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-purple-100 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0">
+                      <Calendar className="w-7 h-7 text-purple-600" />
+                    </div>
+                    <div>
+                      <span className="text-sm font-semibold text-purple-600">
+                        STEP 01
+                      </span>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        Book Appointment
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="relative overflow-hidden mb-6">
+                    <img
+                      src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      alt="Medical Appointment"
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                  </div>
+
+                  <p className="text-gray-600 text-center">
+                    Schedule your visit through our intuitive booking system.
+                    Our team will confirm your appointment within 24 hours.
+                  </p>
+                </div>
+              </div>
+
+              {/* Curved line 1 */}
+              <div className="absolute top-[35%] left-[28%] w-[16%] h-16 z-0 hidden lg:block">
+                <svg
+                  width="100%"
+                  height="100%"
+                  viewBox="0 0 200 80"
+                  preserveAspectRatio="none"
+                >
                   <path
-                    d="M185,35 L200,40 L190,50"
-                    stroke="#8b5cf6"
-                    strokeWidth="4"
-                    fill="#8b5cf6"
+                    d="M0,40 Q100,0 200,40"
+                    stroke="url(#gradient1)"
+                    strokeWidth="3"
+                    fill="none"
+                    strokeDasharray="8,8"
                   />
-                  {/* Define gradient */}
                   <defs>
                     <linearGradient
                       id="gradient1"
@@ -373,7 +615,7 @@ export function Home() {
                       x2="100%"
                       y2="0%"
                     >
-                      <stop offset="0%" stopColor="#9333ea" />
+                      <stop offset="0%" stopColor="#4f46e5" />
                       <stop offset="100%" stopColor="#8b5cf6" />
                     </linearGradient>
                   </defs>
@@ -381,50 +623,44 @@ export function Home() {
               </div>
 
               {/* Step 2 */}
-              <div className="relative w-full md:w-[30%] flex flex-col items-center md:mt-[-40px] group z-5 mb-20 md:mb-0">
-                {/* Card */}
-                <div className="flex flex-col md:flex-row items-start gap-6 bg-white rounded-3xl overflow-hidden shadow-xl w-full relative z-10 transform transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl border border-purple-200 p-6">
-                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-600 to-violet-600"></div>
-
-                  {/* Left side - Label */}
-                  <div className="md:w-1/3">
-                    <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 md:mb-0">
-                      <span className="text-3xl font-bold text-purple-700">
-                        02
+              <div
+                className="w-full lg:w-[28%] lg:mt-[-60px] mb-16 lg:mb-0 z-10"
+                data-aos="fade-up"
+                data-aos-delay="400"
+              >
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-purple-100">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-indigo-100 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0">
+                      <Stethoscope className="w-7 h-7 text-indigo-600" />
+                    </div>
+                    <div>
+                      <span className="text-sm font-semibold text-indigo-600">
+                        STEP 02
                       </span>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        Medical Check-up
+                      </h3>
                     </div>
-                    <h3 className="text-xl font-bold text-purple-900 mt-3">
-                      Start Check-Up
-                    </h3>
                   </div>
 
-                  {/* Right side - Image and description */}
-                  <div className="md:w-2/3">
-                    <div className="relative w-full h-48 overflow-hidden rounded-xl mb-4">
-                      <img
-                        src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="Start Check-Up"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute top-0 right-0 bg-purple-700 text-white text-xs font-bold px-3 py-1.5 rounded-bl-lg">
-                        STEP 2
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-700 m-0">
-                      Our medical professionals will conduct a thorough
-                      examination using state-of-the-art equipment to assess
-                      your condition.
-                    </p>
+                  <div className="relative overflow-hidden mb-6">
+                    <img
+                      src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      alt="Medical Check-up"
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
 
-                  {/* Purple accent line */}
-                  <div className="absolute left-0 bottom-5 w-2.5 h-14 bg-gradient-to-b from-purple-600 to-violet-600 rounded-r-md"></div>
+                  <p className="text-gray-600 text-center">
+                    Undergo a comprehensive examination with our experienced
+                    medical professionals using advanced diagnostic tools.
+                  </p>
                 </div>
               </div>
 
-              {/* Curved dotted line 2 with arrow - going DOWN */}
-              <div className="absolute top-[30%] left-[65%] w-[15%] h-20 z-0 hidden md:block">
-                {/* SVG for curved dotted line */}
+              {/* Curved line 2 */}
+              <div className="absolute top-[35%] left-[56%] w-[16%] h-16 z-0 hidden lg:block">
                 <svg
                   width="100%"
                   height="100%"
@@ -432,21 +668,12 @@ export function Home() {
                   preserveAspectRatio="none"
                 >
                   <path
-                    d="M0,30 Q100,90 200,40"
+                    d="M0,40 Q100,80 200,40"
                     stroke="url(#gradient2)"
-                    strokeWidth="4"
+                    strokeWidth="3"
                     fill="none"
-                    strokeDasharray="10,10"
-                    className="animate-pulse"
+                    strokeDasharray="8,8"
                   />
-                  {/* Arrow at the end */}
-                  <path
-                    d="M185,35 L200,40 L190,50"
-                    stroke="#8b5cf6"
-                    strokeWidth="4"
-                    fill="#8b5cf6"
-                  />
-                  {/* Define gradient */}
                   <defs>
                     <linearGradient
                       id="gradient2"
@@ -455,7 +682,7 @@ export function Home() {
                       x2="100%"
                       y2="0%"
                     >
-                      <stop offset="0%" stopColor="#9333ea" />
+                      <stop offset="0%" stopColor="#4f46e5" />
                       <stop offset="100%" stopColor="#8b5cf6" />
                     </linearGradient>
                   </defs>
@@ -463,166 +690,129 @@ export function Home() {
               </div>
 
               {/* Step 3 */}
-              <div className="relative w-full md:w-[30%] flex flex-col items-center md:mt-[40px] group z-5">
-                {/* Card */}
-                <div className="flex flex-col md:flex-row items-start gap-6 bg-white rounded-3xl overflow-hidden shadow-xl w-full relative z-10 transform transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl border border-purple-200 p-6">
-                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-600 to-violet-600"></div>
-
-                  {/* Left side - Label */}
-                  <div className="md:w-1/3">
-                    <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 md:mb-0">
-                      <span className="text-3xl font-bold text-purple-700">
-                        03
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold text-purple-900 mt-3">
-                      Enjoy Healthy Life
-                    </h3>
-                  </div>
-
-                  {/* Right side - Image and description */}
-                  <div className="md:w-2/3">
-                    <div className="relative w-full h-48 overflow-hidden rounded-xl mb-4">
-                      <img
-                        src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="Enjoy Healthy Life"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute top-0 right-0 bg-purple-700 text-white text-xs font-bold px-3 py-1.5 rounded-bl-lg">
-                        STEP 3
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-700 m-0">
-                      Follow your personalized treatment plan and enjoy improved
-                      health and wellbeing with ongoing support from our team.
-                    </p>
-                  </div>
-
-                  {/* Purple accent line */}
-                  <div className="absolute left-0 bottom-5 w-2.5 h-14 bg-gradient-to-b from-purple-600 to-violet-600 rounded-r-md"></div>
-                </div>
-              </div>
-
-              {/* Mobile view instructions - hidden on desktop */}
-              <div className="md:hidden absolute -bottom-10 w-full text-center text-sm text-gray-600 font-medium">
-                Scroll to see all steps
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section  */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-purple-50 to-violet-50 relative">
-        <div className="absolute inset-0 bg-dotted-pattern opacity-50"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12 md:mb-16" data-aos="fade-up">
-            <div className="inline-flex items-center justify-center mb-4">
-              <div className="h-[1px] w-10 bg-violet-500"></div>
-              <span className="mx-4 text-sm text-violet-600 font-semibold">
-                OUR SERVICES
-              </span>
-              <div className="h-[1px] w-10 bg-violet-500"></div>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-violet-900 mb-4">
-              Comprehensive Dental{" "}
-              <span className="text-violet-600"> Services</span>
-            </h2>
-
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              We offer a comprehensive range of dental services to meet all your
-              oral health needs, from routine check-ups to advanced treatments
-              and cosmetic procedures.
-            </p>
-          </div>
-
-          {/* Services Cards - New Design */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
               <div
-                key={index}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
+                className="w-full lg:w-[28%] mb-16 lg:mb-0 z-10"
+                data-aos="fade-left"
+                data-aos-delay="600"
               >
-                <div className="h-3 bg-gradient-to-r from-purple-500 to-violet-600"></div>
-                <div className="p-6 sm:p-8">
-                  <div className="mb-6 flex justify-center">
-                    <div className="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110">
-                      {service.icon}
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-purple-100">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-blue-100 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0">
+                      <Heart className="w-7 h-7 text-blue-600" />
+                    </div>
+                    <div>
+                      <span className="text-sm font-semibold text-blue-600">
+                        STEP 03
+                      </span>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        Healthy Living
+                      </h3>
                     </div>
                   </div>
-                  <h3 className="text-xl font-semibold mb-4 text-purple-900 group-hover:text-purple-600 transition-colors duration-300 text-center">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed text-center">
-                    {service.description}
-                  </p>
-                  <div className="flex justify-center">
-                    <a
-                      href="#"
-                      className="inline-flex items-center text-purple-600 font-medium hover:text-purple-700 transition-colors"
-                    >
-                      Learn more{" "}
-                      <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </a>
+
+                  <div className="relative overflow-hidden mb-6">
+                    <img
+                      src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      alt="Healthy Living"
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
+
+                  <p className="text-gray-600 text-center">
+                    Follow your personalized treatment plan and embrace a
+                    healthier lifestyle with our ongoing support and guidance.
+                  </p>
                 </div>
               </div>
-            ))}
-          </div>
 
-          <div className="text-center mt-12 md:mt-16" data-aos="fade-up">
-            <a
-              href="#"
-              className="inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-md hover:shadow-lg"
-            >
-              View All Services <ChevronRight className="ml-1 w-4 h-4" />
-            </a>
+              {/* Final curved line */}
+              <div className="absolute top-[35%] -right-[3%] w-[16%] h-16 z-0 hidden lg:block">
+                <svg
+                  width="100%"
+                  height="100%"
+                  viewBox="0 0 200 80"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M0,40 Q100,80 200,40"
+                    stroke="url(#gradient2)"
+                    strokeWidth="3"
+                    fill="none"
+                    strokeDasharray="8,8"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="gradient2"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop offset="0%" stopColor="#4f46e5" />
+                      <stop offset="100%" stopColor="#8b5cf6" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials  */}
-      <section className="py-20 relative overflow-hidden min-h-[90vh] flex items-center">
+      {/* Testimonials */}
+      <section className="py-12 md:py-16 lg:py-20 relative overflow-hidden flex items-center">
         {/* Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white to-purple-50"></div>
-        <div className="absolute inset-0 bg-wave-pattern opacity-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50 to-indigo-50 opacity-70"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(124,58,237,0.1),transparent_50%)]"></div>
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-200 rounded-full opacity-50"></div>
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-200 rounded-full opacity-50"></div>
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-200/30 rounded-full blur-3xl"></div>
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center mb-4">
-              <div className="h-[1px] w-10 bg-purple-500"></div>
-              <span className="mx-4 text-sm text-purple-600 font-semibold uppercase tracking-wider">
+          <div
+            className="text-center mb-12 md:mb-16 lg:mb-20"
+            data-aos="fade-up"
+          >
+            <div className="inline-flex items-center justify-center mb-6">
+              <div className="h-[1px] w-8 md:w-12 bg-indigo-500"></div>
+              <span className="mx-4 text-sm md:text-base text-indigo-600 font-semibold uppercase tracking-wider">
                 Testimonials
               </span>
-              <div className="h-[1px] w-10 bg-purple-500"></div>
+              <div className="h-[1px] w-8 md:w-12 bg-indigo-500"></div>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-purple-900 mb-6">
-              What Our <span className="text-purple-600">Patients Say</span>
+            <h2
+              className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-indigo-900 mb-6 leading-tight"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              What Our{" "}
+              <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                Patients Say
+              </span>
             </h2>
-            <p className="text-gray-700 max-w-2xl mx-auto">
+            <p
+              className="text-gray-700 max-w-2xl mx-auto text-base md:text-lg"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
               Discover why our patients love our dental services and keep coming
               back. Here are some stories from people who have transformed their
               smiles with us.
             </p>
           </div>
 
-          {/* Testimonials Grid - New Design */}
+          {/* Testimonials Grid */}
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all relative"
+                className="bg-white p-8 shadow-lg hover:shadow-xl transition-all relative"
               >
                 {/* Quote mark */}
                 <div className="absolute -top-5 -left-2 text-8xl text-purple-200 font-serif leading-none">
@@ -664,23 +854,14 @@ export function Home() {
                 </div>
 
                 {/* Bottom accent */}
-                <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 to-violet-600 rounded-b-2xl"></div>
+                <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-b-2xl"></div>
               </div>
             ))}
           </div>
-
-          {/* Call to action */}
-          <div className="text-center mt-12">
-            <a
-              href="#"
-              className="inline-flex items-center text-purple-600 font-medium hover:text-purple-700 transition-colors"
-            >
-              Read more patient stories{" "}
-              <ChevronRight className="ml-1 w-4 h-4" />
-            </a>
-          </div>
         </div>
       </section>
+
+      <FAQ />
 
       {/* CTA Section with Fixed Background */}
       <section
@@ -691,29 +872,37 @@ export function Home() {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-black/40"></div>
-        <div className="container mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8 relative">
-          <div className="max-w-2xl text-center md:text-left">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8 relative z-10">
+          <div
+            className="max-w-2xl text-center md:text-left"
+            data-aos="fade-right"
+            data-aos-delay="200"
+          >
             <h4 className="text-2xl sm:text-3xl md:text-[40px] font-normal leading-tight md:leading-[1.3] text-white/90">
               <span className="font-semibold text-white block">
                 Schedule Your Appointment?
               </span>
               <span className="font-semibold text-white block">
-                Our expect team is ready to provide you with exceptional dental
+                Our expert team is ready to provide you with exceptional dental
                 care.
               </span>
             </h4>
           </div>
-          <div className="mt-4 sm:mt-6 md:mt-0">
+          <div
+            className="mt-4 sm:mt-6 md:mt-0"
+            data-aos="fade-left"
+            data-aos-delay="400"
+          >
             <div className="flex gap-10">
               <a
                 href="/book-appointment"
-                className="inline-block rounded-xl px-5 sm:px-7 py-2 sm:py-3 bg-gradient-to-r from-indigo-600 to-purple-700 text-white hover:from-indigo-700 hover:to-purple-800 font-semibold text-base sm:text-lg shadow-lghover:shadow-xl transform transition-all duration-300 ease-in-out border border-white/10"
+                className="inline-block rounded-xl px-5 sm:px-7 py-2 sm:py-3 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white hover:from-indigo-700 hover:via-violet-700 hover:to-purple-700 font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out border border-white/10"
               >
                 Book Appointment
               </a>
               <a
                 href="/contact"
-                className="inline-block rounded-xl px-5 sm:px-7 py-2 sm:py-3 bg-gradient-to-r from-indigo-600 to-purple-700 text-white hover:from-indigo-700 hover:to-purple-800 font-semibold text-base sm:text-lg shadow-lghover:shadow-xl transform transition-all duration-300 ease-in-out border border-white/10"
+                className="inline-block rounded-xl px-5 sm:px-7 py-2 sm:py-3 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white hover:from-indigo-700 hover:via-violet-700 hover:to-purple-700 font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out border border-white/10"
               >
                 Contact Us
               </a>

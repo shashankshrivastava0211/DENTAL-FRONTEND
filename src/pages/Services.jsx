@@ -2,13 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Shield,
-  Smile,
   ArrowRight,
   CheckCircle,
   Users,
-  Star,
-  Calendar,
-  ArrowDown,
   Brush as Toothbrush,
 } from "lucide-react";
 
@@ -126,89 +122,128 @@ const ServicesPage = () => {
     <div className="min-h-screen  overflow-hidden">
       <Hero {...heroProps} />
 
-      {/* Specialties Section */}
-      <section className="py-20 bg-gray-50 min-h-[90vh] flex items-center">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Content */}
-            <div>
-              <div className="inline-flex items-center mb-4">
-                <div className="h-[1px] w-10 bg-violet-500"></div>
-                <span className="ml-4 text-sm text-violet-600 font-semibold">
-                  SPECIALTIES
-                </span>
-              </div>
+      <section className="py-12 lg:py-20 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 md:flex md:items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start lg:items-center">
+            {/* Content Side */}
+            <div className="relative">
+              {/* Organic shape decorations */}
+              <div
+                className="absolute -top-20 -left-20 w-72 h-72 opacity-10"
+                style={{
+                  background:
+                    "radial-gradient(circle at 30% 107%, #7c3aed 0%, #6d28d9 45%, #5b21b6 80%)",
+                  borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
+                }}
+              ></div>
+              <div
+                className="absolute -bottom-20 -right-20 w-64 h-64 opacity-10"
+                style={{
+                  background:
+                    "radial-gradient(circle at 30% 107%, #6d28d9 0%, #5b21b6 45%, #4c1d95 80%)",
+                  borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
+                }}
+              ></div>
 
-              <h2 className="text-3xl md:text-4xl font-bold text-violet-900 mb-6">
-                Specialized Dental{" "}
-                <span className="text-violet-600">Expertise</span>
-              </h2>
-
-              <p className="text-gray-600 mb-8">
-                Our team of specialists provides expert care in various dental
-                fields, ensuring that you receive the most appropriate and
-                effective treatment for your specific needs.
-              </p>
-
-              {/* Specialties Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {specialties.map((specialty, index) => (
-                  <div
-                    key={index}
-                    data-aos="fade-right"
-                    data-aos-delay={index * 100}
-                    className="bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition-all"
-                  >
-                    <div className="bg-violet-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
-                      {specialty.icon}
+              <div className="relative z-10">
+                <h2 className="text-4xl text-center lg:text-left font-bold text-indigo-900 mb-6">
+                  Our Dental &nbsp;
+                  <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                    Specialties
+                  </span>
+                </h2>
+                <p className="text-gray-600 text-center lg:text-left mb-8">
+                  Experience comprehensive dental care with our range of
+                  specialized services. Each treatment is tailored to meet your
+                  unique needs.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {specialties.map((specialty, index) => (
+                    <div
+                      key={index}
+                      className="group flex items-start gap-4 p-4 rounded-2xl bg-white shadow-sm hover:shadow-md transition-all duration-300"
+                    >
+                      <div className="bg-gradient-to-br from-indigo-50 via-violet-50 to-purple-50 p-2 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        {specialty.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-1">
+                          {specialty.title}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {specialty.description}
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-lg font-semibold text-violet-900 mb-2">
-                      {specialty.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      {specialty.description}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Image */}
-            <div data-aos="fade-left" className="relative hidden md:block">
-              <div className="absolute inset-0 -m-6 bg-violet-600/10 rounded-3xl blur-md"></div>
-              <img
-                src="https://images.unsplash.com/photo-1588776814546-daab30f310ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                alt="Dental specialists"
-                className="relative z-10 rounded-3xl shadow-xl object-cover h-[600px] w-full"
-              />
-
-              {/* Floating Elements */}
-              <div className="absolute top-10 -right-10 bg-white p-5 rounded-xl shadow-xl z-20">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-violet-100 p-2 rounded-lg">
-                    <Users className="w-6 h-6 text-violet-600" />
-                  </div>
-                  <div className="text-lg font-semibold text-violet-900">
-                    25+ Specialists
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Board-certified dental experts in multiple specialties
-                </p>
-              </div>
-
-              <div className="absolute -bottom-10 left-10 bg-white p-5 rounded-xl shadow-xl z-20">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-violet-100 p-2 rounded-lg">
-                    <Shield className="w-6 h-6 text-violet-600" />
-                  </div>
-                  <div className="text-lg font-semibold text-violet-900">
-                    Advanced Care
+            {/* Image Side with Organic Shape */}
+            <div className="relative mt-12 lg:mt-0">
+              {/* Organic shape mask */}
+              <div className="relative">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-purple-600/20 blur-2xl"
+                  style={{
+                    borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
+                  }}
+                ></div>
+                <div className="relative z-10">
+                  <div
+                    className="overflow-hidden"
+                    style={{
+                      borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
+                      animation: "morphShape 20s ease-in-out infinite",
+                    }}
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1588776814546-daab30f310ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                      alt="Dental specialists"
+                      className="w-full h-[600px] object-cover transform scale-110"
+                    />
                   </div>
                 </div>
-                <p className="text-sm text-gray-600">
-                  Using the latest dental technology and techniques
-                </p>
+
+                {/* Floating Cards with Organic Shape */}
+                <div
+                  className="absolute top-6 -right-4 sm:right-6 bg-white p-5 shadow-xl z-20 max-w-[250px] backdrop-blur-sm bg-white/90"
+                  style={{
+                    borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
+                  }}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="bg-violet-50 p-2 rounded-xl">
+                      <Users className="w-6 h-6 text-violet-600" />
+                    </div>
+                    <div className="text-lg font-semibold text-violet-900">
+                      25+ Specialists
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Board-certified dental experts in multiple specialties
+                  </p>
+                </div>
+
+                <div
+                  className="absolute -bottom-6 left-6 bg-white p-5 shadow-xl z-20 max-w-[250px] backdrop-blur-sm bg-white/90"
+                  style={{
+                    borderRadius: "70% 30% 30% 70% / 60% 40% 60% 40%",
+                  }}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="bg-violet-50 p-2 rounded-xl">
+                      <Shield className="w-6 h-6 text-violet-600" />
+                    </div>
+                    <div className="text-lg font-semibold text-violet-900">
+                      Advanced Care
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Using the latest dental technology and techniques
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -273,7 +308,7 @@ const ServicesPage = () => {
 
                 {/* Content */}
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-violet-900 mb-3 group-hover:text-violet-600 transition-colors">
+                  <h3 className="text-xl font-semibold text-black mb-3 transition-colors">
                     {service.title}
                   </h3>
 
@@ -294,7 +329,7 @@ const ServicesPage = () => {
                   {/* Learn More Button */}
                   <Link
                     to={`/services/${service.id}`}
-                    className="w-full py-3 bg-violet-50 text-violet-600 font-medium rounded-lg flex items-center justify-center group-hover:bg-violet-600 group-hover:text-white transition-all"
+                   className="w-full py-3 bg-gradient-to-r from-indigo-500/10 via-violet-500/10 to-purple-600/10 text-indigo-800 font-medium rounded-lg flex items-center justify-center group-hover:from-indigo-500 group-hover:via-violet-500 group-hover:to-purple-600 group-hover:text-white transition-all"
                   >
                     Learn More
                     <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -345,170 +380,6 @@ const ServicesPage = () => {
           </div>
         </div>
       </section>
-
-      {/* CSS for animations */}
-      <style jsx="true">{`
-        /* Base AOS animations */
-        [data-aos] {
-          opacity: 0;
-          transition-property: opacity, transform;
-          transition-duration: 0.8s;
-        }
-
-        [data-aos].aos-animate {
-          opacity: 1;
-        }
-
-        [data-aos="fade-up"] {
-          transform: translateY(50px);
-        }
-
-        [data-aos="fade-up"].aos-animate {
-          transform: translateY(0);
-        }
-
-        [data-aos="fade-down"] {
-          transform: translateY(-50px);
-        }
-
-        [data-aos="fade-down"].aos-animate {
-          transform: translateY(0);
-        }
-
-        [data-aos="fade-right"] {
-          transform: translateX(-50px);
-        }
-
-        [data-aos="fade-right"].aos-animate {
-          transform: translateX(0);
-        }
-
-        [data-aos="fade-left"] {
-          transform: translateX(50px);
-        }
-
-        [data-aos="fade-left"].aos-animate {
-          transform: translateX(0);
-        }
-
-        /* Enhanced animations */
-        .animate-pulse {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        .animate-bounce {
-          animation: bounce 2s infinite;
-        }
-
-        .animate-slow-pulse {
-          animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        /* Particle animations */
-        .particles-container {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-
-        .particle {
-          position: absolute;
-          background-color: rgba(255, 255, 255, 0.6);
-          border-radius: 50%;
-          animation: float 10s ease-in-out infinite;
-        }
-
-        /* Line clamp for text truncation */
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-
-        .line-clamp-3 {
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-
-        /* Path animation for sine wave */
-        .path-animation {
-          stroke-dasharray: 1200;
-          stroke-dashoffset: 1200;
-          animation: dash 3s linear forwards;
-        }
-
-        .dot-animation {
-          animation: moveDot 3s linear forwards;
-        }
-
-        @keyframes dash {
-          to {
-            stroke-dashoffset: 0;
-          }
-        }
-
-        @keyframes moveDot {
-          0% {
-            transform: translateX(0);
-          }
-          25% {
-            transform: translateX(300px) translateY(30px);
-          }
-          50% {
-            transform: translateX(600px) translateY(0);
-          }
-          75% {
-            transform: translateX(900px) translateY(30px);
-          }
-          100% {
-            transform: translateX(1200px) translateY(0);
-          }
-        }
-
-        /* Keyframes */
-        @keyframes pulse {
-          0%,
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.8;
-            transform: scale(1.05);
-          }
-        }
-
-        @keyframes bounce {
-          0%,
-          100% {
-            transform: translateY(0);
-            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-          }
-          50% {
-            transform: translateY(15px);
-            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-          }
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0) translateX(0);
-          }
-          25% {
-            transform: translateY(-20px) translateX(10px);
-          }
-          50% {
-            transform: translateY(0) translateX(20px);
-          }
-          75% {
-            transform: translateY(20px) translateX(10px);
-          }
-        }
-      `}</style>
     </div>
   );
 };

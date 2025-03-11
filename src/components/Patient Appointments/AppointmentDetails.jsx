@@ -144,7 +144,6 @@ function AppointmentDetails() {
   const handleViewPrescription = () => {
     if (appointment?.prescriptionId) {
       console.log("Prescription ID: ", appointment.prescriptionId);
-
       navigate(`/prescriptions/${appointment._id}`);
     }
   };
@@ -211,43 +210,30 @@ function AppointmentDetails() {
   return (
     <>
       <Helmet>
-        <title>{appointment.patientName} | Appointment Details</title>
+        <title>Appointment Details | Modern Dental Care Pune</title>
+        <meta
+          name="description"
+          content="View and manage your dental appointment details at our modern clinic in Pimple Saudagar, Pune. Track appointment status, prescriptions, and more."
+        />
+        <meta name="keywords" content="dental appointment, dental clinic pune, appointment details, dental care pune" />
+        <meta property="og:title" content="Appointment Details | Modern Dental Care Pune" />
+        <meta property="og:description" content="View and manage your dental appointment details at our modern clinic in Pimple Saudagar, Pune." />
+        <meta property="og:type" content="website" />
+        <meta name="robots" content="noindex, follow" />
+        <link rel="canonical" href="https://yourdomain.com/appointments" />
       </Helmet>
 
       <Toaster
-        position="top-center"
-        reverseOrder={false}
+        position="top-right"
         toastOptions={{
-          duration: 5000,
+          duration: 4000,
           style: {
-            background: "#1f2937",
-            color: "#fff",
-            borderRadius: "1rem",
-            padding: "1rem 1.5rem",
-            fontSize: "0.875rem",
-            maxWidth: "24rem",
+            background: "#ffffff",
+            color: "#363636",
+            padding: "16px",
+            borderRadius: "4px",
             boxShadow:
-              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          },
-          success: {
-            style: {
-              background: "#065f46",
-              borderLeft: "4px solid #34d399",
-            },
-            iconTheme: {
-              primary: "#34d399",
-              secondary: "#065f46",
-            },
-          },
-          error: {
-            style: {
-              background: "#7f1d1d",
-              borderLeft: "4px solid #f87171",
-            },
-            iconTheme: {
-              primary: "#f87171",
-              secondary: "#7f1d1d",
-            },
+              "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
           },
         }}
       />
@@ -257,8 +243,8 @@ function AppointmentDetails() {
           {/* Background Pattern */}
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
-          <div className="relative z-10 container mx-auto px-4 py-8">
-            <div className="max-w-7xl mx-auto">
+          <div className="relative z-10 container mx-auto px-4 pt-20 pb-8 md:pt-28">
+            <div className="max-w-6xl mx-auto">
               {/* Header */}
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                 <div className="flex items-center">
@@ -268,7 +254,7 @@ function AppointmentDetails() {
                   >
                     <ArrowLeft className="h-5 w-5 text-indigo-600" />
                   </button>
-                  <h1 className="text-3xl font-bold text-indigo-900">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-indigo-900">
                     Appointment Details
                   </h1>
                 </div>
@@ -329,7 +315,7 @@ function AppointmentDetails() {
                   <div className="bg-white rounded-3xl shadow-xl p-8 mb-8">
                     <div className="flex items-start gap-6 mb-8">
                       <div className="flex-shrink-0">
-                        <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
                           <User className="w-10 h-10 text-indigo-600" />
                         </div>
                       </div>
@@ -429,20 +415,19 @@ function AppointmentDetails() {
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Clinical Notes */}
-                  {appointment.description && (
-                    <div className="bg-white rounded-3xl shadow-xl p-8 mb-8">
-                      <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-4">
-                        <HeartPulse className="w-5 h-5 mr-2 text-indigo-600" />
-                        Clinical Notes
-                      </h3>
-                      <div className="p-5 bg-gray-50 rounded-xl text-gray-700">
-                        {appointment.description}
+                    {/* Clinical Notes */}
+                    {appointment.description && (
+                      <div className="my-6 rounded-xl">
+                        <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-2">
+                          Description
+                        </h3>
+                        <div className="p-5 rounded-xl text-gray-780">
+                          {appointment.description}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
 
                   {/* Appointment History */}
                   <div className="bg-white rounded-3xl shadow-xl p-8">
@@ -518,11 +503,11 @@ function AppointmentDetails() {
                       Available 24/7 for urgent dental needs
                     </p>
                     <a
-                      href="tel:+15551234567"
+                      href="tel:+918446322666"
                       className="inline-flex items-center px-4 py-2 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-indigo-50 transition-colors"
                     >
                       <Phone className="w-5 h-5 mr-2" />
-                      +1 (555) 123-4567
+                      +91 <span className="ml-2">844-632-2666</span>
                     </a>
                   </div>
 
@@ -535,11 +520,9 @@ function AppointmentDetails() {
                       <h3 className="font-semibold">Our Location</h3>
                     </div>
                     <p className="text-gray-600 text-sm">
-                      123 Dental Street
-                      <br />
-                      Healthcare District
-                      <br />
-                      City, State 12345
+                      107, Sai vision,<br />
+                      Kunal Icon Road, Pimple Saudagar,<br />
+                      Pune, Maharashtra 411027
                     </p>
                   </div>
                 </div>
