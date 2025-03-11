@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { Menu, X, ChevronDown, ChevronUp, Stethoscope, Instagram, Twitter, Linkedin } from "lucide-react"
+import { Menu, X, ChevronDown, ChevronUp, Stethoscope, Instagram, Twitter, Linkedin, Facebook } from "lucide-react"
 import { Helmet } from "react-helmet-async"
 
 const navigation = [
@@ -14,21 +14,27 @@ const navigation = [
 
 const socialLinks = [
   {
+    icon: Instagram,
+    name: "Instagram",
+    href: "https://www.instagram.com/32_pearls_dentalclinic",
+    hoverColor: "hover:text-pink-500",
+  },
+  {
     icon: Linkedin,
     name: "LinkedIn",
-    href: "https://www.linkedin.com/company/32-pearls-dental",
+    href: "https://www.instagram.com/32_pearls_dentalclinic",
     hoverColor: "hover:text-blue-600",
   },
   {
-    icon: Instagram,
-    name: "Instagram",
-    href: "https://www.instagram.com/32pearlsdental",
-    hoverColor: "hover:text-pink-500",
+    icon: Facebook,
+    name: "Facebook",
+    href: "https://www.facebook.com/pritesh.jagtap",
+    hoverColor: "hover:text-sky-500",
   },
   {
     icon: Twitter,
     name: "Twitter",
-    href: "https://twitter.com/32pearlsdental",
+    href: "https://www.twitter.com/32pearlsdental",
     hoverColor: "hover:text-sky-500",
   },
 ]
@@ -38,6 +44,10 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false)
   const [scrollDirection, setScrollDirection] = useState("up")
   const location = useLocation()
+
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[location.pathname])
 
   useEffect(() => {
     let lastScrollPosition = window.pageYOffset
@@ -97,7 +107,7 @@ const Header = () => {
         className={`fixed w-full z-50 transition-all duration-500 ease-in-out ${
           scrolled
             ? "bg-white/95 backdrop-blur-md shadow-md py-1 sm:py-2 border-b border-indigo-100"
-            : "bg-gradient-to-r from-indigo-900 to-purple-800 py-1.5 sm:py-3"
+            : "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 py-1.5 sm:py-3"
         } ${scrollDirection === "down" && scrolled && !isOpen ? "-translate-y-full" : "translate-y-0"}`}
         style={{ height: isOpen ? "auto" : "" }}
       >
@@ -134,7 +144,7 @@ const Header = () => {
                     to={item.path}
                     className={`inline-flex items-center text-sm font-medium transition-all duration-300 ${
                       scrolled
-                        ? `${location.pathname === item.path ? "text-indigo-700" : "text-gray-700 hover:text-indigo-700"}`
+                        ? `${location.pathname === item.path ? "text-indigo-900" : "text-gray-700 hover:text-indigo-900"}`
                         : `${location.pathname === item.path ? "text-indigo-200" : "text-white hover:text-indigo-200"}`
                     } animate-fadeIn`}
                     style={{
@@ -148,7 +158,7 @@ const Header = () => {
                       <span
                         className={`absolute left-0 bottom-0 w-0 h-0.5 transition-all duration-300 ease-out group-hover:w-full
                         ${location.pathname === item.path ? "w-full" : ""}
-                         ${scrolled ? "bg-indigo-700" : "bg-indigo-200"}
+                         ${scrolled ? "bg-indigo-900" : "bg-indigo-200"}
                         `}
                       />
                     </span>
@@ -180,7 +190,7 @@ const Header = () => {
                 to="/book-appointment"
                 className={`px-2.5 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-md ${
                   scrolled
-                    ? "bg-gradient-to-r from-indigo-600 to-purple-700 text-white hover:from-indigo-700 hover:to-purple-800"
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white hover:from-indigo-700 hover:via-violet-700 hover:to-purple-800"
                     : "bg-white text-indigo-700 hover:bg-indigo-50"
                 }`}
                 aria-label="Book a dental appointment"
@@ -200,12 +210,12 @@ const Header = () => {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`p-1.5 transition-all duration-300 hover:scale-110 ${
+                      className={`p-1 transition-all duration-300 hover:scale-110 ${
                         scrolled ? `text-gray-500 ${social.hoverColor}` : `text-indigo-200 ${social.hoverColor}`
                       }`}
                       aria-label={social.name}
                     >
-                      <Icon className="h-4 w-4" aria-hidden="true" />
+                      <Icon className="h-5 w-5" aria-hidden="true" />
                     </a>
                   )
                 })}

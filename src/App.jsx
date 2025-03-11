@@ -2,29 +2,29 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Home } from "./pages/Home";
-import { About } from "./pages/About";
+import About from "./pages/About";
 import Services from "./pages/Services";
-import { Reports } from "./components/Dashboard/Reports";
+import { Reports } from "./components/extra/Reports";
 import Contact from "./pages/Contact";
-import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
+import { Login } from "./components/extra/Login";
+import { Register } from "./components/extra/Register";
 import Map from "./components/Patient Appointments/Map";
-import { DoctorDashboard } from "./components/Dashboard/DoctorDashboard";
-import { PatientDashboard } from "./components/Dashboard/PatientDashboard";
+import { DoctorDashboard } from "./components/extra/DoctorDashboard";
+import { PatientDashboard } from "./components/extra/PatientDashboard";
 import AppointmentsList from "./components/Dashboard/AppointmentsList";
 import { AdminDashboard } from "./components/Dashboard/AdminDashboard";
-import Appointments from "./components/Appointments";
-import { Dashboard } from "./components/Dashboard/Dashbaord"; // Import Dashboard
-import BookAppointment from "./components/BookAppointment";
+import Appointments from "./pages/Appointments";
+import  Dashboard  from "./components/Dashboard/Dashbaord"; // Import Dashboard
+import BookAppointment from "./pages/BookAppointment";
 import { NotFound } from "./pages/NotFound";
 import Patients from "./components/Dashboard/Patients";
-import { Analytics } from "./components/Dashboard/Analytics";
+import { Analytics } from "./components/extra/Analytics";
 import { Settings } from "./components/Dashboard/Settings";
 import AppointmentDetails from "./components/Patient Appointments/AppointmentDetails";
 import EditAppointment from "./components/Patient Appointments/EditAppointment";
 import PrescriptionView from "./components/Patient Appointments/PrescriptionView";
 import Blog from "./pages/Blog";
-import ServiceDetail from "./pages/ServiceDetail";
+import ServiceDetail from "./components/ServiceDetail";
 function App() {
   return (
     <Router>

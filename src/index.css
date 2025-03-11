@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -103,7 +104,7 @@ body {
 }
 
 .react-datepicker__header {
-  @apply bg-blue-50 border-0 rounded-t-xl;
+  @apply bg-violet-50 border-0 rounded-t-xl;
 }
 
 .react-datepicker__current-month {
@@ -115,11 +116,11 @@ body {
 }
 
 .react-datepicker__day {
-  @apply rounded-full hover:bg-blue-100 transition-colors duration-200;
+  @apply rounded-full hover:bg-violet-100 transition-colors duration-200;
 }
 
 .react-datepicker__day--selected {
-  @apply bg-blue-600 text-white hover:bg-blue-700;
+  @apply bg-violet-600 text-white hover:bg-violet-700;
 }
 
 .react-datepicker__day--disabled {
@@ -136,7 +137,7 @@ body {
 
 .react-datepicker__month-select,
 .react-datepicker__year-select {
-  @apply bg-white border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500;
+  @apply bg-white border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500;
 }
 
 /* Date picker customization */
@@ -288,4 +289,47 @@ body {
 .step-card.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+
+
+
+/* Custom styles for Swiper navigation */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+
+/* Custom styles for Swiper pagination */
+.swiper-pagination {
+  bottom: 0 !important;
+}
+
+.swiper-pagination-bullet {
+  background: theme('colors.violet.200') !important;
+  opacity: 1 !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: theme('colors.violet.600') !important;
+}
+
+/* Service card animations */
+.service-card {
+  transition: all 0.3s ease;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .swiper-container {
+    padding: 0 20px !important;
+  }
+  
+  .service-card {
+    transform: scale(0.95);
+  }
+
+
 }

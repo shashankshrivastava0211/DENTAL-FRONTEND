@@ -13,8 +13,6 @@ const navigation = [
   { name: 'Dashboard', href: '/admin-dashboard/dashboard', icon: HomeIcon },
   { name: 'Appointments', href: '/admin-dashboard/appointments', icon: CalendarIcon },
   { name: 'Patients', href: '/admin-dashboard/patients', icon: UserGroupIcon },
-  { name: 'Reports', href: '/admin-dashboard/reports', icon: DocumentTextIcon },
-  { name: 'Analytics', href: '/admin-dashboard/analytics', icon: ChartBarIcon },
   { name: 'Settings', href: '/admin-dashboard/settings', icon: Cog6ToothIcon },
 ];
 
