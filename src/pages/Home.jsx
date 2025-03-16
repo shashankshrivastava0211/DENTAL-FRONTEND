@@ -106,12 +106,8 @@ export function Home() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Fixed Background Image */}
         <div
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=800&h=600')] bg-cover bg-center bg-fixed"
-          style={{ backgroundAttachment: "fixed" }}
-        >
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/70"></div>
-        </div>
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1629909615184-74f495363b67')] bg-cover bg-center bg-fixed"
+        ></div>
 
         {/* Content Container */}
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
@@ -127,29 +123,6 @@ export function Home() {
                 Welcome to 32 Pearls
               </span>
             </div>
-            {/* Main Heading */}
-            <h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              Your Perfect Smile{" "}
-              <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
-                {/* <span className="text-white"> */}
-                Begins Here
-              </span>
-            </h1>
-
-            {/* Subheading */}
-            <p
-              className="text-lg sm:text-xl text-white mb-12 max-w-2xl mx-auto"
-              data-aos="fade-up"
-              data-aos-delay="300"
-            >
-              Experience world-class dental care with our state-of-the-art
-              facilities and compassionate team. Your comfort and smile are our
-              top priorities.
-            </p>
 
             {/* CTA Buttons */}
             <div
@@ -160,29 +133,17 @@ export function Home() {
               <button className="px-8 py-4 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
                 Schedule Appointment
               </button>
-              <button className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/20 transform hover:-translate-y-1 transition duration-300">
-                View Services
-              </button>
             </div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
-          data-aos="fade-up"
-          data-aos-delay="600"
-        >
-          <div className="w-8 h-12 rounded-full border-2 border-white/30 flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full animate-scroll"></div>
-          </div>
-        </div>
+       
       </section>
 
       {/* Stats Banner */}
-      <div className="relative -mt-20 z-20 mx-4 lg:mx-8">
+      <div className="relative -mt-16 z-20 mx-4 lg:mx-8">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-2xl shadow-xl p-8">
+          <div className="grid grid-cols-4 gap-4 md:gap-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-xl lg:rounded-2xl shadow-lg lg:shadow-xl p-6 md:p-8">
             {stats.map((stat, index) => (
               <div
                 ref={statsRef}
@@ -191,10 +152,10 @@ export function Home() {
                 data-aos="fade-up"
                 data-aos-delay={100 * (index + 1)}
               >
-                <div className="bg-indigo-50 p-2 w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="bg-indigo-50 p-1 md:p-2 w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4">
                   {stat.icon}
                 </div>
-                <h3 className="text-3xl text-white font-bold mb-2">
+                <h3 className="text-xl md:text-2xl lg:text-3xl text-white font-bold mb-1 md:mb-2">
                   {statsInView && (
                     <CountUp
                       end={stat.value}
@@ -203,7 +164,9 @@ export function Home() {
                     />
                   )}
                 </h3>
-                <p className="text-white">{stat.label}</p>
+                <p className="text-xs md:text-sm lg:text-base text-white">
+                  {stat.label}
+                </p>
               </div>
             ))}
           </div>
@@ -498,7 +461,7 @@ export function Home() {
               <div className="h-[1px] w-8 md:w-12 bg-indigo-500"></div>
               <span className="mx-4 text-sm md:text-base text-indigo-600 font-semibold uppercase tracking-wider">
                 Process
-              </span>                  
+              </span>
               <div className="h-[1px] w-8 md:w-12 bg-indigo-500"></div>
             </div>
 
@@ -913,3 +876,17 @@ export function Home() {
     </div>
   );
 }
+
+
+
+
+ {/* Scroll Indicator */}
+//  <div
+//  className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+//  data-aos="fade-up"
+//  data-aos-delay="600"
+// >
+//  <div className="w-8 h-12 rounded-full border-2 border-white/30 flex items-center justify-center">
+//    <div className="w-2 h-2 bg-white rounded-full animate-scroll"></div>
+//  </div>
+// </div>

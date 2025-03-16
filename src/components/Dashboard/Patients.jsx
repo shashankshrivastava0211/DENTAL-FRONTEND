@@ -12,7 +12,7 @@ import {
   Search,
   User,
   CheckCircle,
-  FileText,
+  Loader2,
   FilePlus,
   FileCheck,
   Stethoscope,
@@ -25,10 +25,10 @@ import { Toaster, toast } from "react-hot-toast";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import PrescriptionModal from "./PrescriptionModal";
 import { VITE_REACT_APP_BASE_URL } from "../utils/constants";
+import SelectField from "../SelectField";
+import { treatments } from "../../Data/Treatments";
 
 function ConfirmedPatients() {
-  // State management
-
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -55,14 +55,41 @@ function ConfirmedPatients() {
   const ITEMS_PER_PAGE = 10;
   const DEBOUNCE_DELAY = 500;
 
+  const formatTime = (time) => {
+    const hour = parseInt(time);
+    return new Date(0, 0, 0, hour).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const statusOptions = [
+    { value: "", label: "All Status" },
+    {
+      value: "confirmed",
+      label: "Confirmed",
+      color: "bg-indigo-100 text-indigo-800",
+    },
+    {
+      value: "completed",
+      label: "Completed",
+      color: "bg-emerald-100 text-emerald-800",
+    },
+  ];
+
   // Options for filters
-  const timeOptions = Array.from({ length: 10 }, (_, i) => i + 9);
+  const timeOptions = [
+    { value: "", label: "All Times" },
+    ...Array.from({ length: 11 }, (_, i) => ({
+      value: i + 10,
+      label: formatTime(i + 10),
+    })),
+  ];
 
   const treatmentOptions = [
-    { value: "oral", label: "Teeth Whitening", icon: "🦷" },
-    { value: "dental", label: "Root Canal", icon: "🦷" },
-    { value: "orthodontic", label: "Dental Crown", icon: "😁" },
-    { value: "orthopedic", label: "Orthodontics", icon: "🦴" },
+    { value: "", label: "All Treatments" },
+    ...treatments,
   ];
 
   // Debounced search function
@@ -280,14 +307,20 @@ function ConfirmedPatients() {
     }
   };
 
-  const handleFilterChange = (key, value) => {
-    setFilters((prev) => {
-      const newFilters = { ...prev, [key]: value };
-      if (key === "startDate" || key === "endDate") {
-        setTimeout(() => validateDateRange(), 0);
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "startDate") {
+      setFilters((prev) => ({ ...prev, startDate: value, endDate: null }));
+    } else if (name === "endDate") {
+      if (value && filters.startDate && !isAfter(value, filters.startDate)) {
+        toast.error("End date must be after start date");
+        return;
       }
-      return newFilters;
-    });
+      setFilters((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setFilters((prev) => ({ ...prev, [name]: value }));
+    }
     setPage(1);
   };
 
@@ -295,23 +328,19 @@ function ConfirmedPatients() {
     setFilters({
       startDate: null,
       endDate: null,
-      treatment: "",
+      status: "",
       time: "",
+      treatment: "",
       search: "",
     });
-    setDateErrors({ startDate: "", endDate: "" });
     setPhoneInput("");
     setPhoneError("");
     setPage(1);
   };
 
-  const formatTime = (time) => {
-    const hour = parseInt(time);
-    return new Date(0, 0, 0, hour).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
+  const getPaginationNumbers = () => {
+    const pageNumbers = [];
+    return pageNumbers;
   };
 
   const getTreatmentLabel = (treatment) => {
@@ -319,454 +348,339 @@ function ConfirmedPatients() {
     return found ? found.label : treatment;
   };
 
-  // Get pagination numbers
-  const getPaginationNumbers = () => {
-    const pageNumbers = [];
-    const maxPagesToShow = 5;
-
-    if (totalPages <= maxPagesToShow) {
-      for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
-    } else {
-      if (page <= 3) {
-        for (let i = 1; i <= 4; i++) pageNumbers.push(i);
-        pageNumbers.push("...");
-        pageNumbers.push(totalPages);
-      } else if (page >= totalPages - 2) {
-        pageNumbers.push(1);
-        pageNumbers.push("...");
-        for (let i = totalPages - 3; i <= totalPages; i++) pageNumbers.push(i);
-      } else {
-        pageNumbers.push(1);
-        pageNumbers.push("...");
-        pageNumbers.push(page - 1);
-        pageNumbers.push(page);
-        pageNumbers.push(page + 1);
-        pageNumbers.push("...");
-        pageNumbers.push(totalPages);
-      }
-    }
-
-    return pageNumbers;
-  };
-
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
+    <div className="min-h-screen p-0 bg-gray-50">
       <Toaster
-        position="top-center"
-        reverseOrder={false}
+        position="top-right"
         toastOptions={{
-          duration: 5000,
           style: {
             background: "#1f2937",
             color: "#fff",
-            borderRadius: "1rem",
-            padding: "1rem 1.5rem",
-            fontSize: "0.875rem",
-            maxWidth: "24rem",
-            boxShadow:
-              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+            borderRadius: "0.5rem",
           },
           success: {
-            style: {
-              background: "#065f46",
-              borderLeft: "4px solid #34d399",
-            },
-            iconTheme: {
-              primary: "#34d399",
-              secondary: "#065f46",
-            },
+            duration: 3000,
+            iconTheme: { primary: "#10b981", secondary: "#fff" },
           },
           error: {
-            style: {
-              background: "#7f1d1d",
-              borderLeft: "4px solid #f87171",
-            },
-            iconTheme: {
-              primary: "#f87171",
-              secondary: "#7f1d1d",
-            },
+            duration: 5000,
+            iconTheme: { primary: "#ef4444", secondary: "#fff" },
           },
         }}
       />
 
-      <div className="relative min-h-screen">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-
-        <div className="relative z-10 max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <Calendar className="h-8 w-8 text-indigo-600" />
             <div>
-              <h2 className="text-4xl font-bold text-indigo-900 flex items-center gap-2">
-                <CheckCircle className="h-8 w-8 text-indigo-600" />
-                Patients
-              </h2>
-              <p className="mt-1 text-lg text-indigo-600">
-                View and manage confirmed appointments
+              <h1 className="text-2xl font-bold text-gray-800">
+                Confirmed Patients
+              </h1>
+              <p className="text-sm text-gray-600">
+                Manage Patients and prescriptions
               </p>
-            </div>
-
-            <div className="mt-6 sm:mt-0 flex flex-wrap gap-3">
-              {/* Phone search input */}
-              <div className="relative">
-                <div className="flex items-center border rounded-xl shadow-sm focus-within:ring-2 focus-within:ring-indigo-500/20 focus-within:border-indigo-500 overflow-hidden">
-                  <div className="flex items-center pl-3 pr-2 py-3 bg-gray-50 border-r border-gray-200">
-                    <Phone className="h-5 w-5 text-indigo-400 mr-1" />
-                    <span className="text-gray-500 font-medium">+91</span>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Enter 10-digit number..."
-                    value={phoneInput}
-                    onChange={handlePhoneInputChange}
-                    className="pl-3 pr-4 py-3 border-0 focus:ring-0 focus:outline-none w-full"
-                    inputMode="numeric"
-                  />
-                </div>
-                {phoneError && (
-                  <p className="mt-1 text-xs text-red-600">{phoneError}</p>
-                )}
-              </div>
-
-              {/* Filter toggle button */}
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="inline-flex items-center px-5 py-3 border border-indigo-200 rounded-xl shadow-sm text-sm font-medium text-indigo-700 bg-white hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-              >
-                <Filter className="h-5 w-5 mr-2" />
-                {isFilterOpen ? "Hide Filters" : "Show Filters"}
-              </button>
             </div>
           </div>
 
-          {/* Filters panel */}
-          {isFilterOpen && (
-            <div className="mb-8 bg-white p-8 rounded-3xl shadow-xl border border-indigo-100">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Filter className="h-5 w-5 text-indigo-600" />
-                  Filter Appointments
-                </h3>
-                <button
-                  onClick={clearFilters}
-                  className="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                  Clear all filters
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Date range filters */}
-                <div className="md:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <span className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-2 text-indigo-600" />
-                      Date Range
-                    </span>
-                  </label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="relative">
-                      <DatePicker
-                        selected={filters.startDate}
-                        onChange={(date) =>
-                          handleFilterChange("startDate", date)
-                        }
-                        selectsStart
-                        startDate={filters.startDate}
-                        endDate={filters.endDate}
-                        dateFormat="dd/MM/yyyy"
-                        className={`w-full px-4 py-3 border ${
-                          dateErrors.startDate
-                            ? "border-red-300"
-                            : "border-gray-300"
-                        } rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
-                        placeholderText="Start date"
-                      />
-                      <Calendar className="absolute right-3 top-3.5 h-5 w-5 text-gray-400 pointer-events-none" />
-                      {dateErrors.startDate && (
-                        <p className="mt-2 text-sm text-red-600">
-                          {dateErrors.startDate}
-                        </p>
-                      )}
-                    </div>
-                    <div className="relative">
-                      <DatePicker
-                        selected={filters.endDate}
-                        onChange={(date) => handleFilterChange("endDate", date)}
-                        selectsEnd
-                        startDate={filters.startDate}
-                        endDate={filters.endDate}
-                        minDate={filters.startDate}
-                        dateFormat="dd/MM/yyyy"
-                        className={`w-full px-4 py-3 border ${
-                          dateErrors.endDate
-                            ? "border-red-300"
-                            : "border-gray-300"
-                        } rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
-                        placeholderText="End date"
-                      />
-                      <Calendar className="absolute right-3 top-3.5 h-5 w-5 text-gray-400 pointer-events-none" />
-                      {dateErrors.endDate && (
-                        <p className="mt-2 text-sm text-red-600">
-                          {dateErrors.endDate}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="relative flex-1">
+              <div className="flex items-center border rounded-lg bg-white">
+                <div className="pl-3 pr-2 py-2 border-r">
+                  <Phone className="h-5 w-5 text-indigo-500" />
                 </div>
-
-                {/* Time filter */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <span className="flex items-center">
-                      <Clock className="w-4 h-4 mr-2 text-indigo-600" />
-                      Time
-                    </span>
-                  </label>
-                  <select
-                    value={filters.time}
-                    onChange={(e) => handleFilterChange("time", e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-                  >
-                    <option value="">All Times</option>
-                    {timeOptions.map((hour) => (
-                      <option key={hour} value={hour}>
-                        {formatTime(hour)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Treatment filter */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <span className="flex items-center">
-                      <Stethoscope className="w-4 h-4 mr-2 text-indigo-600" />
-                      Treatment
-                    </span>
-                  </label>
-                  <select
-                    value={filters.treatment}
-                    onChange={(e) =>
-                      handleFilterChange("treatment", e.target.value)
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-                  >
-                    <option value="">All Treatments</option>
-                    {treatmentOptions.map((treatment) => (
-                      <option key={treatment.value} value={treatment.value}>
-                        {treatment.icon} {treatment.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <input
+                  type="text"
+                  placeholder="Search by phone..."
+                  value={phoneInput}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                    setPhoneInput(val);
+                    debouncedSearch(val);
+                  }}
+                  className="w-full px-3 py-2 border-0 focus:ring-0"
+                />
               </div>
-            </div>
-          )}
-
-          {/* Loading state */}
-          {loading ? (
-            <div className="flex items-center justify-center h-64 bg-white rounded-3xl shadow-xl">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-                <p className="mt-4 text-sm text-gray-500">
-                  Loading confirmed patients...
-                </p>
-              </div>
-            </div>
-          ) : patients.length === 0 ? (
-            // Empty state
-            <div className="text-center bg-white rounded-3xl shadow-xl p-12 border border-indigo-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <CalendarDays className="h-8 w-8 text-indigo-600" />
-              </div>
-              <h3 className="text-xl font-medium text-gray-900 mb-2">
-                No confirmed patients found
-              </h3>
-              <p className="text-gray-500 max-w-md mx-auto">
-                We couldn't find any confirmed appointments matching your search
-                criteria. Try adjusting your filters or search terms.
-              </p>
-            </div>
-          ) : (
-            // Patients table
-            <div className="bg-white shadow-xl rounded-3xl overflow-hidden border border-indigo-100">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gradient-to-r from-indigo-50 to-purple-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-semibold text-indigo-800 uppercase tracking-wider"
-                      >
-                        Patient Details
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-semibold text-indigo-800 uppercase tracking-wider"
-                      >
-                        Date
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-semibold text-indigo-800 uppercase tracking-wider"
-                      >
-                        Time
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-semibold text-indigo-800 uppercase tracking-wider"
-                      >
-                        Treatment
-                      </th>
-
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-semibold text-indigo-800 uppercase tracking-wider"
-                      >
-                        Status
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-semibold text-indigo-800 uppercase tracking-wider"
-                      >
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    <TransitionGroup component={null}>
-                      {patients.map((patient) => {
-                        const treatmentOption = treatmentOptions.find(
-                          (t) => t.value === patient.treatment
-                        );
-                        return (
-                          <CSSTransition
-                            key={patient._id}
-                            timeout={300}
-                            classNames="fade"
-                          >
-                            <tr className="hover:bg-indigo-50/50 transition-colors">
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center">
-                                    <User className="h-5 w-5 text-indigo-600" />
-                                  </div>
-                                  <div className="ml-4">
-                                    <div className="text-sm font-medium text-gray-900">
-                                      {patient.patientName}
-                                    </div>
-                                    <div className="text-sm text-gray-500 flex items-center gap-1">
-                                      <Phone className="h-3 w-3" />
-                                      {patient.phoneNo}
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900 flex items-center gap-1">
-                                  <Calendar className="h-4 w-4 text-indigo-600" />
-                                  {patient.date}
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900 flex items-center gap-1">
-                                  <Clock className="h-4 w-4 text-indigo-600" />
-                                  {formatTime(patient.time)}
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900 flex items-center gap-2">
-                                  <span>{treatmentOption?.icon}</span>
-                                  {getTreatmentLabel(patient.treatment)}
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900 flex items-center gap-2">
-                                  <span>{patient.status}</span>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <button
-                                  onClick={() =>
-                                    handlePrescriptionClick(patient._id)
-                                  }
-                                  className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md ${
-                                    patient.prescriptionId
-                                      ? "text-white bg-green-600 hover:bg-green-700"
-                                      : "text-white bg-indigo-600 hover:bg-indigo-700"
-                                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors`}
-                                >
-                                  {patient.prescriptionId ? (
-                                    <>
-                                      <FileCheck className="h-4 w-4 mr-2" />
-                                      View Prescription
-                                    </>
-                                  ) : (
-                                    <>
-                                      <FilePlus className="h-4 w-4 mr-2" />
-                                      Add Prescription
-                                    </>
-                                  )}
-                                </button>
-                              </td>
-                            </tr>
-                          </CSSTransition>
-                        );
-                      })}
-                    </TransitionGroup>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-4 py-6">
-                  <button
-                    onClick={() => setPage((p) => Math.max(1, p - 1))}
-                    disabled={page === 1}
-                    className="p-2.5 rounded-xl bg-white hover:bg-indigo-50 disabled:opacity-50 transition-colors border border-indigo-100 shadow-sm"
-                  >
-                    <ChevronLeft className="h-5 w-5 text-indigo-600" />
-                  </button>
-
-                  <div className="flex space-x-2">
-                    {getPaginationNumbers().map((pageNum, index) =>
-                      pageNum === "..." ? (
-                        <span
-                          key={`ellipsis-${index}`}
-                          className="px-4 py-2 text-gray-500"
-                        >
-                          ...
-                        </span>
-                      ) : (
-                        <button
-                          key={pageNum}
-                          onClick={() => setPage(pageNum)}
-                          className={`px-4 py-2 rounded-xl border ${
-                            page === pageNum
-                              ? "bg-indigo-50 border-indigo-300 text-indigo-700 font-medium"
-                              : "border-indigo-100 text-gray-700 hover:bg-indigo-50/50"
-                          } text-sm transition-colors`}
-                        >
-                          {pageNum}
-                        </button>
-                      )
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                    disabled={page === totalPages}
-                    className="p-2.5 rounded-xl bg-white hover:bg-indigo-50 disabled:opacity-50 transition-colors border border-indigo-100 shadow-sm"
-                  >
-                    <ChevronRight className="h-5 w-5 text-indigo-600" />
-                  </button>
-                </div>
+              {phoneError && (
+                <p className="text-xs text-red-500 mt-1">{phoneError}</p>
               )}
             </div>
-          )}
+
+            <button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="flex items-center gap-2 px-4 py-2 bg-white border rounded-lg text-indigo-600 hover:bg-indigo-50 transition-colors"
+            >
+              <Filter className="h-5 w-5" />
+              {isFilterOpen ? "Hide Filters" : "Show Filters"}
+            </button>
+          </div>
         </div>
+
+        {/* Filters */}
+        {isFilterOpen && (
+          <div className="mb-6 p-4 sm:p-6 bg-white rounded-xl shadow-sm border">
+            <div className="grid grid-cols-1 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-indigo-600" />
+                  Date Range
+                </label>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="relative flex-1">
+                    <DatePicker
+                      selected={filters.startDate}
+                      onChange={(date) =>
+                        handleFilterChange({
+                          target: { name: "startDate", value: date },
+                        })
+                      }
+                      selectsStart
+                      startDate={filters.startDate}
+                      endDate={filters.endDate}
+                      placeholderText="Start Date"
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                      dateFormat="dd/MM/yyyy"
+                      isClearable
+                    />
+                    {dateErrors.startDate && (
+                      <p className="text-xs text-red-500 mt-1">
+                        {dateErrors.startDate}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative flex-1">
+                    <DatePicker
+                      selected={filters.endDate}
+                      onChange={(date) =>
+                        handleFilterChange({
+                          target: { name: "endDate", value: date },
+                        })
+                      }
+                      selectsEnd
+                      startDate={filters.startDate}
+                      endDate={filters.endDate}
+                      minDate={filters.startDate || new Date()}
+                      placeholderText="End Date"
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                      dateFormat="dd/MM/yyyy"
+                      isClearable
+                      disabled={!filters.startDate}
+                    />
+                    {dateErrors.endDate && (
+                      <p className="text-xs text-red-500 mt-1">
+                        {dateErrors.endDate}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <SelectField
+                  label="Status"
+                  icon={Info}
+                  value={filters.status}
+                  onChange={handleFilterChange}
+                  options={statusOptions}
+                  placeholder="All Status"
+                  name="status"
+                />
+                <SelectField
+                  label="Time"
+                  icon={Clock}
+                  value={filters.time}
+                  onChange={handleFilterChange}
+                  options={timeOptions}
+                  placeholder="All Times"
+                  name="time"
+                />
+                <SelectField
+                  label="Treatment"
+                  icon={Stethoscope}
+                  value={filters.treatment}
+                  onChange={handleFilterChange}
+                  options={treatmentOptions}
+                  placeholder="All Treatments"
+                  name="treatment"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={clearFilters}
+                className="text-sm text-indigo-600 hover:text-indigo-700 flex items-center gap-2"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Clear Filters
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Patients Table */}
+        <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-indigo-50">
+                <tr>
+                  <th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
+                    Patient
+                  </th>
+                  <th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
+                    Date
+                  </th>
+                  <th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
+                    Time
+                  </th>
+                  <th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
+                    Treatment
+                  </th>
+                  <th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
+                    Status
+                  </th>
+                  <th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-gray-200">
+                {loading ? (
+                  <tr>
+                    <td colSpan="6" className="px-4 py-6 text-center">
+                      <div className="flex justify-center">
+                        <Loader2 className="h-8 w-8 text-indigo-600 animate-spin" />
+                      </div>
+                    </td>
+                  </tr>
+                ) : patients.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan="6"
+                      className="px-4 py-6 text-center text-gray-500"
+                    >
+                      No confirmed patients found
+                    </td>
+                  </tr>
+                ) : (
+                  patients.map((patient) => {
+                    const status = statusOptions.find(
+                      (s) => s.value === patient.status
+                    );
+                    const treatment = treatmentOptions.find(
+                      (t) => t.value === patient.treatment
+                    );
+
+                    return (
+                      <tr key={patient._id} className="hover:bg-gray-50">
+                        <td className="px-3 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="bg-indigo-100 p-2 rounded-full">
+                              <User className="h-5 w-5 text-indigo-600" />
+                            </div>
+                            <div>
+                              <div className="font-medium text-gray-900">
+                                {patient.patientName}
+                              </div>
+                              <div className="text-sm text-gray-500 flex items-center gap-1">
+                                <Phone className="h-4 w-4" />
+                                {patient.phoneNo}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-3 py-4">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-5 w-5 text-indigo-600" />
+                            <span className="text-sm">{patient.date}</span>
+                          </div>
+                        </td>
+                        <td className="px-3 py-4">
+                          <div className="flex items-center gap-2 text-gray-500">
+                            <Clock className="h-5 w-5 text-indigo-600" />
+                            <span className="text-sm">
+                              {formatTime(patient.time)}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-3 py-4">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{treatment?.icon}</span>
+                            <span className="text-sm">{treatment?.label}</span>
+                          </div>
+                        </td>
+                        <td className="px-3 py-4">
+                          <span
+                            className={`px-2.5 py-1 rounded-full text-xs font-medium ${status?.color}`}
+                          >
+                            {status?.label}
+                          </span>
+                        </td>
+                        <td className="px-3 py-4">
+                          <button
+                            onClick={() => handlePrescriptionClick(patient._id)}
+                            className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md ${
+                              patient.prescriptionId
+                                ? "text-white bg-green-600 hover:bg-green-700"
+                                : "text-white bg-indigo-600 hover:bg-indigo-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors`}
+                          >
+                            {patient.prescriptionId ? (
+                              <>View Prescription</>
+                            ) : (
+                              <>Add Prescription</>
+                            )}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 border-t border-gray-200">
+            <div className="mb-2 sm:mb-0 text-sm text-gray-700">
+              Page {page} of {totalPages}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="p-2 rounded-lg border hover:bg-gray-50 disabled:opacity-50"
+              >
+                <ChevronLeft className="h-5 w-5 text-gray-700" />
+              </button>
+
+              {getPaginationNumbers().map((num) => (
+                <button
+                  key={num}
+                  onClick={() => setPage(num)}
+                  className={`px-3 py-1 rounded-lg ${
+                    page === num
+                      ? "bg-indigo-600 text-white"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {num}
+                </button>
+              ))}
+
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages}
+                className="p-2 rounded-lg border hover:bg-gray-50 disabled:opacity-50"
+              >
+                <ChevronRight className="h-5 w-5 text-gray-700" />
+              </button>
+            </div>
+          </div>
+        </div>
+        {/* )} */}
       </div>
 
       {/* Prescription Modal */}

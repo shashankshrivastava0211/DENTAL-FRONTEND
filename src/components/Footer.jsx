@@ -30,6 +30,7 @@ function Footer() {
     { text: "Appointments", href: "/appointments" },
     { text: "Blog", href: "/blog" },
     { text: "Contact", href: "/contact" },
+    { text: "Login", href: "/login" },
     // { text: "Login", href: "/login" },
     // { text: "Register", href: "/register" },
     // { text: "Dashboard", href: "/admin-dashboard" },
