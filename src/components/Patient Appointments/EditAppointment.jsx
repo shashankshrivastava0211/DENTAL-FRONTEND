@@ -214,38 +214,6 @@ function App() {
     end: 16,
   });
 
-  // const treatments = [
-  //   {
-  //     value: "oral",
-  //     label: "Teeth Whitening ✨",
-  //     icon: "✨",
-  //     description: "Professional teeth whitening treatment",
-  //     details:
-  //       "Advanced whitening procedure using professional-grade materials",
-  //   },
-  //   {
-  //     value: "dental",
-  //     label: "Root Canal 🦷",
-  //     icon: "🦷",
-  //     description: "Advanced root canal therapy",
-  //     details: "Complete root canal treatment with modern equipment",
-  //   },
-  //   {
-  //     value: "orthodontic",
-  //     label: "Dental Crown 👑",
-  //     icon: "👑",
-  //     description: "Custom-fitted dental crowns",
-  //     details: "Premium quality crown fitting and adjustment",
-  //   },
-  //   {
-  //     value: "orthopedic",
-  //     label: "Orthodontics 😁",
-  //     icon: "😁",
-  //     description: "Complete orthodontic treatment",
-  //     details: "Initial orthodontic consultation and treatment planning",
-  //   },
-  // ];
-
   const clinicInfo = {
     name: "32 Pearls Dental Clinic",
     address: "107, Sai vision, Kunal Icon Road, Pimple Saudagar,",
@@ -318,7 +286,6 @@ function App() {
       setLoading(false);
     }
   }, [id]);
-  
 
   const formatTimeLabel = (hour) => {
     const period = hour < 12 ? "AM" : "PM";
@@ -328,7 +295,7 @@ function App() {
 
   const generateTimeSlots = () => {
     const slots = [];
-    for (let hour = 9; hour <= 18; hour++) {
+    for (let hour = 10; hour <= 20; hour++) {
       if (hour >= lunchTime.start && hour < lunchTime.end) {
         if (hour === lunchTime.start) {
           slots.push({
@@ -657,533 +624,535 @@ function App() {
 
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
         <div className="relative min-h-screen">
- {/* Background Pattern */}
- <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50 to-indigo-50"></div>
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50 to-indigo-50"></div>
           <div className="absolute inset-0 bg-wave-pattern opacity-20"></div>
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
             <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-200 rounded-full opacity-50"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-200 rounded-full opacity-50"></div>
           </div>
 
-
           <div className="relative z-10 container mx-auto px-4 pt-20 pb-8 md:pt-28">
-            {/* <div className="max-w-6xl mx-auto"></div> */}
 
-          <header className="">
-            <div className="max-w-7xl rounded-3xl bg-white border-b border-gray-200 shadow-sm  mx-auto px-4 py-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-8">
-                  <button
-                    onClick={handleGoBack}
-                    className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors group"
-                  >
-                    <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
-                    <span className="font-medium">Back</span>
-                  </button>
-                  <h1 className="text-2xl font-bold text-gray-900">
-                    Edit Appointment
-                  </h1>
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  {isCompletedAppointment && (
-                    <div className="bg-green-50 px-4 py-2 rounded-full flex items-center">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 mr-2" />
-                      <p className="text-sm font-medium text-green-700">
-                        Completed
-                      </p>
-                    </div>
-                  )}
-                  <button
-                    onClick={() => setShowInfoModal(true)}
-                    className="p-2 text-indigo-500 hover:text-indigo-700 transition-colors rounded-full hover:bg-indigo-50"
-                    title="Clinic Information"
-                  >
-                    <Info className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          <div className="relative z-10 container mx-auto px-4 py-8">
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-8">
-                  <div className="bg-white rounded-3xl shadow-xl p-8">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="mb-6">
-                        <h2 className="text-xl font-bold text-indigo-900 mb-4">
-                          Patient Information
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              <span className="flex items-center">
-                                <User
-                                  size={18}
-                                  className="mr-2 text-indigo-600"
-                                />
-                                Patient Name
-                              </span>
-                            </label>
-                            <input
-                              type="text"
-                              name="patientName"
-                              value={formData.patientName}
-                              onChange={handleInputChange}
-                              disabled={isCompletedAppointment}
-                              className={`block w-full px-4 py-3 rounded-xl border ${
-                                errors.patientName
-                                  ? "border-red-300 ring-1 ring-red-300"
-                                  : "border-gray-300"
-                              } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
-                              placeholder="Enter patient name"
-                            />
-                            {errors.patientName && (
-                              <p className="mt-2 text-sm text-red-600 flex items-center">
-                                <AlertCircle className="w-4 h-4 mr-1" />
-                                {errors.patientName}
-                              </p>
-                            )}
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              <span className="flex items-center">
-                                <Phone
-                                  size={18}
-                                  className="mr-2 text-indigo-600"
-                                />
-                                Phone Number
-                              </span>
-                            </label>
-                            <div className="flex">
-                              <div className="relative">
-                                <div className="flex items-center justify-between w-24 px-4 py-3 border border-gray-300 rounded-l-xl bg-gray-50">
-                                  <span className="flex items-center">
-                                    <span className="mr-2">🇮🇳</span>
-                                    <span>+91</span>
-                                  </span>
-                                </div>
-                              </div>
-                              <input
-                                type="tel"
-                                name="phoneNo"
-                                value={formData.phoneNo}
-                                onChange={handleInputChange}
-                                disabled={isCompletedAppointment}
-                                placeholder="XXX-XXX-XXXX"
-                                className={`block flex-1 px-4 w-24 py-3 rounded-r-xl border ${
-                                  errors.phoneNo
-                                    ? "border-red-300 ring-1 ring-red-300"
-                                    : "border-gray-300"
-                                } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
-                              />
-                            </div>
-                            {errors.phoneNo && (
-                              <p className="mt-2 text-sm text-red-600 flex items-center">
-                                <AlertCircle className="w-4 h-4 mr-1" />
-                                {errors.phoneNo}
-                              </p>
-                            )}
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              <span className="flex items-center">
-                                <Calendar
-                                  size={18}
-                                  className="mr-2 text-indigo-600"
-                                />
-                                Age
-                              </span>
-                            </label>
-                            <input
-                              type="number"
-                              name="age"
-                              value={formData.age}
-                              onChange={handleInputChange}
-                              disabled={isCompletedAppointment}
-                              min="1"
-                              max="120"
-                              className={`block w-full px-4 py-3 rounded-xl border ${
-                                errors.age
-                                  ? "border-red-300 ring-1 ring-red-300"
-                                  : "border-gray-300"
-                              } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
-                              placeholder="Enter age"
-                            />
-                            {errors.age && (
-                              <p className="mt-2 text-sm text-red-600 flex items-center">
-                                <AlertCircle className="w-4 h-4 mr-1" />
-                                {errors.age}
-                              </p>
-                            )}
-                          </div>
-
-                          <SelectField
-                            label="Gender"
-                            icon={Users}
-                            name="gender"
-                            value={formData.gender}
-                            onChange={handleInputChange}
-                            options={[
-                              { value: "male", label: "Male" },
-                              { value: "female", label: "Female" },
-                              { value: "other", label: "Other" },
-                            ]}
-                            placeholder="Select Gender"
-                            error={errors.gender}
-                            disabled={isCompletedAppointment}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mb-6">
-                        <h2 className="text-xl font-bold text-indigo-900 mb-4">
-                          Appointment Details
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              <span className="flex items-center">
-                                <Calendar
-                                  size={18}
-                                  className="mr-2 text-indigo-600"
-                                />
-                                Appointment Date
-                              </span>
-                            </label>
-                            <div className="relative">
-                              <input
-                                type="date"
-                                name="date"
-                                value={formData.date}
-                                onChange={handleDateChange}
-                                disabled={isCompletedAppointment}
-                                className={`block w-full px-4 py-3 rounded-xl border ${
-                                  errors.date
-                                    ? "border-red-300 ring-1 ring-red-300"
-                                    : "border-gray-300"
-                                } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
-                              />
-                            </div>
-                            {errors.date && (
-                              <p className="mt-2 text-sm text-red-600 flex items-center">
-                                <AlertCircle className="w-4 h-4 mr-1" />
-                                {errors.date}
-                              </p>
-                            )}
-                          </div>
-
-                          <SelectField
-                            label="Appointment Time"
-                            icon={Clock}
-                            name="time"
-                            value={formData.time}
-                            onChange={handleInputChange}
-                            options={generateTimeSlots()}
-                            placeholder="Select Time"
-                            error={errors.time}
-                            disabled={isCompletedAppointment}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="mb-6">
-                        <h2 className="text-xl font-bold text-indigo-900 mb-4">
-                          Treatment Information
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <SelectField
-                            label="Treatment Type"
-                            icon={Stethoscope}
-                            name="treatment"
-                            value={formData.treatment}
-                            onChange={handleInputChange}
-                            options={treatments}
-                            placeholder="Select Treatment"
-                            error={errors.treatment}
-                            disabled={isCompletedAppointment}
-                          />
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Appointment Status
-                            </label>
-                            <div
-                              className={`flex items-center px-4 py-3 rounded-xl border ${getStatusColor(
-                                formData.status
-                              )}`}
-                            >
-                              {getStatusIcon(formData.status)}
-                              <span className="ml-2 font-medium">
-                                {formData.status.charAt(0).toUpperCase() +
-                                  formData.status.slice(1)}
-                              </span>
-                            </div>
-                            {errors.status && (
-                              <p className="mt-2 text-sm text-red-600 flex items-center">
-                                <AlertCircle className="w-4 h-4 mr-1" />
-                                {errors.status}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mb-6">
-                        <h2 className="text-xl font-bold text-indigo-900 mb-4">
-                          Clinical Notes
-                        </h2>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            <span className="flex items-center">
-                              <FileText
-                                size={18}
-                                className="mr-2 text-indigo-600"
-                              />
-                              Notes & Observations
-                            </span>
-                          </label>
-                          <textarea
-                            name="description"
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            disabled={isCompletedAppointment}
-                            rows={4}
-                            placeholder="Enter any relevant clinical notes or observations..."
-                            className={`block w-full px-4 py-3 rounded-xl border ${
-                              errors.description
-                                ? "border-red-300 ring-1 ring-red-300"
-                                : "border-gray-300"
-                            } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
-                          />
-                          {errors.description && (
-                            <p className="mt-2 text-sm text-red-600 flex items-center">
-                              <AlertCircle className="w-4 h-4 mr-1" />
-                              {errors.description}
-                            </p>
-                          )}
-                          <div className="mt-2 flex justify-between items-center">
-                            <p className="text-sm text-gray-500">
-                              {200 - (formData.description?.length || 0)}{" "}
-                              characters remaining
-                            </p>
-                            <div className="h-1 w-24 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className={`h-full ${
-                                  (formData.description?.length || 0) > 150
-                                    ? "bg-amber-500"
-                                    : "bg-green-500"
-                                }`}
-                                style={{
-                                  width: `${Math.min(
-                                    100,
-                                    ((formData.description?.length || 0) /
-                                      200) *
-                                      100
-                                  )}%`,
-                                }}
-                              ></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-end space-x-4 pt-4">
-                        <button
-                          type="button"
-                          onClick={handleGoBack}
-                          className="px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors shadow-sm"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          disabled={saving || isCompletedAppointment}
-                          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {saving ? (
-                            <>
-                              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                              Saving Changes...
-                            </>
-                          ) : (
-                            <>
-                              <Save className="w-5 h-5 mr-2" />
-                              Save Changes
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-4 space-y-6">
-                  {selectedTreatment && (
-                    <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-                      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
-                        <h3 className="text-lg font-semibold text-white">
-                          Treatment Details
-                        </h3>
-                      </div>
-                      <div className="p-6">
-                        <div className="flex items-center text-2xl mb-4">
-                          <span className="mr-3 bg-indigo-100 text-indigo-800 p-3 rounded-full">
-                            {selectedTreatment.icon}
-                          </span>
-                          <span className="font-bold text-gray-900">
-                            {selectedTreatment.label.split(" - ")[0]}
-                          </span>
-                        </div>
-                        <div className="space-y-4 text-gray-600">
-                          <p className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                            {selectedTreatment.details}
-                          </p>
-                          <div className="flex items-center text-indigo-600">
-                            <Stethoscope className="w-5 h-5 mr-2" />
-                            <span className="font-medium">
-                              {selectedTreatment.description}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <Heart className="w-6 h-6 text-indigo-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">Expert Care</h3>
-                        <p className="text-sm text-gray-600">
-                          Professional dental team
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                        <Shield className="w-6 h-6 text-purple-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">Safe & Clean</h3>
-                        <p className="text-sm text-gray-600">
-                          Modern sterilization
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                        <Clock3 className="w-6 h-6 text-blue-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">Flexible Hours</h3>
-                        <p className="text-sm text-gray-600">
-                          Convenient scheduling
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white rounded-3xl shadow-xl p-6">
-                    <div className="flex items-center space-x-4 mb-4">
-                      <Clock className="w-6 h-6 text-indigo-600" />
-                      <h3 className="font-semibold">Working Hours</h3>
-                    </div>{" "}
-                    <p className="text-gray-600 text-sm mb-4">{clinicInfo.hours}</p>
-                    <div className="flex items-center space-x-4 mb-4">
-                      <MapPin className="w-6 h-6 text-indigo-600" />
-                      <h3 className="font-semibold">Our Location</h3>
-                    </div>
-                    <p className="text-gray-600 text-sm">
-                      {clinicInfo.address}
-                      <br />
-                      {clinicInfo.city}
-                      <br />
-                      {clinicInfo.hours}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {showInfoModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-              <div className="bg-white rounded-2xl shadow-xl p-0 max-w-lg w-full mx-4 overflow-hidden animate-fadeIn">
-                <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4 flex justify-between items-center">
-                  <h3 className="text-xl font-bold text-white">
-                    {clinicInfo.name}
-                  </h3>
-                  <button
-                    onClick={() => setShowInfoModal(false)}
-                    className="text-white hover:text-gray-200 transition-colors"
-                  >
-                    <span className="sr-only">Close</span>
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                <div className="p-6 space-y-6">
-                  <div className="flex items-start">
-                    <MapPin className="w-5 h-5 text-indigo-600 mt-1 mr-3 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium text-gray-900">Location</p>
-                      <p className="text-gray-600">{clinicInfo.address}</p>
-                      <p className="text-gray-600">{clinicInfo.city}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <Clock className="w-5 h-5 text-indigo-600 mt-1 mr-3 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium text-gray-900">Working Hours</p>
-                      <p className="text-gray-600">{clinicInfo.hours}</p>
-                      <div className="mt-2 bg-indigo-50 rounded-lg p-2 border border-indigo-100 inline-block">
-                        <p className="text-indigo-700 text-sm">
-                          Lunch: {formatTimeLabel(lunchTime.start)} -{" "}
-                          {formatTimeLabel(lunchTime.end)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <Phone className="w-5 h-5 text-indigo-600 mt-1 mr-3 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium text-gray-900">Contact</p>
-                      <p className="text-gray-600">{clinicInfo.phone}</p>
-                      <p className="text-gray-600">{clinicInfo.email}</p>
-                    </div>
-                  </div>
-                  <div className="mt-8 pt-6 border-t border-gray-200">
+            <header className="">
+              <div className="max-w-7xl rounded-3xl bg-white border-b border-gray-200 shadow-sm  mx-auto px-4 py-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-8">
                     <button
-                      onClick={() => setShowInfoModal(false)}
-                      className="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md font-medium"
+                      onClick={handleGoBack}
+                      className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors group"
                     >
-                      Close
+                      <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+                      <span className="font-medium">Back</span>
+                    </button>
+                    <h1 className="text-2xl font-bold text-gray-900">
+                      Edit Appointment
+                    </h1>
+                  </div>
+
+                  <div className="flex items-center space-x-4">
+                    {isCompletedAppointment && (
+                      <div className="bg-green-50 px-4 py-2 rounded-full flex items-center">
+                        <CheckCircle2 className="w-5 h-5 text-green-600 mr-2" />
+                        <p className="text-sm font-medium text-green-700">
+                          Completed
+                        </p>
+                      </div>
+                    )}
+                    <button
+                      onClick={() => setShowInfoModal(true)}
+                      className="p-2 text-indigo-500 hover:text-indigo-700 transition-colors rounded-full hover:bg-indigo-50"
+                      title="Clinic Information"
+                    >
+                      <Info className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
               </div>
+            </header>
+
+            <div className="relative z-10 container mx-auto px-4 py-8">
+              <div className="max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                  <div className="lg:col-span-8">
+                    <div className="bg-white rounded-3xl shadow-xl p-8">
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="mb-6">
+                          <h2 className="text-xl font-bold text-indigo-900 mb-4">
+                            Patient Information
+                          </h2>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <span className="flex items-center">
+                                  <User
+                                    size={18}
+                                    className="mr-2 text-indigo-600"
+                                  />
+                                  Patient Name
+                                </span>
+                              </label>
+                              <input
+                                type="text"
+                                name="patientName"
+                                value={formData.patientName}
+                                onChange={handleInputChange}
+                                disabled={isCompletedAppointment}
+                                className={`block w-full px-4 py-3 rounded-xl border ${
+                                  errors.patientName
+                                    ? "border-red-300 ring-1 ring-red-300"
+                                    : "border-gray-300"
+                                } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
+                                placeholder="Enter patient name"
+                              />
+                              {errors.patientName && (
+                                <p className="mt-2 text-sm text-red-600 flex items-center">
+                                  <AlertCircle className="w-4 h-4 mr-1" />
+                                  {errors.patientName}
+                                </p>
+                              )}
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <span className="flex items-center">
+                                  <Phone
+                                    size={18}
+                                    className="mr-2 text-indigo-600"
+                                  />
+                                  Phone Number
+                                </span>
+                              </label>
+                              <div className="flex">
+                                <div className="relative">
+                                  <div className="flex items-center justify-between w-24 px-4 py-3 border border-gray-300 rounded-l-xl bg-gray-50">
+                                    <span className="flex items-center">
+                                      <span className="mr-2">🇮🇳</span>
+                                      <span>+91</span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <input
+                                  type="tel"
+                                  name="phoneNo"
+                                  value={formData.phoneNo}
+                                  onChange={handleInputChange}
+                                  disabled={isCompletedAppointment}
+                                  placeholder="XXX-XXX-XXXX"
+                                  className={`block flex-1 px-4 w-24 py-3 rounded-r-xl border ${
+                                    errors.phoneNo
+                                      ? "border-red-300 ring-1 ring-red-300"
+                                      : "border-gray-300"
+                                  } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
+                                />
+                              </div>
+                              {errors.phoneNo && (
+                                <p className="mt-2 text-sm text-red-600 flex items-center">
+                                  <AlertCircle className="w-4 h-4 mr-1" />
+                                  {errors.phoneNo}
+                                </p>
+                              )}
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <span className="flex items-center">
+                                  <Calendar
+                                    size={18}
+                                    className="mr-2 text-indigo-600"
+                                  />
+                                  Age
+                                </span>
+                              </label>
+                              <input
+                                type="number"
+                                name="age"
+                                value={formData.age}
+                                onChange={handleInputChange}
+                                disabled={isCompletedAppointment}
+                                min="1"
+                                max="120"
+                                className={`block w-full px-4 py-3 rounded-xl border ${
+                                  errors.age
+                                    ? "border-red-300 ring-1 ring-red-300"
+                                    : "border-gray-300"
+                                } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
+                                placeholder="Enter age"
+                              />
+                              {errors.age && (
+                                <p className="mt-2 text-sm text-red-600 flex items-center">
+                                  <AlertCircle className="w-4 h-4 mr-1" />
+                                  {errors.age}
+                                </p>
+                              )}
+                            </div>
+
+                            <SelectField
+                              label="Gender"
+                              icon={Users}
+                              name="gender"
+                              value={formData.gender}
+                              onChange={handleInputChange}
+                              options={[
+                                { value: "male", label: "Male" },
+                                { value: "female", label: "Female" },
+                                { value: "other", label: "Other" },
+                              ]}
+                              placeholder="Select Gender"
+                              error={errors.gender}
+                              disabled={isCompletedAppointment}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="mb-6">
+                          <h2 className="text-xl font-bold text-indigo-900 mb-4">
+                            Appointment Details
+                          </h2>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <span className="flex items-center">
+                                  <Calendar
+                                    size={18}
+                                    className="mr-2 text-indigo-600"
+                                  />
+                                  Appointment Date
+                                </span>
+                              </label>
+                              <div className="relative">
+                                <input
+                                  type="date"
+                                  name="date"
+                                  value={formData.date}
+                                  onChange={handleDateChange}
+                                  disabled={isCompletedAppointment}
+                                  className={`block w-full px-4 py-3 rounded-xl border ${
+                                    errors.date
+                                      ? "border-red-300 ring-1 ring-red-300"
+                                      : "border-gray-300"
+                                  } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
+                                />
+                              </div>
+                              {errors.date && (
+                                <p className="mt-2 text-sm text-red-600 flex items-center">
+                                  <AlertCircle className="w-4 h-4 mr-1" />
+                                  {errors.date}
+                                </p>
+                              )}
+                            </div>
+
+                            <SelectField
+                              label="Appointment Time"
+                              icon={Clock}
+                              name="time"
+                              value={formData.time}
+                              onChange={handleInputChange}
+                              options={generateTimeSlots()}
+                              placeholder="Select Time"
+                              error={errors.time}
+                              disabled={isCompletedAppointment}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="mb-6">
+                          <h2 className="text-xl font-bold text-indigo-900 mb-4">
+                            Treatment Information
+                          </h2>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <SelectField
+                              label="Treatment Type"
+                              icon={Stethoscope}
+                              name="treatment"
+                              value={formData.treatment}
+                              onChange={handleInputChange}
+                              options={treatments}
+                              placeholder="Select Treatment"
+                              error={errors.treatment}
+                              disabled={isCompletedAppointment}
+                            />
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Appointment Status
+                              </label>
+                              <div
+                                className={`flex items-center px-4 py-3 rounded-xl border ${getStatusColor(
+                                  formData.status
+                                )}`}
+                              >
+                                {getStatusIcon(formData.status)}
+                                <span className="ml-2 font-medium">
+                                  {formData.status.charAt(0).toUpperCase() +
+                                    formData.status.slice(1)}
+                                </span>
+                              </div>
+                              {errors.status && (
+                                <p className="mt-2 text-sm text-red-600 flex items-center">
+                                  <AlertCircle className="w-4 h-4 mr-1" />
+                                  {errors.status}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mb-6">
+                          <h2 className="text-xl font-bold text-indigo-900 mb-4">
+                            Clinical Notes
+                          </h2>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              <span className="flex items-center">
+                                <FileText
+                                  size={18}
+                                  className="mr-2 text-indigo-600"
+                                />
+                                Notes & Observations
+                              </span>
+                            </label>
+                            <textarea
+                              name="description"
+                              value={formData.description}
+                              onChange={handleInputChange}
+                              disabled={isCompletedAppointment}
+                              rows={4}
+                              placeholder="Enter any relevant clinical notes or observations..."
+                              className={`block w-full px-4 py-3 rounded-xl border ${
+                                errors.description
+                                  ? "border-red-300 ring-1 ring-red-300"
+                                  : "border-gray-300"
+                              } focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-gray-100 disabled:text-gray-500 transition-all duration-200`}
+                            />
+                            {errors.description && (
+                              <p className="mt-2 text-sm text-red-600 flex items-center">
+                                <AlertCircle className="w-4 h-4 mr-1" />
+                                {errors.description}
+                              </p>
+                            )}
+                            <div className="mt-2 flex justify-between items-center">
+                              <p className="text-sm text-gray-500">
+                                {200 - (formData.description?.length || 0)}{" "}
+                                characters remaining
+                              </p>
+                              <div className="h-1 w-24 bg-gray-200 rounded-full overflow-hidden">
+                                <div
+                                  className={`h-full ${
+                                    (formData.description?.length || 0) > 150
+                                      ? "bg-amber-500"
+                                      : "bg-green-500"
+                                  }`}
+                                  style={{
+                                    width: `${Math.min(
+                                      100,
+                                      ((formData.description?.length || 0) /
+                                        200) *
+                                        100
+                                    )}%`,
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-end space-x-4 pt-4">
+                          <button
+                            type="button"
+                            onClick={handleGoBack}
+                            className="px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors shadow-sm"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={saving || isCompletedAppointment}
+                            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {saving ? (
+                              <>
+                                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                Saving Changes...
+                              </>
+                            ) : (
+                              <>
+                                <Save className="w-5 h-5 mr-2" />
+                                Save Changes
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-4 space-y-6">
+                    {selectedTreatment && (
+                      <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+                        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
+                          <h3 className="text-lg font-semibold text-white">
+                            Treatment Details
+                          </h3>
+                        </div>
+                        <div className="p-6">
+                          <div className="flex items-center text-2xl mb-4">
+                            <span className="mr-3 bg-indigo-100 text-indigo-800 p-3 rounded-full">
+                              {selectedTreatment.icon}
+                            </span>
+                            <span className="font-bold text-gray-900">
+                              {selectedTreatment.label.split(" - ")[0]}
+                            </span>
+                          </div>
+                          <div className="space-y-4 text-gray-600">
+                            <p className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                              {selectedTreatment.details}
+                            </p>
+                            <div className="flex items-center text-indigo-600">
+                              <Stethoscope className="w-5 h-5 mr-2" />
+                              <span className="font-medium">
+                                {selectedTreatment.description}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                          <Heart className="w-6 h-6 text-indigo-600" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">Expert Care</h3>
+                          <p className="text-sm text-gray-600">
+                            Professional dental team
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+                          <Shield className="w-6 h-6 text-purple-600" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">Safe & Clean</h3>
+                          <p className="text-sm text-gray-600">
+                            Modern sterilization
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                          <Clock3 className="w-6 h-6 text-blue-600" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">Flexible Hours</h3>
+                          <p className="text-sm text-gray-600">
+                            Convenient scheduling
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-3xl shadow-xl p-6">
+                      <div className="flex items-center space-x-4 mb-4">
+                        <Clock className="w-6 h-6 text-indigo-600" />
+                        <h3 className="font-semibold">Working Hours</h3>
+                      </div>{" "}
+                      <p className="text-gray-600 text-sm mb-4">
+                        {clinicInfo.hours}
+                      </p>
+                      <div className="flex items-center space-x-4 mb-4">
+                        <MapPin className="w-6 h-6 text-indigo-600" />
+                        <h3 className="font-semibold">Our Location</h3>
+                      </div>
+                      <p className="text-gray-600 text-sm">
+                        {clinicInfo.address}
+                        <br />
+                        {clinicInfo.city}
+                        <br />
+                        {clinicInfo.hours}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
+
+            {showInfoModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+                <div className="bg-white rounded-2xl shadow-xl p-0 max-w-lg w-full mx-4 overflow-hidden animate-fadeIn">
+                  <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4 flex justify-between items-center">
+                    <h3 className="text-xl font-bold text-white">
+                      {clinicInfo.name}
+                    </h3>
+                    <button
+                      onClick={() => setShowInfoModal(false)}
+                      className="text-white hover:text-gray-200 transition-colors"
+                    >
+                      <span className="sr-only">Close</span>
+                      <svg
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="p-6 space-y-6">
+                    <div className="flex items-start">
+                      <MapPin className="w-5 h-5 text-indigo-600 mt-1 mr-3 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium text-gray-900">Location</p>
+                        <p className="text-gray-600">{clinicInfo.address}</p>
+                        <p className="text-gray-600">{clinicInfo.city}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <Clock className="w-5 h-5 text-indigo-600 mt-1 mr-3 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium text-gray-900">
+                          Working Hours
+                        </p>
+                        <p className="text-gray-600">{clinicInfo.hours}</p>
+                        <div className="mt-2 bg-indigo-50 rounded-lg p-2 border border-indigo-100 inline-block">
+                          <p className="text-indigo-700 text-sm">
+                            Lunch: {formatTimeLabel(lunchTime.start)} -{" "}
+                            {formatTimeLabel(lunchTime.end)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <Phone className="w-5 h-5 text-indigo-600 mt-1 mr-3 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium text-gray-900">Contact</p>
+                        <p className="text-gray-600">{clinicInfo.phone}</p>
+                        <p className="text-gray-600">{clinicInfo.email}</p>
+                      </div>
+                    </div>
+                    <div className="mt-8 pt-6 border-t border-gray-200">
+                      <button
+                        onClick={() => setShowInfoModal(false)}
+                        className="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md font-medium"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

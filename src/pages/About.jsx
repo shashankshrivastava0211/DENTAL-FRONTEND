@@ -11,7 +11,6 @@ import {
   Sparkles,
   Stethoscope,
   CalendarCheck,
-  Plane,
 } from "lucide-react";
 import { Bluetooth as Tooth, UserPlus } from "lucide-react";
 import AOS from "aos";
@@ -532,12 +531,6 @@ export const About = () => {
             {/* Timeline Line */}
             <div className="absolute left-8 md:left-1/2 top-0 h-full w-0.5 bg-indigo-200"></div>
 
-            {/* Airplane Container */}
-            <div className="sticky h-0 z-10">
-              <div className="absolute left-8 md:left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <Plane className="w-6 h-6 text-indigo-600 rotate-90" />
-              </div>
-            </div>
 
             {timeline.map((item, index) => (
               <div

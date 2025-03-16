@@ -97,38 +97,6 @@ function BookAppointment() {
     fetchLunchTime();
   }, []);
 
-  // const treatments = [
-  //   {
-  //     value: "oral",
-  //     label: "Teeth Whitening",
-  //     icon: "✨",
-  //     description:
-  //       "Professional teeth whitening treatment for a brighter smile",
-  //     duration: "1 hour",
-  //   },
-  //   {
-  //     value: "dental",
-  //     label: "Root Canal",
-  //     icon: "🦷",
-  //     description: "Advanced root canal therapy with minimal discomfort",
-  //     duration: "2 hours",
-  //   },
-  //   {
-  //     value: "orthodontic",
-  //     label: "Dental Crown",
-  //     icon: "👑",
-  //     description: "Custom-fitted dental crowns for damaged teeth",
-  //     duration: "1.5 hours",
-  //   },
-  //   {
-  //     value: "orthopedic",
-  //     label: "Orthodontics",
-  //     icon: "😁",
-  //     description: "Complete orthodontic treatment for perfect alignment",
-  //     duration: "1 hour",
-  //   },
-  // ];
-
   useEffect(() => {
     const now = new Date();
     const currentHour = now.getHours();

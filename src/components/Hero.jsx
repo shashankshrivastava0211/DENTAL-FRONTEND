@@ -241,7 +241,7 @@ function Hero({
       </div>
 
       {/* Keyframe animations defined inline */}
-      <style jsx>{`
+      {/* <style jsx>{`
         @keyframes float-particle {
           0% {
             transform: translateY(0) translateX(0) scale(1);
@@ -284,7 +284,7 @@ function Hero({
           40% { transform: translateY(-20px); }
           60% { transform: translateY(-10px); }
         }
-      `}</style>
+      `}</style> */}
     </section>
   );
 }
