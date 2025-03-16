@@ -31,7 +31,7 @@ export const About = () => {
       easing: "ease-in-out",
     });
   }, []);
-  
+
   const team = [
     {
       name: "Dr. Pritesh Jagtap",
@@ -229,7 +229,7 @@ export const About = () => {
             >
               <h3 className="text-4xl font-bold mb-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent tracking-wide leading-relaxed">
                 <span className="border-b-4 border-indigo-900 text-indigo-900 ">
-                  32 Pearls Dental Clinic
+                  32 Pearls Dental Clinicccccccccccccc
                 </span>{" "}
                 - Leading Dental Care Provider
               </h3>
