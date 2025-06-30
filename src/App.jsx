@@ -26,43 +26,43 @@ import ProtectedRoute from "./Auth/ProtectedRoute";
 // import Main from "./components/extra/New Dashboard/Main";
 
 function App() {
-  return (
-    <AuthProvider>
-      <Router>
-        <RouteGuard />
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            {/* Public routes */}
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="services" element={<Services />} />
-            <Route path="services/:id" element={<ServiceDetail />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="appointments" element={<Appointments />} />
-            <Route path="/appointment/:id" element={<AppointmentDetails />} />
-            <Route path="/appointment/:id/edit" element={<EditAppointment />} />
-            <Route path="/prescriptions/:id" element={<PrescriptionView />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="map" element={<Map />} />
-            <Route path="login" element={<Login />} />
-            <Route path="book-appointment" element={<BookAppointment />} />
-          </Route>
+	return (
+		<AuthProvider>
+			<Router>
+				<RouteGuard />
+				<Routes>
+					<Route path="/" element={<Layout />}>
+						{/* Public routes */}
+						<Route index element={<Home />} />
+						<Route path="about" element={<About />} />
+						<Route path="services" element={<Services />} />
+						<Route path="services/:id" element={<ServiceDetail />} />
+						<Route path="/blog" element={<Blog />} />
+						<Route path="appointments" element={<Appointments />} />
+						<Route path="/appointment/:id" element={<AppointmentDetails />} />
+						<Route path="/appointment/:id/edit" element={<EditAppointment />} />
+						<Route path="/prescriptions/:id" element={<PrescriptionView />} />
+						<Route path="contact" element={<Contact />} />
+						<Route path="map" element={<Map />} />
+						<Route path="login" element={<Login />} />
+						<Route path="book-appointment" element={<BookAppointment />} />
+					</Route>
 
-          {/* Protected Admin Routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="admin-dashboard" element={<AdminDashboard />}>
-              <Route index element={<Dashboard />} />
-              <Route path="AppointmentsList" element={<AppointmentsList />} />
-              <Route path="patients" element={<Patients />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
-          </Route>
+					{/* Protected Admin Routes */}
+					<Route element={<ProtectedRoute />}>
+						<Route path="admin-dashboard" element={<AdminDashboard />}>
+							<Route index element={<Dashboard />} />
+							<Route path="AppointmentsList" element={<AppointmentsList />} />
+							<Route path="patients" element={<Patients />} />
+							<Route path="settings" element={<Settings />} />
+						</Route>
+					</Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
-  );
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+			</Router>
+		</AuthProvider>
+	);
 }
 
 export default App;
