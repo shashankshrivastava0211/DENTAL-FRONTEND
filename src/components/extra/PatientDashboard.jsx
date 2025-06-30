@@ -9,8 +9,11 @@ import {
 	Activity,
 	Plus,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const PatientDashboard = () => {
+  	const navigate = useNavigate();
+
 	const appointments = [
 		{
 			id: 1,
@@ -99,7 +102,9 @@ export const PatientDashboard = () => {
 								</div>
 							</div>
 							<div className="ml-auto">
-								<button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+								<button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300" onClick={()=>{
+                    navigate("/book-appointment")
+                  }} >
 									Book Appointment
 								</button>
 							</div>

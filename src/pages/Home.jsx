@@ -24,6 +24,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { services } from "../Data/ServicesData";
 import FAQ from "../components/FAQ";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
 	// Initialize AOS
@@ -69,7 +70,7 @@ export function Home() {
 		triggerOnce: false,
 		threshold: 0.1,
 	});
-
+	const navigate = useNavigate();
 	const testimonials = [
 		{
 			name: "Nakul Chandra",
@@ -95,7 +96,7 @@ export function Home() {
 			quote:
 				"I had a great experience at 32 Pearls. The staff was friendly and professional, and Dr. Pritesh Jagtap made me feel completely at ease. The care was top-notch, and I’m very happy with the results. Highly recommend!",
 			rating: 5,
-			image: "/public/images/kuldeep.jpg",
+			image: "/images/kuldeep.jpg",
 		},
 	];
 
@@ -125,7 +126,7 @@ export function Home() {
 							className="flex flex-col sm:flex-row gap-4 justify-center"
 							data-aos="fade-up"
 							data-aos-delay="400">
-							<button className="px-8 py-4 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+							<button className="px-8 py-4 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" onClick={()=>{navigate("/book-appointment")}}>
 								Schedule Appointment
 							</button>
 						</div>
@@ -187,7 +188,7 @@ export function Home() {
 										<div className="relative w-full h-full rounded-[1.7rem] overflow-hidden">
 											<div className="absolute w-full h-full inset-0 bg-gradient-to-tr from-indigo-600/10 to-purple-600/10 mix-blend-overlay"></div>
 											<img
-												src="/public/images/smile.jpg"
+												src="/images/healtySmile.png"
 												alt="Modern dental clinic interior"
 												className="w-full h-full object-cover transform transition-all duration-700 group-hover:scale-105"
 											/>
@@ -376,10 +377,10 @@ export function Home() {
 											<div className="h-2 rounded-t-md bg-gradient-to-r from-indigo-700 via-violet-700 to-purple-700"></div>
 											<div className="p-5 md:p-6 lg:p-8">
 												<div className="mb-5 md:mb-6 flex justify-center">
-													<div
-														className={`service-icon w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center bg-gradient-to-r ${service.color}`}>
-														{service.icon}
-													</div>
+													<div className="service-icon w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center">
+  <img src={service.image} alt="Root Canal Icon" className="w-full h-full object-contain" />
+</div>
+
 												</div>
 												<h3 className="service-title text-lg md:text-xl font-semibold mb-3 md:mb-4 text-gray-900 text-center">
 													{service.title}
@@ -637,7 +638,7 @@ export function Home() {
 
 									<div className="relative overflow-hidden mb-6">
 										<img
-											src="/public/images/healtySmile.png"
+											src="/images/healtySmile.png"
 											alt="Healthy Smile"
 											className="w-full h-48 object-cover"
 										/>
