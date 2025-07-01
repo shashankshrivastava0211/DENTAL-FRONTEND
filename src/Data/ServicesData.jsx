@@ -3,7 +3,7 @@ import { Shield, Smile, Sparkles, Bone, HeartPulse, Brain, Baby, Stethoscope, Te
 export const services = [
   {
     id: "root-canals",
-    icon: <Thermometer className="w-10 h-10 text-white" />,
+    // icon: <Thermometer className="w-10 h-10 text-white" />,
     title: "Root Canals",
     description: "Advanced endodontic treatments to save infected teeth and relieve pain effectively.",
     features: ["Single visit RCT", "Multiple visits RCT", "Re-root canal treatment", "Microscopic endodontics"],
@@ -12,7 +12,7 @@ export const services = [
     color: "from-amber-600 to-amber-800",
     bgColor: "bg-amber-50",
     accentColor: "text-amber-600",
-    image: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/root-canal.png"
   },
   {
     id: "crowns",
@@ -25,7 +25,7 @@ export const services = [
     color: "from-teal-500 to-cyan-600",
     bgColor: "bg-teal-50",
     accentColor: "text-teal-600",
-    image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/dental-crown.png"
   },
   {
     id: "cosmetic-dentistry",
@@ -38,7 +38,7 @@ export const services = [
     color: "from-pink-500 to-rose-600",
     bgColor: "bg-pink-50",
     accentColor: "text-pink-600",
-    image: "https://images.unsplash.com/photo-1588774069410-84ae30757c8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/happy.png"
   },
   {
     id: "fillings",
@@ -51,7 +51,7 @@ export const services = [
     color: "from-emerald-500 to-green-600",
     bgColor: "bg-emerald-50",
     accentColor: "text-emerald-600",
-    image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/filling.png"
   },
   {
     id: "dental-implants",
@@ -64,7 +64,7 @@ export const services = [
     color: "from-slate-600 to-gray-700",
     bgColor: "bg-slate-50",
     accentColor: "text-slate-600",
-    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/dental-implant.png"
   },
   {
     id: "teeth-replacement",
@@ -77,7 +77,7 @@ export const services = [
     color: "from-violet-500 to-purple-600",
     bgColor: "bg-violet-50",
     accentColor: "text-violet-600",
-    image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/replacement.jpeg"
   },
   {
     id: "extractions",
@@ -90,7 +90,7 @@ export const services = [
     color: "from-orange-500 to-amber-600",
     bgColor: "bg-orange-50",
     accentColor: "text-orange-600",
-    image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/tooth-extraction.png"
   },
   {
     id: "mouth-guards",
@@ -103,7 +103,7 @@ export const services = [
     color: "from-blue-500 to-indigo-600",
     bgColor: "bg-blue-50",
     accentColor: "text-blue-600",
-    image: "https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/root-canal.png"
   },
   {
     id: "pediatric-dentistry",
@@ -116,7 +116,7 @@ export const services = [
     color: "from-cyan-500 to-sky-600",
     bgColor: "bg-cyan-50",
     accentColor: "text-cyan-600",
-    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/anxiety.png"
   },
   {
     id: "gum-care",
@@ -129,7 +129,7 @@ export const services = [
     color: "from-red-500 to-rose-600",
     bgColor: "bg-red-50",
     accentColor: "text-red-600",
-    image: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/gingivitis.png"
   },
   {
     id: "orthodontics",
@@ -142,7 +142,7 @@ export const services = [
     color: "from-purple-500 to-violet-600",
     bgColor: "bg-purple-50",
     accentColor: "text-purple-600",
-    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/braces.png"
   },
   {
     id: "dental-imaging",
@@ -155,7 +155,7 @@ export const services = [
     color: "from-gray-500 to-slate-600",
     bgColor: "bg-gray-50",
     accentColor: "text-gray-600",
-    image: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+    image: "/images/Icons/x-ray.jpeg"
 
 
   }

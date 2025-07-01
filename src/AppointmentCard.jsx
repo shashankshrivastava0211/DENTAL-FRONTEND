@@ -1,194 +1,192 @@
-import React from 'react';
+import React from "react";
 import {
-  Calendar,
-  Clock,
-  User,
-  FileText,
-  Phone,
-  ArrowLeft,
-  Activity,
-  CalendarDays,
-  MapPin,
-  AlertCircle,
-  CheckCircle2,
-  XCircle,
-  Clock4,
-} from 'lucide-react';
+	Calendar,
+	Clock,
+	User,
+	FileText,
+	Phone,
+	ArrowLeft,
+	Activity,
+	CalendarDays,
+	MapPin,
+	AlertCircle,
+	CheckCircle2,
+	XCircle,
+	Clock4,
+} from "lucide-react";
 
 function AppointmentCard({ appointment, onClose }) {
-  const formatTime = (time) => {
-    const hour = parseInt(time);
-    return new Date(0, 0, 0, hour).toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      hour12: true,
-    });
-  };
+	const formatTime = (time) => {
+		const hour = parseInt(time);
+		return new Date(0, 0, 0, hour).toLocaleTimeString("en-US", {
+			hour: "numeric",
+			hour12: true,
+		});
+	};
 
-  const formatDate = (dateString) => {
-    const [day, month, year] = dateString.split('/');
-    return new Date(year, month - 1, day).toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+	const formatDate = (dateString) => {
+		const [day, month, year] = dateString.split("/");
+		return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		});
+	};
 
-  const formatDateTime = (dateString) => {
-    return new Date(dateString).toLocaleString('en-US', {
-      dateStyle: 'medium',
-      timeStyle: 'short'
-    });
-  };
+	const formatDateTime = (dateString) => {
+		return new Date(dateString).toLocaleString("en-US", {
+			dateStyle: "medium",
+			timeStyle: "short",
+		});
+	};
 
-  const getStatusIcon = (status) => {
-    switch (status.toLowerCase()) {
-      case 'confirmed':
-        return <CheckCircle2 className="h-6 w-6 text-green-600" />;
-      case 'cancelled':
-        return <XCircle className="h-6 w-6 text-red-600" />;
-      default:
-        return <Clock4 className="h-6 w-6 text-yellow-600" />;
-    }
-  };
+	const getStatusIcon = (status) => {
+		switch (status.toLowerCase()) {
+			case "confirmed":
+				return <CheckCircle2 className="h-6 w-6 text-green-600" />;
+			case "cancelled":
+				return <XCircle className="h-6 w-6 text-red-600" />;
+			default:
+				return <Clock4 className="h-6 w-6 text-yellow-600" />;
+		}
+	};
 
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case "confirmed":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "cancelled":
-        return "bg-red-100 text-red-800 border-red-200";
-      default:
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
-    }
-  };
+	const getStatusColor = (status) => {
+		switch (status.toLowerCase()) {
+			case "confirmed":
+				return "bg-green-100 text-green-800 border-green-200";
+			case "cancelled":
+				return "bg-red-100 text-red-800 border-red-200";
+			default:
+				return "bg-yellow-100 text-yellow-800 border-yellow-200";
+		}
+	};
 
-  const getTreatmentLabel = (treatment) => {
-    const treatments = {
-      oral: "Oral Treatment",
-      dental: "Dental Treatment",
-      orthodontic: "Orthodontic Treatment",
-      orthopedic: "Orthopedic Treatment"
-    };
-    return treatments[treatment] || treatment;
-  };
+	const getTreatmentLabel = (treatment) => {
+		const treatments = {
+			oral: "Oral Treatment",
+			dental: "Dental Treatment",
+			orthodontic: "Orthodontic Treatment",
+			orthopedic: "Orthopedic Treatment",
+		};
+		return treatments[treatment] || treatment;
+	};
 
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl">
-          <button
-            onClick={onClose}
-            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5 mr-2" />
-            Back to Appointments
-          </button>
-          <div className="flex items-center gap-2">
-            {getStatusIcon(appointment.status)}
-            <span
-              className={`px-4 py-1.5 rounded-full text-sm font-medium border ${getStatusColor(
-                appointment.status
-              )}`}
-            >
-              {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
-            </span>
-          </div>
-        </div>
+	return (
+		<div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+			<div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+				<div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl">
+					<button
+						onClick={onClose}
+						className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+						<ArrowLeft className="h-5 w-5 mr-2" />
+						Back to Appointments
+					</button>
+					<div className="flex items-center gap-2">
+						{getStatusIcon(appointment.status)}
+						<span
+							className={`px-4 py-1.5 rounded-full text-sm font-medium border ${getStatusColor(
+								appointment.status
+							)}`}>
+							{appointment.status.charAt(0).toUpperCase() +
+								appointment.status.slice(1)}
+						</span>
+					</div>
+				</div>
 
-        <div className="p-6 space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <User className="h-6 w-6 text-indigo-600" />
-                  Patient Information
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Name:</span>
-                    <span>{appointment.patientName}</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Phone:</span>
-                    <span>{appointment.phoneNo}</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Treatment:</span>
-                    <span>{getTreatmentLabel(appointment.treatment)}</span>
-                  </div>
-                </div>
-              </div>
+				<div className="p-6 space-y-8">
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+						<div className="space-y-6">
+							<div className="bg-gray-50 rounded-xl p-6">
+								<h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+									<User className="h-6 w-6 text-indigo-600" />
+									Patient Information
+								</h3>
+								<div className="space-y-4">
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Name:</span>
+										<span>{appointment.patientName}</span>
+									</div>
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Phone:</span>
+										<span>{appointment.phoneNo}</span>
+									</div>
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Treatment:</span>
+										<span>{getTreatmentLabel(appointment.treatment)}</span>
+									</div>
+								</div>
+							</div>
 
-              <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <CalendarDays className="h-6 w-6 text-indigo-600" />
-                  Appointment Details
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Date:</span>
-                    <span>{formatDate(appointment.date)}</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Time:</span>
-                    <span>{formatTime(appointment.time)}</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Created:</span>
-                    <span>{formatDateTime(appointment.createdAt)}</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Last Updated:</span>
-                    <span>{formatDateTime(appointment.updatedAt)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+							<div className="bg-gray-50 rounded-xl p-6">
+								<h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+									<CalendarDays className="h-6 w-6 text-indigo-600" />
+									Appointment Details
+								</h3>
+								<div className="space-y-4">
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Date:</span>
+										<span>{formatDate(appointment.date)}</span>
+									</div>
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Time:</span>
+										<span>{formatTime(appointment.time)}</span>
+									</div>
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Created:</span>
+										<span>{formatDateTime(appointment.createdAt)}</span>
+									</div>
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Last Updated:</span>
+										<span>{formatDateTime(appointment.updatedAt)}</span>
+									</div>
+								</div>
+							</div>
+						</div>
 
-            <div className="space-y-6">
-              {appointment.description && (
-                <div className="bg-gray-50 rounded-xl p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <FileText className="h-6 w-6 text-indigo-600" />
-                    Description
-                  </h3>
-                  <p className="text-gray-700 whitespace-pre-line">
-                    {appointment.description}
-                  </p>
-                </div>
-              )}
+						<div className="space-y-6">
+							{appointment.description && (
+								<div className="bg-gray-50 rounded-xl p-6">
+									<h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+										<FileText className="h-6 w-6 text-indigo-600" />
+										Description
+									</h3>
+									<p className="text-gray-700 whitespace-pre-line">
+										{appointment.description}
+									</p>
+								</div>
+							)}
 
-              <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <AlertCircle className="h-6 w-6 text-indigo-600" />
-                  Additional Information
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Appointment ID:</span>
-                    <span className="font-mono text-sm">{appointment._id}</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <span className="font-medium w-32">Prescription:</span>
-                    <span>{appointment.prescriptionId ? "Available" : "Not Available"}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+							<div className="bg-gray-50 rounded-xl p-6">
+								<h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+									<AlertCircle className="h-6 w-6 text-indigo-600" />
+									Additional Information
+								</h3>
+								<div className="space-y-4">
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Appointment ID:</span>
+										<span className="font-mono text-sm">{appointment._id}</span>
+									</div>
+									<div className="flex items-center text-gray-700">
+										<span className="font-medium w-32">Prescription:</span>
+										<span>
+											{appointment.prescriptionId
+												? "Available"
+												: "Not Available"}
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default AppointmentCard;
-
-
-
-
-
 
 // import React from 'react';
 // import { X, Calendar, Clock, User, FileText, Phone, Stethoscope } from 'lucide-react';
