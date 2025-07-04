@@ -102,12 +102,12 @@ export const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500 outline-none transition-all"
-                  placeholder="••••••••"
+                  placeholder="Enter your password"
                 />
               </div>
             </div>
 
-            <button
+            <buttonUsername
               type="submit"
               disabled={loading}
               className="w-full bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-700 hover:to-violet-800 text-white py-3 px-4 rounded-lg font-medium transition-all transform hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"

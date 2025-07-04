@@ -3,7 +3,13 @@ import { X, Plus, Minus, FileText, Calendar, AlertCircle } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescription, onSave }) {
+function PrescriptionModal({
+  isOpen,
+  onClose,
+  appointmentId,
+  existingPrescription,
+  onSave,
+}) {
   const [prescription, setPrescription] = useState({
     medicines: [{ name: "", dosage: "", frequency: "", duration: "" }],
     instructions: [""],
@@ -15,28 +21,32 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
   });
 
   const [errors, setErrors] = useState({
-    medicines: false
+    medicines: false,
   });
 
   useEffect(() => {
     if (existingPrescription) {
       setPrescription({
         ...existingPrescription,
-        medicines: existingPrescription.medicines?.length > 0 
-          ? existingPrescription.medicines 
-          : [{ name: "", dosage: "", frequency: "", duration: "" }],
-        instructions: existingPrescription.instructions?.length > 0 
-          ? existingPrescription.instructions 
-          : [""],
-        proceduresPerformed: existingPrescription.proceduresPerformed?.length > 0 
-          ? existingPrescription.proceduresPerformed 
-          : [{ procedureName: "", notes: "" }],
-        allergies: existingPrescription.allergies?.length > 0 
-          ? existingPrescription.allergies 
-          : [""],
+        medicines:
+          existingPrescription.medicines?.length > 0
+            ? existingPrescription.medicines
+            : [{ name: "", dosage: "", frequency: "", duration: "" }],
+        instructions:
+          existingPrescription.instructions?.length > 0
+            ? existingPrescription.instructions
+            : [""],
+        proceduresPerformed:
+          existingPrescription.proceduresPerformed?.length > 0
+            ? existingPrescription.proceduresPerformed
+            : [{ procedureName: "", notes: "" }],
+        allergies:
+          existingPrescription.allergies?.length > 0
+            ? existingPrescription.allergies
+            : [""],
         followUpRequired: existingPrescription.followUpRequired || false,
-        nextVisit: existingPrescription.nextVisit 
-          ? new Date(existingPrescription.nextVisit) 
+        nextVisit: existingPrescription.nextVisit
+          ? new Date(existingPrescription.nextVisit)
           : new Date(),
         additionalNotes: existingPrescription.additionalNotes || "",
       });
@@ -52,7 +62,7 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
         additionalNotes: "",
       });
     }
-    
+
     // Reset errors
     setErrors({ medicines: false });
   }, [existingPrescription]);
@@ -61,9 +71,9 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
     const newMedicines = [...prescription.medicines];
     newMedicines[index] = { ...newMedicines[index], [field]: value };
     setPrescription({ ...prescription, medicines: newMedicines });
-    
+
     // Clear error if at least one medicine has a name
-    if (field === 'name' && value.trim() !== '') {
+    if (field === "name" && value.trim() !== "") {
       setErrors({ ...errors, medicines: false });
     }
   };
@@ -71,7 +81,10 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
   const addMedicine = () => {
     setPrescription({
       ...prescription,
-      medicines: [...prescription.medicines, { name: "", dosage: "", frequency: "", duration: "" }],
+      medicines: [
+        ...prescription.medicines,
+        { name: "", dosage: "", frequency: "", duration: "" },
+      ],
     });
   };
 
@@ -79,9 +92,11 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
     if (prescription.medicines.length > 1) {
       const newMedicines = prescription.medicines.filter((_, i) => i !== index);
       setPrescription({ ...prescription, medicines: newMedicines });
-      
+
       // Check if any remaining medicines have names
-      const hasNamedMedicine = newMedicines.some(med => med.name.trim() !== '');
+      const hasNamedMedicine = newMedicines.some(
+        (med) => med.name.trim() !== ""
+      );
       setErrors({ ...errors, medicines: !hasNamedMedicine });
     }
   };
@@ -99,9 +114,26 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
     });
   };
 
+  const hadleAddDiagnosis = () => {
+    setPrescription({
+      ...prescription,
+      diagnosis: [...(prescription.diagnosis || []), ""],
+    });
+  };
+  handleAddSymptoms = () => {
+    setPrescription({
+      ...prescription,
+      symptoms: [...(prescription.symptoms || []), ""],
+    });
+  };
+
+  
+
   const removeInstruction = (index) => {
     if (prescription.instructions.length > 1) {
-      const newInstructions = prescription.instructions.filter((_, i) => i !== index);
+      const newInstructions = prescription.instructions.filter(
+        (_, i) => i !== index
+      );
       setPrescription({ ...prescription, instructions: newInstructions });
     }
   };
@@ -115,13 +147,18 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
   const addProcedure = () => {
     setPrescription({
       ...prescription,
-      proceduresPerformed: [...prescription.proceduresPerformed, { procedureName: "", notes: "" }],
+      proceduresPerformed: [
+        ...prescription.proceduresPerformed,
+        { procedureName: "", notes: "" },
+      ],
     });
   };
 
   const removeProcedure = (index) => {
     if (prescription.proceduresPerformed.length > 1) {
-      const newProcedures = prescription.proceduresPerformed.filter((_, i) => i !== index);
+      const newProcedures = prescription.proceduresPerformed.filter(
+        (_, i) => i !== index
+      );
       setPrescription({ ...prescription, proceduresPerformed: newProcedures });
     }
   };
@@ -148,35 +185,43 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
 
   const validateForm = () => {
     const newErrors = { medicines: false };
-    
+
     // Check if at least one medicine has a name
-    const hasNamedMedicine = prescription.medicines.some(med => med.name.trim() !== '');
+    const hasNamedMedicine = prescription.medicines.some(
+      (med) => med.name.trim() !== ""
+    );
     if (!hasNamedMedicine) {
       newErrors.medicines = true;
     }
-    
+
     setErrors(newErrors);
-    return !Object.values(newErrors).some(error => error);
+    return !Object.values(newErrors).some((error) => error);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Validate form
     if (!validateForm()) {
       return;
     }
-    
+
     // Filter out empty entries
     const filteredPrescription = {
       ...prescription,
       appointmentId,
-      medicines: prescription.medicines.filter(med => med.name.trim() !== ""),
-      instructions: prescription.instructions.filter(instruction => instruction.trim() !== ""),
-      proceduresPerformed: prescription.proceduresPerformed.filter(proc => proc.procedureName.trim() !== ""),
-      allergies: prescription.allergies.filter(allergy => allergy.trim() !== "")
+      medicines: prescription.medicines.filter((med) => med.name.trim() !== ""),
+      instructions: prescription.instructions.filter(
+        (instruction) => instruction.trim() !== ""
+      ),
+      proceduresPerformed: prescription.proceduresPerformed.filter(
+        (proc) => proc.procedureName.trim() !== ""
+      ),
+      allergies: prescription.allergies.filter(
+        (allergy) => allergy.trim() !== ""
+      ),
     };
-    
+
     onSave(filteredPrescription);
   };
 
@@ -188,7 +233,9 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
         <div className="sticky top-0 bg-white z-10 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
             <FileText className="h-6 w-6 text-indigo-600" />
-            {existingPrescription ? "View/Edit Prescription" : "Add New Prescription"}
+            {existingPrescription
+              ? "View/Edit Prescription"
+              : "Add New Prescripti"}
           </h2>
           <button
             onClick={onClose}
@@ -212,62 +259,95 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
                 Add Medicine
               </button>
             </div>
-            
+
             {errors.medicines && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-center">
                 <AlertCircle className="h-5 w-5 mr-2 text-red-500" />
                 Please add at least one medicine with a name
               </div>
             )}
-            
+
             <div className="space-y-4">
               {prescription.medicines.map((medicine, index) => (
-                <div key={index} className="p-4 border border-gray-200 rounded-xl bg-gray-50">
+                <div
+                  key={index}
+                  className="p-4 border border-gray-200 rounded-xl bg-gray-50"
+                >
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Medicine Name</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Medicine Name
+                      </label>
                       <input
                         type="text"
                         value={medicine.name}
-                        onChange={(e) => handleMedicineChange(index, "name", e.target.value)}
+                        onChange={(e) =>
+                          handleMedicineChange(index, "name", e.target.value)
+                        }
                         className={`w-full px-3 py-2 border ${
-                          errors.medicines ? "border-red-300 ring-1 ring-red-300" : "border-gray-300"
+                          errors.medicines
+                            ? "border-red-300 ring-1 ring-red-300"
+                            : "border-gray-300"
                         } rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
                         placeholder="Medicine name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Dosage</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Dosage
+                      </label>
                       <input
                         type="text"
                         value={medicine.dosage}
-                        onChange={(e) => handleMedicineChange(index, "dosage", e.target.value)}
+                        onChange={(e) =>
+                          handleMedicineChange(index, "dosage", e.target.value)
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                         placeholder="e.g., 500mg"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Frequency
+                      </label>
                       <select
                         value={medicine.frequency}
-                        onChange={(e) => handleMedicineChange(index, "frequency", e.target.value)}
+                        onChange={(e) =>
+                          handleMedicineChange(
+                            index,
+                            "frequency",
+                            e.target.value
+                          )
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                       >
                         <option value="">Select frequency</option>
                         <option value="Once daily">Once daily</option>
                         <option value="Twice daily">Twice daily</option>
-                        <option value="Three times daily">Three times daily</option>
-                        <option value="Four times daily">Four times daily</option>
+                        <option value="Three times daily">
+                          Three times daily
+                        </option>
+                        <option value="Four times daily">
+                          Four times daily
+                        </option>
                         <option value="As needed">As needed</option>
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Duration
+                      </label>
                       <div className="flex items-center">
                         <input
                           type="text"
                           value={medicine.duration}
-                          onChange={(e) => handleMedicineChange(index, "duration", e.target.value)}
+                          onChange={(e) =>
+                            handleMedicineChange(
+                              index,
+                              "duration",
+                              e.target.value
+                            )
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                           placeholder="e.g., 7 days"
                         />
@@ -291,7 +371,9 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
           {/* Instructions Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Instructions</h3>
+              <h3 className="text-lg font-medium text-gray-900">
+                Instructions
+              </h3>
               <button
                 type="button"
                 onClick={addInstruction}
@@ -301,14 +383,16 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
                 Add Instruction
               </button>
             </div>
-            
+
             <div className="space-y-3">
               {prescription.instructions.map((instruction, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <input
                     type="text"
                     value={instruction}
-                    onChange={(e) => handleInstructionChange(index, e.target.value)}
+                    onChange={(e) =>
+                      handleInstructionChange(index, e.target.value)
+                    }
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                     placeholder="Enter instruction"
                   />
@@ -325,11 +409,14 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
               ))}
             </div>
           </div>
+          
 
           {/* Procedures Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Procedures Performed</h3>
+              <h3 className="text-lg font-medium text-gray-900">
+                Procedures Performed
+              </h3>
               <button
                 type="button"
                 onClick={addProcedure}
@@ -339,28 +426,122 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
                 Add Procedure
               </button>
             </div>
-            
+
             <div className="space-y-4">
               {prescription.proceduresPerformed.map((procedure, index) => (
-                <div key={index} className="p-4 border border-gray-200 rounded-xl bg-gray-50">
+                <div
+                  key={index}
+                  className="p-4 border border-gray-200 rounded-xl bg-gray-50"
+                >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Procedure Name</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Procedure Name
+                      </label>
                       <input
                         type="text"
                         value={procedure.procedureName}
-                        onChange={(e) => handleProcedureChange(index, "procedureName", e.target.value)}
+                        onChange={(e) =>
+                          handleProcedureChange(
+                            index,
+                            "procedureName",
+                            e.target.value
+                          )
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                         placeholder="Procedure name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Notes
+                      </label>
                       <div className="flex items-center">
                         <input
                           type="text"
                           value={procedure.notes}
-                          onChange={(e) => handleProcedureChange(index, "notes", e.target.value)}
+                          onChange={(e) =>
+                            handleProcedureChange(
+                              index,
+                              "notes",
+                              e.target.value
+                            )
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                          placeholder="Procedure notes"
+                        />
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => removeProcedure(index)}
+                            className="ml-2 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <Minus className="h-5 w-5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+           <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">
+                Procedures Performed
+              </h3>
+              <button
+                type="button"
+                onClick={addProcedure}
+                className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Procedure
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {prescription.proceduresPerformed.map((procedure, index) => (
+                <div
+                  key={index}
+                  className="p-4 border border-gray-200 rounded-xl bg-gray-50"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Procedure Name
+                      </label>
+                      <input
+                        type="text"
+                        value={procedure.procedureName}
+                        onChange={(e) =>
+                          handleProcedureChange(
+                            index,
+                            "procedureName",
+                            e.target.value
+                          )
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                        placeholder="Procedure name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Notes
+                      </label>
+                      <div className="flex items-center">
+                        <input
+                          type="text"
+                          value={procedure.notes}
+                          onChange={(e) =>
+                            handleProcedureChange(
+                              index,
+                              "notes",
+                              e.target.value
+                            )
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                           placeholder="Procedure notes"
                         />
@@ -394,7 +575,7 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
                 Add Allergy
               </button>
             </div>
-            
+
             <div className="space-y-3">
               {prescription.allergies.map((allergy, index) => (
                 <div key={index} className="flex items-center gap-2">
@@ -403,7 +584,9 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
                     <input
                       type="text"
                       value={allergy}
-                      onChange={(e) => handleAllergyChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleAllergyChange(index, e.target.value)
+                      }
                       className="flex-1 bg-transparent border-none focus:ring-0 text-red-700"
                       placeholder="Enter allergy"
                     />
@@ -429,10 +612,17 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
                 <input
                   type="checkbox"
                   checked={prescription.followUpRequired}
-                  onChange={(e) => setPrescription({ ...prescription, followUpRequired: e.target.checked })}
+                  onChange={(e) =>
+                    setPrescription({
+                      ...prescription,
+                      followUpRequired: e.target.checked,
+                    })
+                  }
                   className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                 />
-                <span className="text-sm font-medium text-gray-700">Follow-up Required</span>
+                <span className="text-sm font-medium text-gray-700">
+                  Follow-up Required
+                </span>
               </label>
             </div>
             <div>
@@ -442,7 +632,9 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
               <div className="relative">
                 <DatePicker
                   selected={prescription.nextVisit}
-                  onChange={(date) => setPrescription({ ...prescription, nextVisit: date })}
+                  onChange={(date) =>
+                    setPrescription({ ...prescription, nextVisit: date })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                   minDate={new Date()}
                   dateFormat="dd/MM/yyyy"
@@ -451,7 +643,23 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
               </div>
             </div>
           </div>
-
+  <div>
+            <label className="block text-lg font-medium text-gray-900 mb-2">
+              Additional No
+            </label>
+            <textarea
+              value={prescription.additionalNotes}
+              onChange={(e) =>
+                setPrescription({
+                  ...prescription,
+                  additionalNotes: e.target.value,
+                })
+              }
+              rows={4}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+              placeholder="Add any additional notes here..."
+            ></textarea>
+          </div>
           {/* Additional Notes */}
           <div>
             <label className="block text-lg font-medium text-gray-900 mb-2">
@@ -459,7 +667,12 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
             </label>
             <textarea
               value={prescription.additionalNotes}
-              onChange={(e) => setPrescription({ ...prescription, additionalNotes: e.target.value })}
+              onChange={(e) =>
+                setPrescription({
+                  ...prescription,
+                  additionalNotes: e.target.value,
+                })
+              }
               rows={4}
               className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
               placeholder="Add any additional notes here..."
@@ -478,7 +691,9 @@ function PrescriptionModal({ isOpen, onClose, appointmentId, existingPrescriptio
               type="submit"
               className="px-6 py-3 border border-transparent rounded-xl text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
             >
-              {existingPrescription ? "Update Prescription" : "Save Prescription"}
+              {existingPrescription
+                ? "Update Prescription"
+                : "Save Prescription"}
             </button>
           </div>
         </form>
