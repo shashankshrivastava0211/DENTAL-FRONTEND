@@ -846,7 +846,7 @@ export function Home() {
           >
             <h4 className="text-2xl sm:text-3xl md:text-[40px] font-normal leading-tight md:leading-[1.3] text-white/90">
               <span className="font-semibold text-white block">
-                Schedule Your Appointment?
+                Schedule Your Appointment
               </span>
               <span className="font-semibold text-white block">
                 Our expert team is ready to provide you with exceptional dental
