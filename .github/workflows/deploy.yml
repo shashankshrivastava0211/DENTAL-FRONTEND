@@ -16,22 +16,32 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'  # Change if you're using a different version
+        node-version: '18'
 
     - name: Install dependencies
       run: npm install
 
     - name: Build the project
-      run: npm run build  # This will generate the dist/ folder for Vite
+      run: npm run build  # Generates dist/ folder for Vite
 
     - name: Set up SSH key
       run: |
         echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
         chmod 600 ec2_key.pem
 
-    - name: Deploy dist folder to EC2
+    - name: Prepare EC2 and Deploy dist folder
       run: |
+        # Step 1: Clear and fix permissions on EC2
+        ssh -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@13.49.78.167 << 'EOF'
+          sudo rm -rf /var/www/html/*
+          sudo mkdir -p /var/www/html
+          sudo chown -R ubuntu:ubuntu /var/www/html
+        EOF
+
+        # Step 2: Sync built frontend files to EC2
         rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i ec2_key.pem" dist/ ubuntu@13.49.78.167:/var/www/html/
+
+        # Step 3: Fix ownership for Nginx and restart
         ssh -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@13.49.78.167 << 'EOF'
           sudo chown -R www-data:www-data /var/www/html
           sudo systemctl restart nginx
