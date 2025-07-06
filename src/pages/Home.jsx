@@ -118,7 +118,7 @@ export function Home() {
             >
               <Sparkles className="w-4 h-4 mr-2 text-indigo-600" />
               <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent font-semibold">
-                Welcomee to 32 Pearls
+                Welcome to 32 Pearls
               </span>
             </div>
 
