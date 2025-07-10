@@ -15,6 +15,8 @@ import {
 import { Helmet } from "react-helmet-async";
 
 function Footer() {
+  // Define the services and quick links
+
   const services = [
     { text: "General Dentistry", href: "/services/general-dentistry" },
     { text: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },

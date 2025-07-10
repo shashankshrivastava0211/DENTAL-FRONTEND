@@ -15,6 +15,7 @@ import {
   Award,
   Users,
 } from "lucide-react";
+import { ADDRESS, PHONE } from "../constants/constant";
 
 const ServiceDetail = () => {
   const { id } = useParams();
@@ -600,9 +601,7 @@ const ServiceDetail = () => {
 
                 <div className="mt-4 text-center">
                   <span className="text-sm text-gray-500">or call us at</span>
-                  <p className="font-semibold text-indigo-900">
-                    (123) 456-7890
-                  </p>
+                  <p className="font-semibold text-indigo-900"></p>
                 </div>
               </div>
 
@@ -620,12 +619,12 @@ const ServiceDetail = () => {
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center">
                     <Phone className="w-5 h-5 mr-3" />
-                    <span>(123) 456-7890</span>
+                    <span>{PHONE}</span>
                   </div>
 
                   <div className="flex items-center">
-                    <MapPin className="w-5 h-5 mr-3" />
-                    <span>123 Dental Care St, NY</span>
+                    <MapPin className="w-10 h-10 mr-3" />
+                    <span>{ADDRESS}</span>
                   </div>
                 </div>
 
