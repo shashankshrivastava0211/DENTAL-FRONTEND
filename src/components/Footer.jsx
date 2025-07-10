@@ -31,11 +31,6 @@ function Footer() {
     { text: "Blog", href: "/blog" },
     { text: "Contact", href: "/contact" },
     { text: "Login", href: "/login" },
-    // { text: "Login", href: "/login" },
-    // { text: "Register", href: "/register" },
-    // { text: "Dashboard", href: "/admin-dashboard" },
-    // { text: "Doctor-Dashboard", href: "/doctor-dashboard" },
-    // { text: "Patient-Dashboard", href: "/patient-dashboard" },
   ];
 
   const handleCall = (number) => {
