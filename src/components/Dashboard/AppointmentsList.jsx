@@ -542,7 +542,7 @@ function AppointmentsList() {
 												</td>
 												<td className="px-3 py-4">
 													<div className="flex items-center gap-2 flex-wrap">
-														<span className="text-lg">{treatment?.icon}</span>
+														{/* <span className="text-lg">{treatment?.icon}</span> */}
 														<span className="text-sm whitespace-normal">
 															{treatment?.label}
 														</span>

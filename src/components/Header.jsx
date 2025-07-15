@@ -10,6 +10,7 @@ import {
 	Twitter,
 	Linkedin,
 	Facebook,
+	Phone,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
@@ -29,24 +30,31 @@ const socialLinks = [
 		href: "https://www.instagram.com/32_pearls_dentalclinic",
 		hoverColor: "hover:text-pink-500",
 	},
-	{
-		icon: Linkedin,
-		name: "LinkedIn",
-		href: "https://www.instagram.com/32_pearls_dentalclinic",
-		hoverColor: "hover:text-blue-600",
-	},
+	// {
+	// 	icon: Linkedin,
+	// 	name: "LinkedIn",
+	// 	href: "https://www.instagram.com/32_pearls_dentalclinic",
+	// 	hoverColor: "hover:text-blue-600",
+	// },
 	{
 		icon: Facebook,
 		name: "Facebook",
-		href: "https://www.facebook.com/pritesh.jagtap",
+		href: "https://www.facebook.com/abhi.jagtap",
 		hoverColor: "hover:text-sky-500",
 	},
+	// call
 	{
-		icon: Twitter,
-		name: "Twitter",
-		href: "https://www.twitter.com/32pearlsdental",
+		icon: Phone,
+		name: "Call",
+		href: "tel: +918446322666",
 		hoverColor: "hover:text-sky-500",
 	},
+	// {
+	// 	icon: Twitter,
+	// 	name: "Twitter",
+	// 	href: "https://www.twitter.com/32pearlsdental",
+	// 	hoverColor: "hover:text-sky-500",
+	// },
 ];
 
 const Header = () => {
