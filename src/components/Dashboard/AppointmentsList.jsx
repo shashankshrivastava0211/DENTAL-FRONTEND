@@ -34,7 +34,7 @@ function AppointmentsList() {
 		endDate: null,
 		status: "",
 		time: "",
-		treatment: "",
+		// treatment: "",
 		search: "",
 	});
 	const [phoneInput, setPhoneInput] = useState("");
@@ -116,7 +116,7 @@ function AppointmentsList() {
 			const queryParams = { page, limit: ITEMS_PER_PAGE };
 			if (filters.search) queryParams.phoneNo = `+91${filters.search}`;
 			if (filters.status) queryParams.status = filters.status;
-			if (filters.treatment) queryParams.treatment = filters.treatment;
+			// if (filters.treatment) queryParams.treatment = filters.treatment;
 			if (filters.time) queryParams.time = filters.time;
 
 			if (filters.startDate && filters.endDate) {
@@ -172,7 +172,7 @@ function AppointmentsList() {
 			endDate: null,
 			status: "",
 			time: "",
-			treatment: "",
+			// treatment: "",
 			search: "",
 		});
 		setPhoneInput("");
@@ -408,7 +408,7 @@ function AppointmentsList() {
 									placeholder="All Times"
 									name="time"
 								/>
-								<SelectField
+								{/* <SelectField
 									label="Treatment"
 									icon={Stethoscope}
 									value={filters.treatment}
@@ -416,7 +416,7 @@ function AppointmentsList() {
 									options={treatmentOptions}
 									placeholder="All Treatments"
 									name="treatment"
-								/>
+								/> */}
 							</div>
 						</div>
 
@@ -459,9 +459,9 @@ function AppointmentsList() {
 									<th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
 										Time
 									</th>
-									<th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
+									{/* <th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
 										Treatment
-									</th>
+									</th> */}
 									<th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
 										Status
 									</th>
@@ -540,14 +540,14 @@ function AppointmentsList() {
 														</span>
 													</div>
 												</td>
-												<td className="px-3 py-4">
+												{/* <td className="px-3 py-4">
 													<div className="flex items-center gap-2 flex-wrap">
-														{/* <span className="text-lg">{treatment?.icon}</span> */}
+														{/* <span className="text-lg">{treatment?.icon}</span> 
 														<span className="text-sm whitespace-normal">
 															{treatment?.label}
 														</span>
 													</div>
-												</td>
+												</td> */}
 												<td className="px-3 py-4">
 													<span
 														className={`px-2.5 py-1 rounded-full text-xs font-medium ${status?.color} truncate`}>

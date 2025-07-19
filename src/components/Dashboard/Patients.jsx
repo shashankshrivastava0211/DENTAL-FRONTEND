@@ -27,6 +27,7 @@ import PrescriptionModal from "./PrescriptionModal";
 import { VITE_REACT_APP_BASE_URL } from "../utils/constants";
 import SelectField from "../SelectField";
 import { treatments } from "../../Data/Treatments";
+import TreatmentPlanModal from "./TreatmentPlanModal";
 
 function ConfirmedPatients() {
 	const [patients, setPatients] = useState([]);
@@ -46,6 +47,9 @@ function ConfirmedPatients() {
 	const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
 	const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
 	const [existingPrescription, setExistingPrescription] = useState(null);
+	const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
+	const [selectedTreatmentData, setSelectedTreatmentData] = useState(null);
+
 	const [dateErrors, setDateErrors] = useState({
 		startDate: "",
 		endDate: "",
@@ -200,7 +204,7 @@ function ConfirmedPatients() {
 					return appDate >= startDateStr && appDate <= endDateStr;
 				});
 			}
-
+			console.log(filteredPatients);
 			setPatients(filteredPatients);
 			setTotalPages(
 				Math.ceil((response.data.totalAppointments || 0) / ITEMS_PER_PAGE)
@@ -231,7 +235,7 @@ function ConfirmedPatients() {
 			if (response.data && response.data.length > 0) {
 				// If prescription exists, set it in state
 				setExistingPrescription(response.data[0]);
-				toast.success("Prescription loaded successfully");
+				// toast.success("Prescription loaded successfully");
 			} else {
 				// If no prescription exists, set to null
 				setExistingPrescription(null);
@@ -295,7 +299,7 @@ function ConfirmedPatients() {
 				});
 				toast.dismiss(loadingToast);
 				toast.success("Prescription added successfully");
-				await updateAppointmentStatus(selectedAppointmentId);
+				// await updateAppointmentStatus(selectedAppointmentId);
 			}
 			setIsPrescriptionModalOpen(false);
 			fetchConfirmedPatients();
@@ -347,7 +351,10 @@ function ConfirmedPatients() {
 		const found = treatmentOptions.find((t) => t.value === treatment);
 		return found ? found.label : treatment;
 	};
-
+	const handleTreatmentClick = (prescriptionId) => {
+		setSelectedTreatmentData(prescriptionId);
+		setIsTreatmentModalOpen(true);
+	};
 	return (
 		<div className="min-h-screen p-0 bg-gray-50">
 			<Toaster
@@ -533,10 +540,10 @@ function ConfirmedPatients() {
 										Time
 									</th>
 									<th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
-										Treatment
+										Status
 									</th>
 									<th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
-										Status
+										Treatment Plan
 									</th>
 									<th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
 										Actions
@@ -566,9 +573,17 @@ function ConfirmedPatients() {
 										const status = statusOptions.find(
 											(s) => s.value === patient.status
 										);
-										const treatment = treatmentOptions.find(
-											(t) => t.value === patient.treatment
-										);
+										const treatmentValues =
+											patient.prescriptionId?.treatments?.map(
+												(t) => t.treatment
+											) || [];
+
+										const treatmentLabels = treatmentValues
+											.map(
+												(val) =>
+													treatmentOptions.find((t) => t.value === val)?.label
+											)
+											.filter(Boolean);
 
 										return (
 											<tr key={patient._id} className="hover:bg-gray-50">
@@ -602,17 +617,23 @@ function ConfirmedPatients() {
 														</span>
 													</div>
 												</td>
-												<td className="px-3 py-4">
-													<div className="flex items-center gap-2">
-														{/* <span className="text-lg">{treatment?.icon}</span> */}
-														<span className="text-sm">{treatment?.label}</span>
-													</div>
-												</td>
+
 												<td className="px-3 py-4">
 													<span
 														className={`px-2.5 py-1 rounded-full text-xs font-medium ${status?.color}`}>
 														{status?.label}
 													</span>
+												</td>
+												<td className="px-3 py-4">
+													<div className="flex items-center gap-2">
+														<span
+															className="text-sm text-indigo-600 cursor-pointer hover:underline"
+															onClick={() =>
+																handleTreatmentClick(patient.prescriptionId)
+															}>
+															View Plan ({treatmentLabels.length})
+														</span>
+													</div>
 												</td>
 												<td className="px-3 py-4">
 													<button
@@ -687,6 +708,16 @@ function ConfirmedPatients() {
 					appointmentId={selectedAppointmentId}
 					existingPrescription={existingPrescription}
 					onSave={handleSavePrescription}
+				/>
+			)}
+			{isTreatmentModalOpen && selectedTreatmentData && (
+				<TreatmentPlanModal
+					isOpen={isTreatmentModalOpen}
+					onClose={() => {
+						setIsTreatmentModalOpen(false);
+						setSelectedTreatmentData(null);
+					}}
+					treatmentData={selectedTreatmentData}
 				/>
 			)}
 		</div>

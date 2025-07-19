@@ -451,14 +451,14 @@ function Appointments() {
 					placeholder="All Times"
 				/>
 
-				<SelectField
+				{/* <SelectField
 					label="Treatment"
 					icon={Stethoscope}
 					value={filters.treatment}
 					onChange={(e) => handleFilterChange("treatment", e.target.value)}
 					options={treatmentOptions}
 					placeholder="All Treatments"
-				/>
+				/> */}
 			</div>
 		</div>
 	);

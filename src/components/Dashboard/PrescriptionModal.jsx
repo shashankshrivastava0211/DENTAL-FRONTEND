@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { X, Plus, Minus, FileText, Calendar, AlertCircle } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { treatments } from "../../Data/Treatments";
 
 function PrescriptionModal({
 	isOpen,
@@ -18,8 +19,14 @@ function PrescriptionModal({
 		proceduresPerformed: [{ procedureName: "", notes: "" }],
 		allergies: [""],
 		followUpRequired: false,
-		nextVisit: new Date(),
+		nextVisit: (() => {
+			const date = new Date();
+			date.setDate(date.getDate() + 2); // +2 days
+			date.setHours(10, 0, 0, 0); // Set to 10:00 AM
+			return date;
+		})(),
 		additionalNotes: "",
+		treatments: [],
 	});
 
 	const [errors, setErrors] = useState({
@@ -51,6 +58,10 @@ function PrescriptionModal({
 					? new Date(existingPrescription.nextVisit)
 					: new Date(),
 				additionalNotes: existingPrescription.additionalNotes || "",
+				treatments:
+					existingPrescription.treatments?.length > 0
+						? existingPrescription.treatments
+						: [],
 			});
 		} else {
 			// Reset to default state for new prescription
@@ -60,8 +71,14 @@ function PrescriptionModal({
 				proceduresPerformed: [{ procedureName: "", notes: "" }],
 				allergies: [""],
 				followUpRequired: false,
-				nextVisit: new Date(),
+				nextVisit: (() => {
+					const date = new Date();
+					date.setDate(date.getDate() + 2);
+					date.setHours(10, 0, 0, 0);
+					return date;
+				})(),
 				additionalNotes: "",
+				treatments: [],
 			});
 		}
 
@@ -480,6 +497,125 @@ function PrescriptionModal({
 									</div>
 								</div>
 							))}
+						</div>
+					</div>
+					{/* Treatments Section */}
+					<div className="space-y-4">
+						<h3 className="text-lg font-medium text-gray-900">Treatments</h3>
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+							{treatments.map((treatment) => {
+								// Filter entries for this treatment
+								const relatedEntries = prescription.treatments.filter(
+									(t) => t.treatment === treatment.value
+								);
+
+								const isChecked = relatedEntries.length > 0;
+
+								return (
+									<div
+										key={treatment.value}
+										className="flex flex-col space-y-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+										<label className="flex items-center space-x-2 cursor-pointer">
+											<input
+												type="checkbox"
+												checked={isChecked}
+												onChange={(e) => {
+													if (e.target.checked) {
+														setPrescription((prev) => ({
+															...prev,
+															treatments: [
+																...prev.treatments,
+																{ treatment: treatment.value, toothNumber: "" },
+															],
+														}));
+													} else {
+														setPrescription((prev) => ({
+															...prev,
+															treatments: prev.treatments.filter(
+																(t) => t.treatment !== treatment.value
+															),
+														}));
+													}
+												}}
+												className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+											/>
+											<span className="text-sm text-gray-800">
+												{treatment.label}
+											</span>
+										</label>
+
+										{isChecked && (
+											<div className="space-y-2">
+												{relatedEntries.map((entry, index) => (
+													<div
+														key={index}
+														className="flex items-center space-x-2">
+														<input
+															type="text"
+															value={entry.toothNumber}
+															placeholder="Tooth #"
+															onChange={(e) => {
+																const updated = [...prescription.treatments];
+																const globalIndex =
+																	prescription.treatments.findIndex(
+																		(t, i) =>
+																			t.treatment === treatment.value &&
+																			relatedEntries.indexOf(t) === index
+																	);
+																updated[globalIndex] = {
+																	...updated[globalIndex],
+																	toothNumber: e.target.value,
+																};
+																setPrescription({
+																	...prescription,
+																	treatments: updated,
+																});
+															}}
+															className="flex-1 px-3 py-1 border border-gray-300 rounded-md text-sm"
+														/>
+														{index > 0 && (
+															<button
+																type="button"
+																onClick={() => {
+																	const updated = [...prescription.treatments];
+																	// Find the correct global index to remove
+																	const globalIndex =
+																		prescription.treatments.findIndex(
+																			(t, i) =>
+																				t.treatment === treatment.value &&
+																				relatedEntries.indexOf(t) === index
+																		);
+																	updated.splice(globalIndex, 1);
+																	setPrescription({
+																		...prescription,
+																		treatments: updated,
+																	});
+																}}
+																className="text-red-500 hover:text-red-700 text-sm px-2 py-1">
+																<Minus className="h-4 w-4" />
+															</button>
+														)}
+													</div>
+												))}
+												<button
+													type="button"
+													onClick={() =>
+														setPrescription((prev) => ({
+															...prev,
+															treatments: [
+																...prev.treatments,
+																{ treatment: treatment.value, toothNumber: "" },
+															],
+														}))
+													}
+													className="text-indigo-600 text-sm hover:underline">
+													+ Add Tooth
+												</button>
+											</div>
+										)}
+									</div>
+								);
+							})}
 						</div>
 					</div>
 
