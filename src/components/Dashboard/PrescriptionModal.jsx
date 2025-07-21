@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { X, Plus, Minus, FileText, Calendar, AlertCircle } from "lucide-react";
+import {
+	X,
+	Plus,
+	Minus,
+	FileText,
+	Calendar,
+	AlertCircle,
+	Printer,
+} from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { treatments } from "../../Data/Treatments";
@@ -230,6 +238,9 @@ function PrescriptionModal({
 	};
 
 	if (!isOpen) return null;
+	const handlePrint = () => {
+		window.print();
+	};
 
 	return (
 		<div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -241,11 +252,15 @@ function PrescriptionModal({
 							? "View/Edit Prescription"
 							: "Add New Prescription"}
 					</h2>
-					<button
-						onClick={onClose}
-						className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-						<X className="h-6 w-6 text-gray-500" />
-					</button>
+					<div className="flex items-center space-x-3">
+						<Printer className="h-6 w-6 text-gray-500" />
+
+						<button
+							onClick={onClose}
+							className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+							<X className="h-6 w-6 text-gray-500" />
+						</button>
+					</div>
 				</div>
 
 				<form onSubmit={handleSubmit} className="p-6 space-y-8">
@@ -691,7 +706,7 @@ function PrescriptionModal({
 										setPrescription({ ...prescription, nextVisit: date })
 									}
 									showTimeSelect
-									timeIntervals={60}
+									timeIntervals={30}
 									timeFormat="hh:mm aa"
 									dateFormat="dd MMM yyyy • hh:mm aa"
 									minDate={new Date()}
@@ -728,6 +743,13 @@ function PrescriptionModal({
 							onClick={onClose}
 							className="px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
 							Cancel
+						</button>
+						<button
+							type="button"
+							onClick={handlePrint}
+							className="px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors flex items-center">
+							<Printer className="h-4 w-4 mr-2" />
+							Print
 						</button>
 						<button
 							type="submit"
