@@ -234,7 +234,7 @@ function PrescriptionModal({
           <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
             <FileText className="h-6 w-6 text-indigo-600" />
             {existingPrescription
-              ? "View/Edit Prescription"
+              ? "View/Edit Prescriptionnnn"
               : "Add New Prescripti"}
           </h2>
           <button
