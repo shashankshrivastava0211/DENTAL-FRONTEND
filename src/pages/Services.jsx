@@ -285,17 +285,19 @@ const ServicesPage = () => {
 								{/* Service Image */}
 								<div className="relative h-48 overflow-hidden">
 									<img
-										src={service.image}
+										src={service.photo}
 										alt={service.title}
 										className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
 									/>
 
 									{/* Icon Badge */}
-									<div className="absolute top-4 left-4">
-										<div
-											className={`bg-gradient-to-br ${service.color} p-3 rounded-xl flex items-center justify-center`}>
-											{service.icon}
-										</div>
+									<div
+										className={`absolute top-4 left-4 p-3 rounded-xl bg-gradient-to-br bg-white flex items-center justify-center`}>
+										<img
+											src={service.image}
+											alt={service.name}
+											className="w-8 h-8 object-contain"
+										/>
 									</div>
 								</div>
 
