@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Calendar,
   ChevronLeft,
@@ -25,8 +25,27 @@ import "swiper/css/pagination";
 import { services } from "../Data/ServicesData";
 import FAQ from "../components/FAQ";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { VITE_REACT_APP_BASE_URL } from "../components/utils/constants";
 
 export function Home() {
+  const [testimonials, setTestimonials] = useState([]);
+  const getGoogleReviewData = async () => {
+    try {
+      const response = await axios.get(
+        `${VITE_REACT_APP_BASE_URL}/googleReview`
+      );
+      console.log(
+        "Google review data:",
+        response?.data?.result?.reviews?.filter((item) => item?.rating >= 4)
+      );
+      setTestimonials(
+        response?.data?.result?.reviews?.filter((item) => item?.rating >= 4)
+      );
+    } catch (error) {
+      console.error("Error fetching Google review data:", error);
+    }
+  };
   // Initialize AOS
   useEffect(() => {
     AOS.init({
@@ -36,6 +55,7 @@ export function Home() {
       offset: 50,
       easing: "ease-in-out",
     });
+    getGoogleReviewData();
   }, []);
 
   const stats = [
@@ -71,34 +91,34 @@ export function Home() {
     threshold: 0.1,
   });
   const navigate = useNavigate();
-  const testimonials = [
-    {
-      name: "Nakul Chandra",
-      service: "Dental Implants",
-      quote:
-        "After my dental implants, I can smile, eat, and talk without any worries. A life-changing experience!",
-      rating: 5,
-      image:
-        "https://images.pexels.com/photos/30026793/pexels-photo-30026793/free-photo-of-portrait-of-a-man-in-a-white-shirt.jpeg?auto=compress&cs=tinysrgb&w=600",
-    },
-    {
-      name: "Priya Patel",
-      service: "Cosmetic Dentistry",
-      quote:
-        "32 Pearls completely transformed my smile. The team was professional and caring, and the results far exceeded my expectations!",
-      rating: 5,
-      image:
-        "https://images.pexels.com/photos/31430969/pexels-photo-31430969/free-photo-of-black-and-white-portrait-of-smiling-woman.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    },
-    {
-      name: "Kuldeep Patil",
-      service: "Root Canal",
-      quote:
-        "I had a great experience at 32 Pearls. The staff was friendly and professional, and Dr. Pritesh Jagtap made me feel completely at ease. The care was top-notch, and I’m very happy with the results. Highly recommend!",
-      rating: 5,
-      image: "/images/kuldeep.jpg",
-    },
-  ];
+  // const testimonials = [
+  //   {
+  //     name: "Nakul Chandra",
+  //     service: "Dental Implants",
+  //     quote:
+  //       "After my dental implants, I can smile, eat, and talk without any worries. A life-changing experience!",
+  //     rating: 5,
+  //     image:
+  //       "https://images.pexels.com/photos/30026793/pexels-photo-30026793/free-photo-of-portrait-of-a-man-in-a-white-shirt.jpeg?auto=compress&cs=tinysrgb&w=600",
+  //   },
+  //   {
+  //     name: "Priya Patel",
+  //     service: "Cosmetic Dentistry",
+  //     quote:
+  //       "32 Pearls completely transformed my smile. The team was professional and caring, and the results far exceeded my expectations!",
+  //     rating: 5,
+  //     image:
+  //       "https://images.pexels.com/photos/31430969/pexels-photo-31430969/free-photo-of-black-and-white-portrait-of-smiling-woman.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  //   },
+  //   {
+  //     name: "Kuldeep Patil",
+  //     service: "Root Canal",
+  //     quote:
+  //       "I had a great experience at 32 Pearls. The staff was friendly and professional, and Dr. Pritesh Jagtap made me feel completely at ease. The care was top-notch, and I’m very happy with the results. Highly recommend!",
+  //     rating: 5,
+  //     image: "/images/kuldeep.jpg",
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -771,7 +791,6 @@ export function Home() {
             </p>
           </div>
 
-          {/* Testimonials Grid */}
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div
@@ -797,21 +816,21 @@ export function Home() {
 
                 {/* Quote */}
                 <p className="text-gray-600 mb-8 italic leading-relaxed relative z-10">
-                  "{testimonial.quote}"
+                  "{testimonial.text}"
                 </p>
 
                 {/* Author */}
                 <div className="flex items-center">
                   <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-purple-200 mr-4 shadow-md">
                     <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
+                      src={testimonial.profile_photo_url}
+                      alt="Patient Photo"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div>
                     <h4 className="font-semibold text-purple-900 text-lg">
-                      {testimonial.name}
+                      {testimonial.author_name}
                     </h4>
                     <p className="text-sm text-purple-600">
                       {testimonial.service}
