@@ -37,10 +37,10 @@ export function Home() {
       );
       console.log(
         "Google review data:",
-        response?.data?.result?.reviews?.filter((item) => item?.rating >= 4)
+        response?.data?.reviews?.filter((item) => item?.rating >= 4)
       );
       setTestimonials(
-        response?.data?.result?.reviews?.filter((item) => item?.rating >= 4)
+        response?.data?.reviews?.filter((item) => item?.rating >= 4)
       );
     } catch (error) {
       console.error("Error fetching Google review data:", error);
