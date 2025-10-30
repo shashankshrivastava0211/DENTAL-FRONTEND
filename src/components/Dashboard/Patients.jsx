@@ -643,7 +643,9 @@ function ConfirmedPatients() {
 									<th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
 										Treatment Plan
 									</th>
-									<th className="px-3 py-3 text-left text-sm font-medium text-gray-700">
+									<th
+										colSpan={2}
+										className="px-3 py-3 text-center text-sm font-medium text-gray-700">
 										Actions
 									</th>
 								</tr>

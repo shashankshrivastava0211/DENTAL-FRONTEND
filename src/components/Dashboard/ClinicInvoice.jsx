@@ -66,11 +66,18 @@ export default function ClinicInvoice({ bill }) {
 						alignItems: "center",
 						justifyContent: "center",
 						borderRight: "2px solid black",
-						fontSize: "40px",
-						fontWeight: "bold",
 					}}>
-					LOGO
+					<img
+						src="/images/Icons/logo2.png"
+						alt="Logo"
+						style={{
+							maxHeight: "200px",
+							maxWidth: "100%",
+							objectFit: "cover",
+						}}
+					/>
 				</div>
+
 				<div style={{ flex: 2 }}>
 					<div
 						style={{
@@ -83,7 +90,7 @@ export default function ClinicInvoice({ bill }) {
 						}}>
 						Invoice
 					</div>
-					<div style={{ padding: "10px", fontSize: "14px" }}>
+					<div style={{ padding: "10px", fontSize: "18px" }}>
 						<div>
 							<b>Clinic Name:</b> {CLINIC_NAME}
 						</div>

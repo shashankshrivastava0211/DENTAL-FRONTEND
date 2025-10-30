@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
 	X,
 	Plus,
@@ -11,6 +11,7 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { treatments } from "../../Data/Treatments";
+import PrescriptionCard from "./PrescriptionPrint";
 
 function PrescriptionModal({
 	isOpen,
@@ -36,6 +37,7 @@ function PrescriptionModal({
 		additionalNotes: "",
 		treatments: [],
 	});
+	const prescriptionRef = useRef();
 
 	const [errors, setErrors] = useState({
 		medicines: false,
@@ -239,529 +241,558 @@ function PrescriptionModal({
 
 	if (!isOpen) return null;
 	const handlePrint = () => {
-		window.print();
+		const printContents = prescriptionRef.current.innerHTML;
+		const printWindow = window.open("", "", "height=800,width=1000");
+		printWindow.document.write(`
+      <html>
+        <body>
+          ${printContents}
+        </body>
+      </html>
+    `);
+		printWindow.document.close();
+		printWindow.print();
 	};
 
 	return (
-		<div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
-			<div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-				<div className="sticky top-0 bg-white z-10 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-					<h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-						<FileText className="h-6 w-6 text-indigo-600" />
-						{existingPrescription
-							? "View/Edit Prescription"
-							: "Add New Prescription"}
-					</h2>
-					<div className="flex items-center space-x-3">
-						<Printer className="h-6 w-6 text-gray-500" />
+		<>
+			<div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
+				<div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+					<div className="sticky top-0 bg-white z-10 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+						<h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+							<FileText className="h-6 w-6 text-indigo-600" />
+							{existingPrescription
+								? "View/Edit Prescription"
+								: "Add New Prescription"}
+						</h2>
+						<div className="flex items-center space-x-3">
+							<Printer className="h-6 w-6 text-gray-500" />
 
-						<button
-							onClick={onClose}
-							className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-							<X className="h-6 w-6 text-gray-500" />
-						</button>
-					</div>
-				</div>
-
-				<form onSubmit={handleSubmit} className="p-6 space-y-8">
-					{/* Medicines Section */}
-					<div className="space-y-4">
-						<div className="flex items-center justify-between">
-							<h3 className="text-lg font-medium text-gray-900">Medicines</h3>
 							<button
-								type="button"
-								onClick={addMedicine}
-								className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-								<Plus className="h-4 w-4 mr-2" />
-								Add Medicine
+								onClick={onClose}
+								className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+								<X className="h-6 w-6 text-gray-500" />
 							</button>
 						</div>
+					</div>
 
-						{errors.medicines && (
-							<div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-center">
-								<AlertCircle className="h-5 w-5 mr-2 text-red-500" />
-								Please add at least one medicine with a name
-							</div>
-						)}
-
+					<form onSubmit={handleSubmit} className="p-6 space-y-8">
+						{/* Medicines Section */}
 						<div className="space-y-4">
-							{prescription.medicines.map((medicine, index) => (
-								<div
-									key={index}
-									className="p-4 border border-gray-200 rounded-xl bg-gray-50">
-									<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-										<div>
-											<label className="text-sm text-gray-700">Type</label>
-											<select
-												value={medicine.type}
-												onChange={(e) =>
-													handleMedicineChange(index, "type", e.target.value)
-												}
-												className="w-full mt-1 px-3 py-2 border rounded-lg border-gray-300 focus:ring-indigo-500/20 focus:border-indigo-500 text-sm">
-												<option value="">Select</option>
-												<option value="Tablet">Tab</option>
-												<option value="Capsule">Cap</option>
-												<option value="Syrup">Syp</option>
-												<option value="Injection">Inj</option>
-												<option value="Drops">Drp</option>
-												<option value="Ointment">Oint</option>
-												<option value="Powder">Pwd</option>
-												<option value="Other">Other</option>
-											</select>
-										</div>
+							<div className="flex items-center justify-between">
+								<h3 className="text-lg font-medium text-gray-900">Medicines</h3>
+								<button
+									type="button"
+									onClick={addMedicine}
+									className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+									<Plus className="h-4 w-4 mr-2" />
+									Add Medicine
+								</button>
+							</div>
 
-										<div>
-											<label className="block text-sm font-medium text-gray-700 mb-1">
-												Medicine Name
-											</label>
-											<input
-												type="text"
-												value={medicine.name}
-												onChange={(e) =>
-													handleMedicineChange(index, "name", e.target.value)
-												}
-												className={`w-full px-3 py-2 border ${
-													errors.medicines
-														? "border-red-300 ring-1 ring-red-300"
-														: "border-gray-300"
-												} rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
-												placeholder="Medicine name"
-											/>
-										</div>
-										<div>
-											<label className="block text-sm font-medium text-gray-700 mb-1">
-												Dosage
-											</label>
-											<input
-												type="text"
-												value={medicine.dosage}
-												onChange={(e) =>
-													handleMedicineChange(index, "dosage", e.target.value)
-												}
-												className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-												placeholder="e.g., 500mg"
-											/>
-										</div>
-										<div>
-											<label className="block text-sm font-medium text-gray-700 mb-1">
-												Frequency
-											</label>
-											<select
-												value={medicine.frequency}
-												onChange={(e) =>
-													handleMedicineChange(
-														index,
-														"frequency",
-														e.target.value
-													)
-												}
-												className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
-												<option value="">Select frequency</option>
-												<option value="Once daily">Once daily</option>
-												<option value="Twice daily">Twice daily</option>
-												<option value="Three times daily">
-													Three times daily
-												</option>
-												<option value="Four times daily">
-													Four times daily
-												</option>
-												<option value="As needed">As needed</option>
-											</select>
-										</div>
-										<div>
-											<label className="block text-sm font-medium text-gray-700 mb-1">
-												Duration
-											</label>
-											<div className="flex items-center">
+							{errors.medicines && (
+								<div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-center">
+									<AlertCircle className="h-5 w-5 mr-2 text-red-500" />
+									Please add at least one medicine with a name
+								</div>
+							)}
+
+							<div className="space-y-4">
+								{prescription.medicines.map((medicine, index) => (
+									<div
+										key={index}
+										className="p-4 border border-gray-200 rounded-xl bg-gray-50">
+										<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+											<div>
+												<label className="text-sm text-gray-700">Type</label>
+												<select
+													value={medicine.type}
+													onChange={(e) =>
+														handleMedicineChange(index, "type", e.target.value)
+													}
+													className="w-full mt-1 px-3 py-2 border rounded-lg border-gray-300 focus:ring-indigo-500/20 focus:border-indigo-500 text-sm">
+													<option value="">Select</option>
+													<option value="Tablet">Tab</option>
+													<option value="Capsule">Cap</option>
+													<option value="Syrup">Syp</option>
+													<option value="Injection">Inj</option>
+													<option value="Drops">Drp</option>
+													<option value="Ointment">Oint</option>
+													<option value="Powder">Pwd</option>
+													<option value="Other">Other</option>
+												</select>
+											</div>
+
+											<div>
+												<label className="block text-sm font-medium text-gray-700 mb-1">
+													Medicine Name
+												</label>
 												<input
 													type="text"
-													value={medicine.duration}
+													value={medicine.name}
+													onChange={(e) =>
+														handleMedicineChange(index, "name", e.target.value)
+													}
+													className={`w-full px-3 py-2 border ${
+														errors.medicines
+															? "border-red-300 ring-1 ring-red-300"
+															: "border-gray-300"
+													} rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500`}
+													placeholder="Medicine name"
+												/>
+											</div>
+											<div>
+												<label className="block text-sm font-medium text-gray-700 mb-1">
+													Dosage
+												</label>
+												<input
+													type="text"
+													value={medicine.dosage}
 													onChange={(e) =>
 														handleMedicineChange(
 															index,
-															"duration",
+															"dosage",
 															e.target.value
 														)
 													}
 													className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-													placeholder="e.g., 7 days"
+													placeholder="e.g., 500mg"
 												/>
-												{index > 0 && (
-													<button
-														type="button"
-														onClick={() => removeMedicine(index)}
-														className="ml-2 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-														<Minus className="h-5 w-5" />
-													</button>
-												)}
+											</div>
+											<div>
+												<label className="block text-sm font-medium text-gray-700 mb-1">
+													Frequency
+												</label>
+												<select
+													value={medicine.frequency}
+													onChange={(e) =>
+														handleMedicineChange(
+															index,
+															"frequency",
+															e.target.value
+														)
+													}
+													className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+													<option value="">Select frequency</option>
+													<option value="Once daily">Once daily</option>
+													<option value="Twice daily">Twice daily</option>
+													<option value="Three times daily">
+														Three times daily
+													</option>
+													<option value="Four times daily">
+														Four times daily
+													</option>
+													<option value="As needed">As needed</option>
+												</select>
+											</div>
+											<div>
+												<label className="block text-sm font-medium text-gray-700 mb-1">
+													Duration
+												</label>
+												<div className="flex items-center">
+													<input
+														type="text"
+														value={medicine.duration}
+														onChange={(e) =>
+															handleMedicineChange(
+																index,
+																"duration",
+																e.target.value
+															)
+														}
+														className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+														placeholder="e.g., 7 days"
+													/>
+													{index > 0 && (
+														<button
+															type="button"
+															onClick={() => removeMedicine(index)}
+															className="ml-2 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+															<Minus className="h-5 w-5" />
+														</button>
+													)}
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							))}
-						</div>
-					</div>
-
-					{/* Instructions Section */}
-					<div className="space-y-4">
-						<div className="flex items-center justify-between">
-							<h3 className="text-lg font-medium text-gray-900">
-								Instructions
-							</h3>
-							<button
-								type="button"
-								onClick={addInstruction}
-								className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-								<Plus className="h-4 w-4 mr-2" />
-								Add Instruction
-							</button>
+								))}
+							</div>
 						</div>
 
-						<div className="space-y-3">
-							{prescription.instructions.map((instruction, index) => (
-								<div key={index} className="flex items-center gap-2">
-									<input
-										type="text"
-										value={instruction}
-										onChange={(e) =>
-											handleInstructionChange(index, e.target.value)
-										}
-										className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-										placeholder="Enter instruction"
-									/>
-									{index > 0 && (
-										<button
-											type="button"
-											onClick={() => removeInstruction(index)}
-											className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-											<Minus className="h-5 w-5" />
-										</button>
-									)}
-								</div>
-							))}
-						</div>
-					</div>
-
-					{/* Procedures Section */}
-					<div className="space-y-4">
-						<div className="flex items-center justify-between">
-							<h3 className="text-lg font-medium text-gray-900">
-								Procedures Performed
-							</h3>
-							<button
-								type="button"
-								onClick={addProcedure}
-								className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-								<Plus className="h-4 w-4 mr-2" />
-								Add Procedure
-							</button>
-						</div>
-
+						{/* Instructions Section */}
 						<div className="space-y-4">
-							{prescription.proceduresPerformed.map((procedure, index) => (
-								<div
-									key={index}
-									className="p-4 border border-gray-200 rounded-xl bg-gray-50">
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-										<div>
-											<label className="block text-sm font-medium text-gray-700 mb-1">
-												Procedure Name
-											</label>
-											<input
-												type="text"
-												value={procedure.procedureName}
-												onChange={(e) =>
-													handleProcedureChange(
-														index,
-														"procedureName",
-														e.target.value
-													)
-												}
-												className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-												placeholder="Procedure name"
-											/>
-										</div>
-										<div>
-											<label className="block text-sm font-medium text-gray-700 mb-1">
-												Notes
-											</label>
-											<div className="flex items-center">
+							<div className="flex items-center justify-between">
+								<h3 className="text-lg font-medium text-gray-900">
+									Instructions
+								</h3>
+								<button
+									type="button"
+									onClick={addInstruction}
+									className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+									<Plus className="h-4 w-4 mr-2" />
+									Add Instruction
+								</button>
+							</div>
+
+							<div className="space-y-3">
+								{prescription.instructions.map((instruction, index) => (
+									<div key={index} className="flex items-center gap-2">
+										<input
+											type="text"
+											value={instruction}
+											onChange={(e) =>
+												handleInstructionChange(index, e.target.value)
+											}
+											className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+											placeholder="Enter instruction"
+										/>
+										{index > 0 && (
+											<button
+												type="button"
+												onClick={() => removeInstruction(index)}
+												className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+												<Minus className="h-5 w-5" />
+											</button>
+										)}
+									</div>
+								))}
+							</div>
+						</div>
+
+						{/* Procedures Section */}
+						<div className="space-y-4">
+							<div className="flex items-center justify-between">
+								<h3 className="text-lg font-medium text-gray-900">
+									Procedures Performed
+								</h3>
+								<button
+									type="button"
+									onClick={addProcedure}
+									className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+									<Plus className="h-4 w-4 mr-2" />
+									Add Procedure
+								</button>
+							</div>
+
+							<div className="space-y-4">
+								{prescription.proceduresPerformed.map((procedure, index) => (
+									<div
+										key={index}
+										className="p-4 border border-gray-200 rounded-xl bg-gray-50">
+										<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+											<div>
+												<label className="block text-sm font-medium text-gray-700 mb-1">
+													Procedure Name
+												</label>
 												<input
 													type="text"
-													value={procedure.notes}
+													value={procedure.procedureName}
 													onChange={(e) =>
 														handleProcedureChange(
 															index,
-															"notes",
+															"procedureName",
 															e.target.value
 														)
 													}
 													className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-													placeholder="Procedure notes"
+													placeholder="Procedure name"
 												/>
-												{index > 0 && (
-													<button
-														type="button"
-														onClick={() => removeProcedure(index)}
-														className="ml-2 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-														<Minus className="h-5 w-5" />
-													</button>
-												)}
+											</div>
+											<div>
+												<label className="block text-sm font-medium text-gray-700 mb-1">
+													Notes
+												</label>
+												<div className="flex items-center">
+													<input
+														type="text"
+														value={procedure.notes}
+														onChange={(e) =>
+															handleProcedureChange(
+																index,
+																"notes",
+																e.target.value
+															)
+														}
+														className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+														placeholder="Procedure notes"
+													/>
+													{index > 0 && (
+														<button
+															type="button"
+															onClick={() => removeProcedure(index)}
+															className="ml-2 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+															<Minus className="h-5 w-5" />
+														</button>
+													)}
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							))}
+								))}
+							</div>
 						</div>
-					</div>
-					{/* Treatments Section */}
-					<div className="space-y-4">
-						<h3 className="text-lg font-medium text-gray-900">Treatments</h3>
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-							{treatments.map((treatment) => {
-								// Filter entries for this treatment
-								const relatedEntries = prescription.treatments.filter(
-									(t) => t.treatment === treatment.value
-								);
+						{/* Treatments Section */}
+						<div className="space-y-4">
+							<h3 className="text-lg font-medium text-gray-900">Treatments</h3>
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+								{treatments.map((treatment) => {
+									// Filter entries for this treatment
+									const relatedEntries = prescription.treatments.filter(
+										(t) => t.treatment === treatment.value
+									);
 
-								const isChecked = relatedEntries.length > 0;
+									const isChecked = relatedEntries.length > 0;
 
-								return (
-									<div
-										key={treatment.value}
-										className="flex flex-col space-y-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
-										<label className="flex items-center space-x-2 cursor-pointer">
-											<input
-												type="checkbox"
-												checked={isChecked}
-												onChange={(e) => {
-													if (e.target.checked) {
-														setPrescription((prev) => ({
-															...prev,
-															treatments: [
-																...prev.treatments,
-																{ treatment: treatment.value, toothNumber: "" },
-															],
-														}));
-													} else {
-														setPrescription((prev) => ({
-															...prev,
-															treatments: prev.treatments.filter(
-																(t) => t.treatment !== treatment.value
-															),
-														}));
-													}
-												}}
-												className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-											/>
-											<span className="text-sm text-gray-800">
-												{treatment.label}
-											</span>
-										</label>
+									return (
+										<div
+											key={treatment.value}
+											className="flex flex-col space-y-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+											<label className="flex items-center space-x-2 cursor-pointer">
+												<input
+													type="checkbox"
+													checked={isChecked}
+													onChange={(e) => {
+														if (e.target.checked) {
+															setPrescription((prev) => ({
+																...prev,
+																treatments: [
+																	...prev.treatments,
+																	{
+																		treatment: treatment.value,
+																		toothNumber: "",
+																	},
+																],
+															}));
+														} else {
+															setPrescription((prev) => ({
+																...prev,
+																treatments: prev.treatments.filter(
+																	(t) => t.treatment !== treatment.value
+																),
+															}));
+														}
+													}}
+													className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+												/>
+												<span className="text-sm text-gray-800">
+													{treatment.label}
+												</span>
+											</label>
 
-										{isChecked && (
-											<div className="space-y-2">
-												{relatedEntries.map((entry, index) => (
-													<div
-														key={index}
-														className="flex items-center space-x-2">
-														<input
-															type="text"
-															value={entry.toothNumber}
-															placeholder="Tooth #"
-															onChange={(e) => {
-																const updated = [...prescription.treatments];
-																const globalIndex =
-																	prescription.treatments.findIndex(
-																		(t, i) =>
-																			t.treatment === treatment.value &&
-																			relatedEntries.indexOf(t) === index
-																	);
-																updated[globalIndex] = {
-																	...updated[globalIndex],
-																	toothNumber: e.target.value,
-																};
-																setPrescription({
-																	...prescription,
-																	treatments: updated,
-																});
-															}}
-															className="flex-1 px-3 py-1 border border-gray-300 rounded-md text-sm"
-														/>
-														{index > 0 && (
-															<button
-																type="button"
-																onClick={() => {
+											{isChecked && (
+												<div className="space-y-2">
+													{relatedEntries.map((entry, index) => (
+														<div
+															key={index}
+															className="flex items-center space-x-2">
+															<input
+																type="text"
+																value={entry.toothNumber}
+																placeholder="Tooth #"
+																onChange={(e) => {
 																	const updated = [...prescription.treatments];
-																	// Find the correct global index to remove
 																	const globalIndex =
 																		prescription.treatments.findIndex(
 																			(t, i) =>
 																				t.treatment === treatment.value &&
 																				relatedEntries.indexOf(t) === index
 																		);
-																	updated.splice(globalIndex, 1);
+																	updated[globalIndex] = {
+																		...updated[globalIndex],
+																		toothNumber: e.target.value,
+																	};
 																	setPrescription({
 																		...prescription,
 																		treatments: updated,
 																	});
 																}}
-																className="text-red-500 hover:text-red-700 text-sm px-2 py-1">
-																<Minus className="h-4 w-4" />
-															</button>
-														)}
-													</div>
-												))}
-												<button
-													type="button"
-													onClick={() =>
-														setPrescription((prev) => ({
-															...prev,
-															treatments: [
-																...prev.treatments,
-																{ treatment: treatment.value, toothNumber: "" },
-															],
-														}))
-													}
-													className="text-indigo-600 text-sm hover:underline">
-													+ Add Tooth
-												</button>
-											</div>
-										)}
-									</div>
-								);
-							})}
-						</div>
-					</div>
-
-					{/* Allergies Section */}
-					<div className="space-y-4">
-						<div className="flex items-center justify-between">
-							<h3 className="text-lg font-medium text-gray-900">Allergies</h3>
-							<button
-								type="button"
-								onClick={addAllergy}
-								className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-								<Plus className="h-4 w-4 mr-2" />
-								Add Allergy
-							</button>
-						</div>
-
-						<div className="space-y-3">
-							{prescription.allergies.map((allergy, index) => (
-								<div key={index} className="flex items-center gap-2">
-									<div className="flex-1 flex items-center bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-										<AlertCircle className="h-4 w-4 text-red-500 mr-2" />
-										<input
-											type="text"
-											value={allergy}
-											onChange={(e) =>
-												handleAllergyChange(index, e.target.value)
-											}
-											className="flex-1 bg-transparent border-none focus:ring-0 text-red-700"
-											placeholder="Enter allergy"
-										/>
-									</div>
-									{index > 0 && (
-										<button
-											type="button"
-											onClick={() => removeAllergy(index)}
-											className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-											<Minus className="h-5 w-5" />
-										</button>
-									)}
-								</div>
-							))}
-						</div>
-					</div>
-
-					{/* Follow-up and Next Visit */}
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 border border-gray-200 rounded-xl bg-gray-50">
-						<div>
-							<label className="flex items-center space-x-2">
-								<input
-									type="checkbox"
-									checked={prescription.followUpRequired}
-									onChange={(e) =>
-										setPrescription({
-											...prescription,
-											followUpRequired: e.target.checked,
-										})
-									}
-									className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-								/>
-								<span className="text-sm font-medium text-gray-700">
-									Follow-up Required
-								</span>
-							</label>
-						</div>
-						<div>
-							<label className="block text-sm font-semibold text-gray-800 mb-1">
-								Next Visit (Date & Time)
-							</label>
-							<div className="relative">
-								<DatePicker
-									selected={prescription.nextVisit}
-									onChange={(date) =>
-										setPrescription({ ...prescription, nextVisit: date })
-									}
-									showTimeSelect
-									timeIntervals={30}
-									timeFormat="hh:mm aa"
-									dateFormat="dd MMM yyyy • hh:mm aa"
-									minDate={new Date()}
-									className="w-full px-4 py-2 pr-10 border rounded-xl border-gray-300 text-sm shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-									placeholderText="e.g., 22 Jul 2025 • 10:30 AM"
-									popperPlacement="bottom-start"
-								/>
-								<Calendar className="absolute right-3 top-2.5 h-5 w-5 text-indigo-500 pointer-events-none" />
+																className="flex-1 px-3 py-1 border border-gray-300 rounded-md text-sm"
+															/>
+															{index > 0 && (
+																<button
+																	type="button"
+																	onClick={() => {
+																		const updated = [
+																			...prescription.treatments,
+																		];
+																		// Find the correct global index to remove
+																		const globalIndex =
+																			prescription.treatments.findIndex(
+																				(t, i) =>
+																					t.treatment === treatment.value &&
+																					relatedEntries.indexOf(t) === index
+																			);
+																		updated.splice(globalIndex, 1);
+																		setPrescription({
+																			...prescription,
+																			treatments: updated,
+																		});
+																	}}
+																	className="text-red-500 hover:text-red-700 text-sm px-2 py-1">
+																	<Minus className="h-4 w-4" />
+																</button>
+															)}
+														</div>
+													))}
+													<button
+														type="button"
+														onClick={() =>
+															setPrescription((prev) => ({
+																...prev,
+																treatments: [
+																	...prev.treatments,
+																	{
+																		treatment: treatment.value,
+																		toothNumber: "",
+																	},
+																],
+															}))
+														}
+														className="text-indigo-600 text-sm hover:underline">
+														+ Add Tooth
+													</button>
+												</div>
+											)}
+										</div>
+									);
+								})}
 							</div>
 						</div>
-					</div>
 
-					{/* Additional Notes */}
-					<div>
-						<label className="block text-lg font-medium text-gray-900 mb-2">
-							Additional Notes
-						</label>
-						<textarea
-							value={prescription.additionalNotes}
-							onChange={(e) =>
-								setPrescription({
-									...prescription,
-									additionalNotes: e.target.value,
-								})
-							}
-							rows={4}
-							className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-							placeholder="Add any additional notes here..."></textarea>
-					</div>
+						{/* Allergies Section */}
+						<div className="space-y-4">
+							<div className="flex items-center justify-between">
+								<h3 className="text-lg font-medium text-gray-900">Allergies</h3>
+								<button
+									type="button"
+									onClick={addAllergy}
+									className="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+									<Plus className="h-4 w-4 mr-2" />
+									Add Allergy
+								</button>
+							</div>
 
-					<div className="flex justify-end space-x-3">
-						<button
-							type="button"
-							onClick={onClose}
-							className="px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-							Cancel
-						</button>
-						<button
-							type="button"
-							onClick={handlePrint}
-							className="px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors flex items-center">
-							<Printer className="h-4 w-4 mr-2" />
-							Print
-						</button>
-						<button
-							type="submit"
-							className="px-6 py-3 border border-transparent rounded-xl text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-							{existingPrescription
-								? "Update Prescription"
-								: "Save Prescription"}
-						</button>
-					</div>
-				</form>
+							<div className="space-y-3">
+								{prescription.allergies.map((allergy, index) => (
+									<div key={index} className="flex items-center gap-2">
+										<div className="flex-1 flex items-center bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+											<AlertCircle className="h-4 w-4 text-red-500 mr-2" />
+											<input
+												type="text"
+												value={allergy}
+												onChange={(e) =>
+													handleAllergyChange(index, e.target.value)
+												}
+												className="flex-1 bg-transparent border-none focus:ring-0 text-red-700"
+												placeholder="Enter allergy"
+											/>
+										</div>
+										{index > 0 && (
+											<button
+												type="button"
+												onClick={() => removeAllergy(index)}
+												className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+												<Minus className="h-5 w-5" />
+											</button>
+										)}
+									</div>
+								))}
+							</div>
+						</div>
+
+						{/* Follow-up and Next Visit */}
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 border border-gray-200 rounded-xl bg-gray-50">
+							<div>
+								<label className="flex items-center space-x-2">
+									<input
+										type="checkbox"
+										checked={prescription.followUpRequired}
+										onChange={(e) =>
+											setPrescription({
+												...prescription,
+												followUpRequired: e.target.checked,
+											})
+										}
+										className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+									/>
+									<span className="text-sm font-medium text-gray-700">
+										Follow-up Required
+									</span>
+								</label>
+							</div>
+							<div>
+								<label className="block text-sm font-semibold text-gray-800 mb-1">
+									Next Visit (Date & Time)
+								</label>
+								<div className="relative">
+									<DatePicker
+										selected={prescription.nextVisit}
+										onChange={(date) =>
+											setPrescription({ ...prescription, nextVisit: date })
+										}
+										showTimeSelect
+										timeIntervals={30}
+										timeFormat="hh:mm aa"
+										dateFormat="dd MMM yyyy • hh:mm aa"
+										minDate={new Date()}
+										className="w-full px-4 py-2 pr-10 border rounded-xl border-gray-300 text-sm shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+										placeholderText="e.g., 22 Jul 2025 • 10:30 AM"
+										popperPlacement="bottom-start"
+									/>
+									<Calendar className="absolute right-3 top-2.5 h-5 w-5 text-indigo-500 pointer-events-none" />
+								</div>
+							</div>
+						</div>
+
+						{/* Additional Notes */}
+						<div>
+							<label className="block text-lg font-medium text-gray-900 mb-2">
+								Additional Notes
+							</label>
+							<textarea
+								value={prescription.additionalNotes}
+								onChange={(e) =>
+									setPrescription({
+										...prescription,
+										additionalNotes: e.target.value,
+									})
+								}
+								rows={4}
+								className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+								placeholder="Add any additional notes here..."></textarea>
+						</div>
+
+						<div className="flex justify-end space-x-3">
+							<button
+								type="button"
+								onClick={onClose}
+								className="px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+								Cancel
+							</button>
+							<button
+								type="button"
+								onClick={handlePrint}
+								className="px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors flex items-center">
+								<Printer className="h-4 w-4 mr-2" />
+								Print
+							</button>
+							<button
+								type="submit"
+								className="px-6 py-3 border border-transparent rounded-xl text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+								{existingPrescription
+									? "Update Prescription"
+									: "Save Prescription"}
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
-		</div>
+			<div
+				ref={prescriptionRef}
+				className="mt-6 border rounded-lg p-4 bg-gray-50">
+				<PrescriptionCard prescription={prescription} />
+			</div>
+		</>
 	);
 }
 

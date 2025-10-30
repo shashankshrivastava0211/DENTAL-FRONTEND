@@ -13,7 +13,8 @@ import {
 	Phone,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-
+import LOGO from "../components/assets/LOGO.png";
+import { CLINIC_NAME } from "../constants/constant";
 const navigation = [
 	{ name: "Home", path: "/" },
 	{ name: "About", path: "/about" },
@@ -161,12 +162,11 @@ const Header = () => {
 								className="flex items-center transition-all duration-300 hover:scale-105"
 								aria-label="32 Pearls Dental Clinic Home">
 								<div className="flex items-center">
-									<div className="mr-1.5 sm:mr-2 flex items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 p-1 sm:p-1.5 shadow-md">
-										<Stethoscope
-											className={`h-4 w-4 md:h-5 md:w-5 text-white`}
-											aria-hidden="true"
-										/>
-									</div>
+									<img
+										src={LOGO}
+										alt={`${CLINIC_NAME} Logo`}
+										className="h-18 w-18 md:h-16 md:w-16 text-white mr-2 rounded"
+									/>
 									<div className="flex flex-col">
 										<span className="text-xl md:text-2xl font-bold tracking-tight">
 											<span
