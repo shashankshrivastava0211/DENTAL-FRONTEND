@@ -2,7 +2,7 @@ export const ADDRESS =
 	"107, Sai vision, Kunal Icon Road, Pimple Saudagar, Pune, Maharashtra 411027";
 
 export const PHONE = "+91 844-632-2666";
-
+export const REGISTRATION_NO = "A-20427";
 export const EMAIL = "drpritesh86@gmail.com";
 export const NAME = "Dr. Pritesh Jagtap";
 export const CLINIC_NAME = "32 Pearl Dental Care";

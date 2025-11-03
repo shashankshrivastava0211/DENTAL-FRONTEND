@@ -340,7 +340,7 @@ const BillModal = ({
 			</div>
 			{/* Preview Invoice */}
 			<div ref={invoiceRef} className="mt-6 border rounded-lg p-4 bg-gray-50">
-				<h3 className="text-lg font-medium mb-2">Invoice Preview</h3>
+				{/* <h3 className="text-lg font-medium mb-2">Invoice Preview</h3> */}
 				<ClinicInvoice bill={bill} />
 			</div>
 		</>
