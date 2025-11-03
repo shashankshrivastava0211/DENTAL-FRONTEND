@@ -5,6 +5,7 @@ import {
 	EMAIL,
 	NAME,
 	PHONE,
+	REGISTRATION_NO,
 } from "../../constants/constant";
 import moment from "moment/moment";
 import numberToWords from "number-to-words";
@@ -98,6 +99,9 @@ export default function ClinicInvoice({ bill }) {
 							<b>Address:</b> {ADDRESS}
 						</div>
 						<div>
+							<b>Registeration No:</b> {REGISTRATION_NO}
+						</div>
+						<div>
 							<b>Phone No.:</b> {PHONE}
 						</div>
 						<div>
@@ -178,7 +182,7 @@ export default function ClinicInvoice({ bill }) {
 						<th style={{ border: "1px solid black", padding: "5px" }}>
 							Treatment
 						</th>
-						<th style={{ border: "1px solid black", padding: "5px" }}>Price</th>
+						{/* <th style={{ border: "1px solid black", padding: "5px" }}>Price</th> */}
 						<th style={{ border: "1px solid black", padding: "5px" }}>
 							Amount
 						</th>
@@ -191,7 +195,7 @@ export default function ClinicInvoice({ bill }) {
 								<td style={{ border: "1px solid black" }}>
 									{item.description || "N/A"}
 								</td>
-								<td style={{ border: "1px solid black" }}>{item.amount}</td>
+								{/* <td style={{ border: "1px solid black" }}>{item.amount}</td> */}
 								<td style={{ border: "1px solid black" }}>{item.amount}</td>
 							</tr>
 						))
@@ -206,7 +210,7 @@ export default function ClinicInvoice({ bill }) {
 					)}
 					<tr>
 						<td
-							colSpan="2"
+							colSpan="1"
 							style={{
 								border: "1px solid black",
 								textAlign: "right",
@@ -274,7 +278,7 @@ export default function ClinicInvoice({ bill }) {
 					</div>
 				</div>
 
-				<div style={{ flex: 1 }}>
+				{/* <div style={{ flex: 1 }}>
 					<div style={{ padding: "10px", fontSize: "14px" }}>
 						<div>
 							<b>Sub Total:</b> {amount}
@@ -286,12 +290,12 @@ export default function ClinicInvoice({ bill }) {
 							<b>Tax Rate:</b>
 							{tax}
 						</div>
-						{/* <div>
+						<div>
 							<b>CGST:</b> __________
 						</div>
 						<div>
 							<b>SGST:</b> __________
-						</div> */}
+						</div>
 					</div>
 					<div
 						style={{
@@ -304,7 +308,7 @@ export default function ClinicInvoice({ bill }) {
 						Total Amount: {total}
 					</div>
 					<div style={{ height: "60px" }}></div>
-				</div>
+				</div> */}
 			</div>
 			{/* Footer */}
 			<div
