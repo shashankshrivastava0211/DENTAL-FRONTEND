@@ -159,42 +159,44 @@ const Header = () => {
 						<div className="flex-shrink-0">
 							<Link
 								to="/"
-								className="flex items-center transition-all duration-300 hover:scale-105"
+								className="flex items-center gap-2 transition-transform duration-300 hover:scale-105"
 								aria-label="32 Pearls Dental Clinic Home">
-								<div className="flex items-center">
-									<img
-										src={LOGO}
-										alt={`${CLINIC_NAME} Logo`}
-										className="h-18 w-18 md:h-16 md:w-16 text-white mr-2 rounded"
-									/>
-									<div className="flex flex-col">
-										<span className="text-xl md:text-2xl font-bold tracking-tight">
-											<span
-												className={`${
-													scrolled ? "text-indigo-700" : "text-white"
-												}`}>
-												32
-											</span>
-											<span
-												className={`${
-													scrolled ? "text-indigo-400" : "text-indigo-300"
-												}`}>
-												•
-											</span>
-											<span
-												className={`${
-													scrolled ? "text-purple-600" : "text-white"
-												}`}>
-												Pearls
-											</span>
+								{/* Logo Image */}
+								<img
+									src={LOGO}
+									alt={`${CLINIC_NAME} Logo`}
+									className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 rounded-md object-contain"
+								/>
+
+								{/* Clinic Name */}
+								<div className="flex flex-col leading-tight">
+									<span className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight">
+										<span
+											className={`${
+												scrolled ? "text-indigo-700" : "text-white"
+											}`}>
+											32
 										</span>
 										<span
-											className={`text-[10px] md:text-xs tracking-widest uppercase ${
-												scrolled ? "text-purple-600" : "text-purple-200"
+											className={`${
+												scrolled ? "text-indigo-400" : "text-indigo-300"
 											}`}>
-											Dental Clinic
+											•
 										</span>
-									</div>
+										<span
+											className={`${
+												scrolled ? "text-purple-600" : "text-white"
+											}`}>
+											Pearls
+										</span>
+									</span>
+
+									<span
+										className={`text-[9px] sm:text-[10px] md:text-xs tracking-widest uppercase ${
+											scrolled ? "text-purple-600" : "text-purple-200"
+										}`}>
+										Dental Clinic
+									</span>
 								</div>
 							</Link>
 						</div>
