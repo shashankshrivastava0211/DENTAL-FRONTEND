@@ -786,11 +786,11 @@ function PrescriptionModal({
 						</div>
 					</form>
 				</div>
-				<div
+				{/* <div
 					ref={prescriptionRef}
 					className="mt-6 border rounded-lg p-4 bg-gray-50">
 					<PrescriptionCard prescription={prescription} />
-				</div>
+				</div> */}
 			</div>
 			<div
 				ref={prescriptionRef}
